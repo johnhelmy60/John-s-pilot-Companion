@@ -1,5 +1,18 @@
-const CACHE='johns-pilot-companion-v2-5';
-const ASSETS=['./index.html?v=2.5','./manifest.webmanifest','./icon.svg'];
+const CACHE='johns-pilot-companion-v2-6';
+const ASSETS=[
+  './index.html',
+  './manifest.webmanifest',
+  './icon.svg',
+  './src/app.js',
+  './src/aircraft.js',
+  './src/airports.js',
+  './src/frequencies.js',
+  './src/craft.js',
+  './src/fuel.js',
+  './src/wb.js',
+  './data/airport_database_A_M.json?v=3',
+  './data/airport_database_N_Z.json?v=3'
+];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{

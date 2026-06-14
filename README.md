@@ -10,4 +10,4 @@ Adds CRAFT IFR Clearance builder:
 - Live readback generator
 - CRAFT completion checklist
 
-Keep airport_database_A_M.json and airport_database_N_Z.json in the repository root.
+Keep airport_database_A_M.json and airport_database_N_Z.json in the data directory.
