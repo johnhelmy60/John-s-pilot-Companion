@@ -1,0 +1,15 @@
+{
+  "name": "Tom's Pilot Companion",
+  "short_name": "Pilot Companion",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

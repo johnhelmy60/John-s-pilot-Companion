@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071018">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Tom's Pilot Companion</title>
+<style>
+:root{--bg:#071018;--card:#101d2a;--line:#2d4358;--text:#f4f7fb;--muted:#9fb0c0;--blue:#58b7ff;--green:#76e06b;--yellow:#ffd166;--red:#ff6b6b}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:85px}
+header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3} h1{font-size:22px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
+main{max-width:980px;margin:auto;padding:12px}.tabs{position:fixed;bottom:0;left:0;right:0;background:#071018;border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:5}
+.tab{min-width:95px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}.tab.active{color:#001018;background:var(--blue)}
+.card{background:rgba(16,29,42,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}h2{margin:0 0 12px;font-size:19px}h3{color:var(--blue);margin:16px 0 8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--muted);font-size:13px;margin:9px 0 5px}
+input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--text);font-size:16px}textarea{min-height:130px}
+.btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--blue);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--text);border:1px solid var(--line)}
+.result{background:#061018;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}.small{font-size:12px;color:var(--muted);line-height:1.45}
+.pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--green);border:1px solid #2c7440}.warn{background:#33270c;color:var(--yellow);border:1px solid #806b2b}.bad{background:#371517;color:var(--red);border:1px solid #864141}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--line);text-align:right}td:first-child,th:first-child{text-align:left}
+.hide{display:none!important}.row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}.canvasWrap{background:#fff;border-radius:14px;overflow:hidden;margin-top:10px}canvas{width:100%;height:300px;display:block;touch-action:none}
+.logItem{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:#091421}
+@media(max-width:560px){.grid,.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>Tom's Pilot Companion</h1><div class="sub">Offline kneeboard for N41498 • Verify all data with POH/W&B</div></header>
+<main>
+<section id="crosswind" class="card">
+<h2>Crosswind Calculator</h2>
+<div class="grid">
+<div><label>Runway # or heading</label><input id="rwy" type="number" placeholder="11 or 110"></div>
+<div><label>Wind from °</label><input id="windDir" type="number" placeholder="257"></div>
+<div><label>Wind speed kt</label><input id="windSpeed" type="number" placeholder="8"></div>
+<div><label>Gust kt</label><input id="gust" type="number" placeholder="14"></div>
+<div><label>Personal XW limit kt</label><input id="xwLimit" type="number" value="17"></div>
+</div>
+<div class="result"><div class="small">Runway heading</div><div class="big" id="rwyOut">—</div><div id="windRisk"></div></div>
+<div class="result"><table>
+<tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id="angleOut">—</td></tr><tr><td>Crosswind</td><td id="xwOut">—</td></tr><tr><td>Gust XW</td><td id="gxwOut">—</td></tr><tr><td>Head/Tailwind</td><td id="hwOut">—</td></tr><tr><td>Wind side</td><td id="sideOut">—</td></tr><tr><td>Crab/Nose</td><td id="crabOut">—</td></tr>
+</table></div>
+</section>
+
+<section id="wb" class="card hide">
+<h2>N41498 Weight & Balance</h2>
+<div class="small">Preloaded from your aircraft profile screenshots. Confirm with the aircraft W&B/POH before flight.</div>
+<div class="grid">
+<div><label>Pilot + front passenger lb</label><input id="frontWt" type="number"></div>
+<div><label>Rear passengers lb</label><input id="rearWt" type="number"></div>
+<div><label>Baggage lb</label><input id="bagWt" type="number"></div>
+<div><label>Fuel gallons</label><input id="fuelGal" type="number"></div>
+</div>
+<div class="result"><table>
+<tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id="wbWeight">—</td></tr><tr><td>Loaded CG</td><td id="wbCg">—</td></tr><tr><td>Useful load remaining</td><td id="wbRemain">—</td></tr><tr><td>Status</td><td id="wbStatus">—</td></tr>
+</table></div>
+<div class="small">Arms used: empty 87.1, front 80.5, rear 118.1, baggage 142.8, fuel 95.0. Max TO weight 2440 lb. Empty weight 1443 lb.</div>
+</section>
+
+<section id="fuel" class="card hide">
+<h2>Fuel & Reserve</h2>
+<div class="grid">
+<div><label>Fuel onboard gal</label><input id="fuelOnboard" type="number"></div>
+<div><label>Planned flight time hr</label><input id="flightHours" type="number" step="0.1"></div>
+<div><label>Fuel burn GPH</label><input id="fuelBurn" type="number" value="9"></div>
+</div>
+<div class="result"><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id="fuelUsed">—</td></tr><tr><td>Fuel remaining</td><td id="fuelRem">—</td></tr><tr><td>Reserve time</td><td id="reserveTime">—</td></tr><tr><td>Status</td><td id="fuelStatus">—</td></tr></table></div>
+</section>
+
+<section id="da" class="card hide">
+<h2>Density Altitude</h2>
+<div class="grid">
+<div><label>Field elevation ft</label><input id="elev" type="number" placeholder="KBJC 5673"></div>
+<div><label>Altimeter inHg</label><input id="altim" type="number" step="0.01" placeholder="29.92"></div>
+<div><label>OAT °C</label><input id="oat" type="number"></div>
+</div>
+<div class="result"><table><tr><th>Item</th><th>Result</th></tr><tr><td>Pressure altitude</td><td id="paOut">—</td></tr><tr><td>Density altitude</td><td id="daOut">—</td></tr><tr><td>Colorado risk</td><td id="daRisk">—</td></tr></table></div>
+</section>
+
+<section id="tank" class="card hide">
+<h2>Fuel Tank Switch Timer</h2>
+<div class="grid"><button class="btn" onclick="startTank('LEFT')">Start LEFT Tank</button><button class="btn" onclick="startTank('RIGHT')">Start RIGHT Tank</button></div>
+<button class="btn btn2" onclick="stopTank()">Stop Timer</button>
+<div class="result"><div class="small">Current tank</div><div class="big" id="tankName">—</div><div id="tankElapsed">—</div><div id="tankWarn"></div></div>
+</section>
+
+<section id="hobbs" class="card hide">
+<h2>Hobbs/Tach Rental Tracker</h2>
+<div class="grid">
+<div><label>Start Hobbs</label><input id="startHobbs" type="number" step="0.1" placeholder="4278.5"></div>
+<div><label>End Hobbs</label><input id="endHobbs" type="number" step="0.1"></div>
+<div><label>Start Tach</label><input id="startTach" type="number" step="0.01" placeholder="874.63"></div>
+<div><label>End Tach</label><input id="endTach" type="number" step="0.01"></div>
+<div><label>Hourly rental rate $</label><input id="rate" type="number" step="1"></div>
+</div>
+<div class="result"><table><tr><th>Item</th><th>Result</th></tr><tr><td>Hobbs time</td><td id="hobbsTime">—</td></tr><tr><td>Tach time</td><td id="tachTime">—</td></tr><tr><td>Estimated cost</td><td id="rentalCost">—</td></tr></table></div>
+</section>
+
+<section id="atis" class="card hide">
+<h2>ATIS Scratchpad</h2>
+<textarea id="atisText" placeholder="ATIS Bravo&#10;RWY 30R&#10;Wind 280@15G24&#10;Altimeter 29.98"></textarea>
+<button class="btn btn2" onclick="clearAtis()">Clear typed ATIS</button>
+<h3>Finger Writing Kneeboard</h3>
+<div class="canvasWrap"><canvas id="pad"></canvas></div>
+<div class="grid"><button class="btn btn2" onclick="clearPad()">Clear drawing</button><button class="btn" onclick="savePad()">Save drawing</button></div>
+</section>
+
+<section id="flightlog" class="card hide">
+<h2>Flight Log</h2>
+<div class="grid">
+<div><label>Date</label><input id="logDate" type="date"></div><div><label>Aircraft</label><input id="logAircraft" value="N41498"></div><div><label>Route</label><input id="logRoute" placeholder="KBJC-KFMM-KAKO-KBJC"></div><div><label>Landings</label><input id="logLandings" type="number"></div>
+</div>
+<label>Remarks</label><textarea id="logRemarks" placeholder="150 NM XC solo, weather notes, etc."></textarea>
+<button class="btn" onclick="saveFlightLog()">Save Flight Log</button>
+<div id="logs"></div>
+</section>
+
+<section id="emergency" class="card hide">
+<h2>Emergency Reference</h2>
+<select id="emerSelect"><option>Engine Failure In Flight</option><option>Engine Failure After Takeoff</option><option>Engine Fire</option><option>Electrical Fire</option><option>Alternator Failure</option><option>Spin Recovery</option><option>Radio Failure</option></select>
+<div class="result" id="emerText"></div>
+</section>
+
+<section id="gono" class="card hide">
+<h2>Go / No-Go</h2>
+<div class="grid">
+<div><label>Crosswind kt</label><input id="goXw" type="number"></div><div><label>Fuel reserve hr</label><input id="goReserve" type="number" step="0.1"></div><div><label>Ceiling ft AGL</label><input id="goCeil" type="number"></div><div><label>Visibility SM</label><input id="goVis" type="number"></div><div><label>Density altitude ft</label><input id="goDa" type="number"></div>
+</div>
+<div class="result"><div class="big" id="goOverall">—</div><div id="goDetails"></div></div>
+</section>
+</main>
+
+<div class="tabs" id="tabs"></div>
+<script>
+const aircraft={emptyWt:1443,emptyArm:87.1,maxWt:2440,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelPpg:6};
+const names=[['crosswind','X-Wind'],['wb','W&B'],['fuel','Fuel'],['da','DA'],['tank','Tank'],['hobbs','Hobbs'],['atis','ATIS'],['flightlog','Log'],['emergency','Emergency'],['gono','Go/No-Go']];
+function $(id){return document.getElementById(id)} function num(id){let x=parseFloat($(id)?.value);return Number.isFinite(x)?x:null} function fmt(x,d=1){return Number.isFinite(x)?x.toFixed(d):'—'} function pill(t,c){return `<span class="pill ${c}">${t}</span>`}
+function save(){document.querySelectorAll('input,textarea,select').forEach(e=>localStorage.setItem('pc_'+e.id,e.value))}
+function load(){document.querySelectorAll('input,textarea,select').forEach(e=>{let v=localStorage.getItem('pc_'+e.id);if(v!==null)e.value=v}); if(!$('logDate').value)$('logDate').value=new Date().toISOString().slice(0,10)}
+names.forEach(([id,label])=>{let b=document.createElement('button');b.className='tab';b.textContent=label;b.onclick=()=>show(id);$('tabs').appendChild(b)})
+function show(id){names.forEach(([sid])=>$(sid).classList.toggle('hide',sid!==id));document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',names[i][0]===id));localStorage.setItem('pc_tab',id)}
+function signedDiff(from,to){return ((from-to+540)%360)-180} function norm(d){return ((d%360)+360)%360}
+function calcCross(){let r=num('rwy'),wd=num('windDir'),ws=num('windSpeed'),g=num('gust'),lim=num('xwLimit');let rh=r==null?null:(r<=36?norm(r*10):norm(r));$('rwyOut').textContent=rh==null?'—':String(Math.round(rh)).padStart(3,'0')+'°';if(rh==null||wd==null||ws==null)return;let d=signedDiff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180,xw=Math.abs(ws*Math.sin(rad)),gxw=(g&&g>ws)?Math.abs(g*Math.sin(rad)):null,hw=ws*Math.cos(rad);$('angleOut').textContent=fmt(abs,0)+'°';$('xwOut').textContent=fmt(xw,1)+' kt';$('gxwOut').textContent=gxw?fmt(gxw,1)+' kt':'—';$('hwOut').textContent=hw>=0?fmt(hw,1)+' kt headwind':fmt(Math.abs(hw),1)+' kt tailwind';let side=Math.abs(d)<2?'Mostly straight':d>0?'From RIGHT':'From LEFT';let crab=Math.abs(d)<2?'Little/no crab':d>0?'Crab nose RIGHT':'Crab nose LEFT';$('sideOut').textContent=side;$('crabOut').textContent=crab;let check=gxw||xw,html=pill(side,'warn')+pill(crab,'good');if(lim)html+=check>lim?pill('Over limit','bad'):check>lim*.8?pill('Near limit','warn'):pill('Within limit','good');if(hw<0)html+=pill('Tailwind','bad');$('windRisk').innerHTML=html}
+function calcWB(){let f=num('frontWt')||0,r=num('rearWt')||0,b=num('bagWt')||0,fg=num('fuelGal')||0,fw=fg*6,total=aircraft.emptyWt+f+r+b+fw,m=aircraft.emptyWt*aircraft.emptyArm+f*aircraft.frontArm+r*aircraft.rearArm+b*aircraft.bagArm+fw*aircraft.fuelArm,cg=m/total,rem=aircraft.maxWt-total;$('wbWeight').textContent=fmt(total,1)+' lb';$('wbCg').textContent=fmt(cg,2)+' in';$('wbRemain').textContent=fmt(rem,1)+' lb';let status='';status+=total>aircraft.maxWt?pill('OVER GROSS','bad'):pill('Weight OK','good');status+=cg<83||cg>93?pill('Check CG limits','bad'):pill('CG likely OK','good');$('wbStatus').innerHTML=status}
+function calcFuel(){let on=num('fuelOnboard'),hrs=num('flightHours'),burn=num('fuelBurn')||9;if(on==null||hrs==null)return;let used=hrs*burn,rem=on-used,res=rem/burn;$('fuelUsed').textContent=fmt(used,1)+' gal';$('fuelRem').textContent=fmt(rem,1)+' gal';$('reserveTime').textContent=fmt(res,2)+' hr';$('fuelStatus').innerHTML=res<0.75?pill('LOW RESERVE','bad'):res<1.25?pill('Caution','warn'):pill('Good reserve','good')}
+function calcDA(){let e=num('elev'),a=num('altim'),o=num('oat');if(e==null||a==null||o==null)return;let pa=e+(29.92-a)*1000,isa=15-1.98*(pa/1000),da=pa+120*(o-isa);$('paOut').textContent=fmt(pa,0)+' ft';$('daOut').textContent=fmt(da,0)+' ft';$('daRisk').innerHTML=da>10500?pill('Very high DA','bad'):da>9000?pill('High DA','bad'):da>7500?pill('Caution','warn'):pill('Normal','good')}
+let tankTimer=null;function startTank(t){localStorage.setItem('pc_tank',t);localStorage.setItem('pc_tankStart',Date.now());updateTank();clearInterval(tankTimer);tankTimer=setInterval(updateTank,1000)}function stopTank(){localStorage.removeItem('pc_tankStart');updateTank()}function updateTank(){let t=localStorage.getItem('pc_tank'),s=parseInt(localStorage.getItem('pc_tankStart')||'0');$('tankName').textContent=t||'—';if(!s){$('tankElapsed').textContent='—';$('tankWarn').innerHTML='';return}let min=(Date.now()-s)/60000;$('tankElapsed').textContent=fmt(min,1)+' minutes';$('tankWarn').innerHTML=min>=60?pill('SWITCH TANKS','bad'):min>=30?pill('Consider tank switch','warn'):pill('Timer running','good')}
+function calcHobbs(){let sh=num('startHobbs'),eh=num('endHobbs'),st=num('startTach'),et=num('endTach'),rate=num('rate');$('hobbsTime').textContent=(sh!=null&&eh!=null)?fmt(eh-sh,1):'—';$('tachTime').textContent=(st!=null&&et!=null)?fmt(et-st,2):'—';$('rentalCost').textContent=(sh!=null&&eh!=null&&rate)?'$'+fmt((eh-sh)*rate,2):'—'}
+const emer={ "Engine Failure In Flight":"BEST GLIDE 73 KIAS<br><br>Fuel selector — CHECK<br>Fuel pump — ON<br>Mixture — RICH<br>Carb heat — ON<br>Magnetos — CHECK<br>Pick landing spot<br>Declare emergency", "Engine Failure After Takeoff":"Pitch for safe airspeed<br>Land mostly straight ahead<br>Fuel selector / pump / mixture if time permits<br>No steep turnback unless trained and altitude permits", "Engine Fire":"Mixture — IDLE CUTOFF<br>Fuel selector — OFF<br>Throttle — CLOSED<br>Cabin heat/air — OFF<br>Forced landing", "Electrical Fire":"Master — OFF<br>Vents/heat — CLOSED<br>Extinguish if available<br>Land ASAP", "Alternator Failure":"Verify low voltage/ammeter<br>Alternator switch — OFF then ON<br>Reduce electrical load<br>Land as practical", "Spin Recovery":"Power — IDLE<br>Ailerons — NEUTRAL<br>Rudder — FULL opposite rotation<br>Elevator — FORWARD<br>Recover from dive", "Radio Failure":"Check volume/squelch/frequency<br>Try COM2 if available<br>Transponder 7600<br>Use light gun signals if towered" }
+function updateEmer(){ $('emerText').innerHTML=emer[$('emerSelect').value] }
+function calcGo(){let x=num('goXw')||0,res=num('goReserve')||0,ceil=num('goCeil')||9999,vis=num('goVis')||10,da=num('goDa')||0,score=0,html='';function assess(name,level){score=Math.max(score,level);html+=pill(name,level==2?'bad':level==1?'warn':'good')}assess('Crosswind',x>17?2:x>13?1:0);assess('Fuel',res<.75?2:res<1.25?1:0);assess('Ceiling',ceil<2000?2:ceil<3500?1:0);assess('Visibility',vis<5?2:vis<8?1:0);assess('Density Altitude',da>9500?2:da>7500?1:0);$('goOverall').innerHTML=score==2?'🔴 HIGH RISK':score==1?'🟡 MODERATE RISK':'🟢 LOW RISK';$('goDetails').innerHTML=html}
+function clearAtis(){$('atisText').value='';save()}function clearPad(){ctx.clearRect(0,0,pad.width,pad.height);localStorage.removeItem('pc_pad')}function savePad(){localStorage.setItem('pc_pad',pad.toDataURL());alert('Drawing saved')}
+function saveFlightLog(){let logs=JSON.parse(localStorage.getItem('pc_logs')||'[]');logs.unshift({date:$('logDate').value,aircraft:$('logAircraft').value,route:$('logRoute').value,landings:$('logLandings').value,remarks:$('logRemarks').value,hobbs:$('hobbsTime').textContent,tach:$('tachTime').textContent});localStorage.setItem('pc_logs',JSON.stringify(logs.slice(0,50)));renderLogs()}
+function renderLogs(){let logs=JSON.parse(localStorage.getItem('pc_logs')||'[]');$('logs').innerHTML=logs.map(l=>`<div class="logItem"><b>${l.date} • ${l.aircraft}</b><br>${l.route}<br>Hobbs: ${l.hobbs} • Tach: ${l.tach}<br>Landings: ${l.landings}<br><span class="small">${l.remarks}</span></div>`).join('')}
+document.querySelectorAll('input,textarea,select').forEach(e=>e.addEventListener('input',()=>{save();calcCross();calcWB();calcFuel();calcDA();calcHobbs();calcGo()}));$('emerSelect').addEventListener('change',()=>{save();updateEmer()})
+let pad=$('pad'),ctx=pad.getContext('2d');function resize(){pad.width=pad.clientWidth*2;pad.height=300*2;ctx.lineWidth=5;ctx.lineCap='round';ctx.strokeStyle='#111';let img=localStorage.getItem('pc_pad');if(img){let im=new Image();im.onload=()=>ctx.drawImage(im,0,0,pad.width,pad.height);im.src=img}}resize();let drawing=false;function pos(e){let r=pad.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*2,y:(t.clientY-r.top)*2}}pad.addEventListener('touchstart',e=>{drawing=true;let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault()},{passive:false});pad.addEventListener('touchmove',e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()},{passive:false});pad.addEventListener('touchend',()=>drawing=false);
+load();renderLogs();updateEmer();calcCross();calcWB();calcFuel();calcDA();calcHobbs();calcGo();show(localStorage.getItem('pc_tab')||'crosswind');updateTank();tankTimer=setInterval(updateTank,1000);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
