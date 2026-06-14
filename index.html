@@ -7,9 +7,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <title>Tom's Pilot Companion</title>
 <style>
-:root{--bg:#071018;--card:#101d2a;--line:#2d4358;--text:#f4f7fb;--muted:#9fb0c0;--blue:#58b7ff;--green:#76e06b;--yellow:#ffd166;--red:#ff6b6b}
+:root{--card:#101d2a;--line:#2d4358;--text:#f4f7fb;--muted:#9fb0c0;--blue:#58b7ff;--green:#76e06b;--yellow:#ffd166;--red:#ff6b6b}
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:88px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:92px}
 header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
 h1{font-size:22px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
 main{max-width:980px;margin:auto;padding:12px}
@@ -17,7 +17,7 @@ main{max-width:980px;margin:auto;padding:12px}
 h2{margin:0 0 12px;font-size:19px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 label{display:block;color:var(--muted);font-size:13px;margin:9px 0 5px}
-input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--text);font-size:16px}
+input{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--text);font-size:16px}
 .btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--blue);color:#001018;font-weight:900;font-size:16px}
 .btn2{background:#172a3a;color:var(--text);border:1px solid var(--line)}
 .result{background:#061018;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
@@ -30,17 +30,17 @@ input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a
 table{width:100%;border-collapse:collapse;font-size:13px}
 td,th{padding:8px 3px;border-bottom:1px solid var(--line);text-align:right}
 td:first-child,th:first-child{text-align:left}
-.hide{display:none!important}
+.hidden{display:none}
 .tabs{position:fixed;bottom:0;left:0;right:0;background:#071018;border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:5}
-.tab{min-width:105px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}
+.tab{min-width:96px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}
 .tab.active{color:#001018;background:var(--blue)}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.tab{min-width:96px}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-<h1>Tom's Pilot Companion v1.3</h1>
-<div class="sub">N41498 quick tools • Verify with POH/W&B and school procedures</div>
+<h1>Tom's Pilot Companion v1.3.1</h1>
+<div class="sub">N41498 quick tools • Verify with POH/W&amp;B and school procedures</div>
 </header>
 
 <main>
@@ -65,9 +65,9 @@ td:first-child,th:first-child{text-align:left}
 </table></div>
 </section>
 
-<section id="wb" class="card hide">
-<h2>N41498 Weight & Balance</h2>
-<div class="small">Preloaded values from your aircraft profile screenshots. Confirm with the airplane’s approved W&B sheet.</div>
+<section id="wb" class="card hidden">
+<h2>N41498 Weight &amp; Balance</h2>
+<div class="small">Preloaded values from your aircraft profile screenshots. Confirm with the airplane’s approved W&amp;B sheet.</div>
 <div class="grid">
 <div><label>Pilot + front passenger lb</label><input id="frontWt" type="number"></div>
 <div><label>Rear passengers lb</label><input id="rearWt" type="number"></div>
@@ -84,8 +84,8 @@ td:first-child,th:first-child{text-align:left}
 <div class="small">Arms used: empty 87.1, front 80.5, rear 118.1, baggage 142.8, fuel 95.0. Max TO weight 2440 lb. Empty weight 1443 lb.</div>
 </section>
 
-<section id="fuel" class="card hide">
-<h2>Fuel & Reserve</h2>
+<section id="fuel" class="card hidden">
+<h2>Fuel &amp; Reserve</h2>
 <div class="grid">
 <div><label>Fuel onboard gal</label><input id="fuelOnboard" type="number"></div>
 <div><label>Planned flight time hr</label><input id="flightHours" type="number" step="0.1"></div>
@@ -100,7 +100,7 @@ td:first-child,th:first-child{text-align:left}
 </table></div>
 </section>
 
-<section id="tank" class="card hide">
+<section id="tank" class="card hidden">
 <h2>Fuel Tank Switch Timer</h2>
 <div class="grid">
 <button class="btn" id="leftTankBtn">Start LEFT Tank</button>
@@ -110,7 +110,7 @@ td:first-child,th:first-child{text-align:left}
 <div class="result"><div class="small">Current tank</div><div class="big" id="tankName">—</div><div id="tankElapsed">—</div><div id="tankWarn"></div></div>
 </section>
 
-<section id="hobbs" class="card hide">
+<section id="hobbs" class="card hidden">
 <h2>Hobbs/Tach Rental Tracker</h2>
 <div class="grid">
 <div><label>Start Hobbs</label><input id="startHobbs" type="number" step="0.1" placeholder="4278.5"></div>
@@ -127,7 +127,7 @@ td:first-child,th:first-child{text-align:left}
 </table></div>
 </section>
 
-<section id="gono" class="card hide">
+<section id="gono" class="card hidden">
 <h2>Go / No-Go</h2>
 <div class="small">Auto-pulls crosswind from the X-Wind tab and fuel reserve from the Fuel tab when available.</div>
 <div class="grid">
@@ -150,159 +150,256 @@ td:first-child,th:first-child{text-align:left}
 </section>
 </main>
 
-<div class="tabs" id="tabs"></div>
+<div class="tabs">
+<button class="tab active" id="tab-crosswind" onclick="showTab('crosswind')">X-Wind</button>
+<button class="tab" id="tab-wb" onclick="showTab('wb')">W&amp;B</button>
+<button class="tab" id="tab-fuel" onclick="showTab('fuel')">Fuel</button>
+<button class="tab" id="tab-tank" onclick="showTab('tank')">Tank</button>
+<button class="tab" id="tab-hobbs" onclick="showTab('hobbs')">Hobbs</button>
+<button class="tab" id="tab-gono" onclick="showTab('gono')">Go/No-Go</button>
+</div>
 
 <script>
-let lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null;
-const aircraft={emptyWt:1443,emptyArm:87.1,maxWt:2440,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelPpg:6};
-const tabs=[["crosswind","X-Wind"],["wb","W&B"],["fuel","Fuel"],["tank","Tank"],["hobbs","Hobbs"],["gono","Go/No-Go"]];
+var lastCrosswind = null;
+var lastGustCrosswind = null;
+var lastReserveHours = null;
+var aircraft = {emptyWt:1443, emptyArm:87.1, maxWt:2440, frontArm:80.5, rearArm:118.1, bagArm:142.8, fuelArm:95, fuelPpg:6};
+var sections = ["crosswind","wb","fuel","tank","hobbs","gono"];
 
-function $(id){return document.getElementById(id)}
-function num(id){const el=$(id); if(!el) return null; const x=parseFloat(el.value); return Number.isFinite(x)?x:null}
-function fmt(x,d=1){return Number.isFinite(x)?x.toFixed(d):"—"}
-function pill(t,c){return `<span class="pill ${c}">${t}</span>`}
-function norm(d){return ((d%360)+360)%360}
-function signedDiff(from,to){return ((from-to+540)%360)-180}
-
-function saveInputs(){document.querySelectorAll("input").forEach(e=>localStorage.setItem("pc13_"+e.id,e.value))}
-function loadInputs(){document.querySelectorAll("input").forEach(e=>{const v=localStorage.getItem("pc13_"+e.id); if(v!==null)e.value=v})}
+function el(id){ return document.getElementById(id); }
+function numberValue(id){ var e = el(id); if(!e){ return null; } var x = parseFloat(e.value); return isFinite(x) ? x : null; }
+function fmt(x,d){ if(!isFinite(x)){ return "—"; } return Number(x).toFixed(d); }
+function pill(text, kind){ return '<span class="pill '+kind+'">'+text+'</span>'; }
+function normDeg(d){ return ((d % 360) + 360) % 360; }
+function signedDiff(from,to){ return ((from - to + 540) % 360) - 180; }
 
 function showTab(id){
-  tabs.forEach(([sid])=>$(sid).classList.toggle("hide",sid!==id));
-  document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("active",tabs[i][0]===id));
-  localStorage.setItem("pc13_tab",id);
-  calcAll();
+  for(var i=0;i<sections.length;i++){
+    var s = sections[i];
+    if(el(s)){ el(s).className = s === id ? "card" : "card hidden"; }
+    if(el("tab-"+s)){ el("tab-"+s).className = s === id ? "tab active" : "tab"; }
+  }
+  localStorage.setItem("pc131_tab", id);
+  calculateAll();
 }
 
-function buildTabs(){
-  const wrap=$("tabs");
-  wrap.innerHTML="";
-  tabs.forEach(([id,label])=>{
-    const b=document.createElement("button");
-    b.className="tab";
-    b.textContent=label;
-    b.addEventListener("click",()=>showTab(id));
-    wrap.appendChild(b);
-  });
+function saveInputs(){
+  var inputs = document.getElementsByTagName("input");
+  for(var i=0;i<inputs.length;i++){
+    if(inputs[i].id){ localStorage.setItem("pc131_"+inputs[i].id, inputs[i].value); }
+  }
 }
 
-function calcCross(){
-  const r=num("rwy"),wd=num("windDir"),ws=num("windSpeed"),g=num("gust"),lim=num("xwLimit");
-  const rh=r==null?null:(r<=36?norm(r*10):norm(r));
-  $("rwyOut").textContent=rh==null?"—":String(Math.round(rh)).padStart(3,"0")+"°";
-  if(rh==null||wd==null||ws==null){
-    lastCrosswind=null; lastGustCrosswind=null;
+function loadInputs(){
+  var inputs = document.getElementsByTagName("input");
+  for(var i=0;i<inputs.length;i++){
+    if(inputs[i].id){
+      var v = localStorage.getItem("pc131_"+inputs[i].id);
+      if(v !== null){ inputs[i].value = v; }
+    }
+  }
+}
+
+function calculateCrosswind(){
+  var r = numberValue("rwy");
+  var wd = numberValue("windDir");
+  var ws = numberValue("windSpeed");
+  var gust = numberValue("gust");
+  var limit = numberValue("xwLimit");
+  var rh = null;
+
+  if(r !== null){ rh = r <= 36 ? normDeg(r*10) : normDeg(r); }
+  el("rwyOut").innerHTML = rh === null ? "—" : String(Math.round(rh)).padStart(3,"0") + "°";
+
+  if(rh === null || wd === null || ws === null){
+    lastCrosswind = null;
+    lastGustCrosswind = null;
     return;
   }
-  const d=signedDiff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180;
-  const xw=Math.abs(ws*Math.sin(rad));
-  const gxw=(g!==null&&g>ws)?Math.abs(g*Math.sin(rad)):null;
-  const hw=ws*Math.cos(rad);
-  lastCrosswind=xw; lastGustCrosswind=gxw;
-  $("angleOut").textContent=fmt(abs,0)+"°";
-  $("xwOut").textContent=fmt(xw,1)+" kt";
-  $("gxwOut").textContent=gxw==null?"—":fmt(gxw,1)+" kt";
-  $("hwOut").textContent=hw>=0?fmt(hw,1)+" kt headwind":fmt(Math.abs(hw),1)+" kt tailwind";
-  const side=Math.abs(d)<2?"Mostly straight":d>0?"From RIGHT":"From LEFT";
-  const crab=Math.abs(d)<2?"Little/no crab":d>0?"Crab nose RIGHT":"Crab nose LEFT";
-  $("sideOut").textContent=side;
-  $("crabOut").textContent=crab;
-  let html=pill(side,"warn")+pill(crab,"good");
-  const check=gxw??xw;
-  if(lim!==null){ html += check>lim?pill("Over limit","bad"):check>lim*.8?pill("Near limit","warn"):pill("Within limit","good"); }
-  if(hw<0) html += pill("Tailwind","bad");
-  $("windRisk").innerHTML=html;
+
+  var d = signedDiff(wd, rh);
+  var abs = Math.abs(d);
+  var rad = abs * Math.PI / 180;
+  var xw = Math.abs(ws * Math.sin(rad));
+  var gxw = null;
+  if(gust !== null && gust > ws){ gxw = Math.abs(gust * Math.sin(rad)); }
+  var hw = ws * Math.cos(rad);
+
+  lastCrosswind = xw;
+  lastGustCrosswind = gxw;
+
+  el("angleOut").innerHTML = fmt(abs,0) + "°";
+  el("xwOut").innerHTML = fmt(xw,1) + " kt";
+  el("gxwOut").innerHTML = gxw === null ? "—" : fmt(gxw,1) + " kt";
+  el("hwOut").innerHTML = hw >= 0 ? fmt(hw,1) + " kt headwind" : fmt(Math.abs(hw),1) + " kt tailwind";
+
+  var side = Math.abs(d) < 2 ? "Mostly straight" : (d > 0 ? "From RIGHT" : "From LEFT");
+  var crab = Math.abs(d) < 2 ? "Little/no crab" : (d > 0 ? "Crab nose RIGHT" : "Crab nose LEFT");
+  el("sideOut").innerHTML = side;
+  el("crabOut").innerHTML = crab;
+
+  var check = gxw === null ? xw : gxw;
+  var html = pill(side,"warn") + pill(crab,"good");
+  if(limit !== null){
+    if(check > limit){ html += pill("Over limit","bad"); }
+    else if(check > limit * 0.8){ html += pill("Near limit","warn"); }
+    else { html += pill("Within limit","good"); }
+  }
+  if(hw < 0){ html += pill("Tailwind","bad"); }
+  el("windRisk").innerHTML = html;
 }
 
-function calcWB(){
-  const f=num("frontWt")||0,r=num("rearWt")||0,b=num("bagWt")||0,fg=num("fuelGal")||0;
-  const fw=fg*aircraft.fuelPpg;
-  const total=aircraft.emptyWt+f+r+b+fw;
-  const moment=aircraft.emptyWt*aircraft.emptyArm+f*aircraft.frontArm+r*aircraft.rearArm+b*aircraft.bagArm+fw*aircraft.fuelArm;
-  const cg=moment/total;
-  const rem=aircraft.maxWt-total;
-  $("wbWeight").textContent=fmt(total,1)+" lb";
-  $("wbCg").textContent=fmt(cg,2)+" in";
-  $("wbRemain").textContent=fmt(rem,1)+" lb";
-  let status="";
-  status += total>aircraft.maxWt?pill("OVER GROSS","bad"):pill("Weight OK","good");
-  status += cg<83||cg>93?pill("Check CG limits","bad"):pill("CG likely OK","good");
-  $("wbStatus").innerHTML=status;
+function calculateWB(){
+  var front = numberValue("frontWt") || 0;
+  var rear = numberValue("rearWt") || 0;
+  var bag = numberValue("bagWt") || 0;
+  var fuelGal = numberValue("fuelGal") || 0;
+  var fuelWt = fuelGal * aircraft.fuelPpg;
+  var total = aircraft.emptyWt + front + rear + bag + fuelWt;
+  var moment = aircraft.emptyWt*aircraft.emptyArm + front*aircraft.frontArm + rear*aircraft.rearArm + bag*aircraft.bagArm + fuelWt*aircraft.fuelArm;
+  var cg = moment / total;
+  var remain = aircraft.maxWt - total;
+
+  el("wbWeight").innerHTML = fmt(total,1) + " lb";
+  el("wbCg").innerHTML = fmt(cg,2) + " in";
+  el("wbRemain").innerHTML = fmt(remain,1) + " lb";
+
+  var status = "";
+  status += total > aircraft.maxWt ? pill("OVER GROSS","bad") : pill("Weight OK","good");
+  status += (cg < 83 || cg > 93) ? pill("Check CG limits","bad") : pill("CG likely OK","good");
+  el("wbStatus").innerHTML = status;
 }
 
-function calcFuel(){
-  const on=num("fuelOnboard"),hrs=num("flightHours"),burn=num("fuelBurn")||9;
-  if(on==null||hrs==null){lastReserveHours=null;return}
-  const used=hrs*burn,rem=on-used,res=rem/burn;
-  lastReserveHours=res;
-  $("fuelUsed").textContent=fmt(used,1)+" gal";
-  $("fuelRem").textContent=fmt(rem,1)+" gal";
-  $("reserveTime").textContent=fmt(res,2)+" hr";
-  $("fuelStatus").innerHTML=res<0.75?pill("LOW RESERVE","bad"):res<1.25?pill("Caution","warn"):pill("Good reserve","good");
+function calculateFuel(){
+  var onboard = numberValue("fuelOnboard");
+  var hours = numberValue("flightHours");
+  var burn = numberValue("fuelBurn") || 9;
+
+  if(onboard === null || hours === null){
+    lastReserveHours = null;
+    return;
+  }
+
+  var used = hours * burn;
+  var remaining = onboard - used;
+  var reserve = remaining / burn;
+  lastReserveHours = reserve;
+
+  el("fuelUsed").innerHTML = fmt(used,1) + " gal";
+  el("fuelRem").innerHTML = fmt(remaining,1) + " gal";
+  el("reserveTime").innerHTML = fmt(reserve,2) + " hr";
+
+  if(reserve < 0.75){ el("fuelStatus").innerHTML = pill("LOW RESERVE","bad"); }
+  else if(reserve < 1.25){ el("fuelStatus").innerHTML = pill("Caution","warn"); }
+  else { el("fuelStatus").innerHTML = pill("Good reserve","good"); }
 }
 
-function calcHobbs(){
-  const sh=num("startHobbs"),eh=num("endHobbs"),st=num("startTach"),et=num("endTach"),rate=num("rate");
-  const hob=(sh!=null&&eh!=null)?eh-sh:null;
-  const tach=(st!=null&&et!=null)?et-st:null;
-  $("hobbsTime").textContent=hob==null?"—":fmt(hob,1);
-  $("tachTime").textContent=tach==null?"—":fmt(tach,2);
-  $("rentalCost").textContent=(hob!=null&&rate!=null)?"$"+fmt(hob*rate,2):"—";
+function calculateHobbs(){
+  var sh = numberValue("startHobbs");
+  var eh = numberValue("endHobbs");
+  var st = numberValue("startTach");
+  var et = numberValue("endTach");
+  var rate = numberValue("rate");
+
+  var hobbs = (sh !== null && eh !== null) ? eh - sh : null;
+  var tach = (st !== null && et !== null) ? et - st : null;
+
+  el("hobbsTime").innerHTML = hobbs === null ? "—" : fmt(hobbs,1);
+  el("tachTime").innerHTML = tach === null ? "—" : fmt(tach,2);
+  el("rentalCost").innerHTML = (hobbs !== null && rate !== null) ? "$" + fmt(hobbs * rate,2) : "—";
 }
 
-function calcGo(){
-  const x=lastGustCrosswind??lastCrosswind??0;
-  const res=lastReserveHours??0;
-  let ceil=num("goCeil"); if(ceil==null) ceil=9999;
-  let vis=num("goVis"); if(vis==null) vis=10;
-  $("goXwAuto").textContent=x?fmt(x,1)+" kt":"—";
-  $("goReserveAuto").textContent=res?fmt(res,2)+" hr":"—";
-  $("goCeilAuto").textContent=fmt(ceil,0)+" ft AGL";
-  $("goVisAuto").textContent=fmt(vis,1)+" SM";
-  let score=0,html="";
-  function assess(name,level){score=Math.max(score,level);html+=pill(name,level===2?"bad":level===1?"warn":"good")}
-  assess("Crosswind",x>17?2:x>13?1:0);
-  assess("Fuel",res&&res<.75?2:res&&res<1.25?1:0);
-  assess("Ceiling",ceil<2000?2:ceil<3500?1:0);
-  assess("Visibility",vis<5?2:vis<8?1:0);
-  $("goOverall").innerHTML=score===2?"🔴 HIGH RISK":score===1?"🟡 MODERATE RISK":"🟢 LOW RISK";
-  $("goDetails").innerHTML=html;
+function calculateGo(){
+  var xw = lastGustCrosswind !== null ? lastGustCrosswind : (lastCrosswind !== null ? lastCrosswind : 0);
+  var reserve = lastReserveHours !== null ? lastReserveHours : 0;
+  var ceiling = numberValue("goCeil");
+  var visibility = numberValue("goVis");
+  if(ceiling === null){ ceiling = 9999; }
+  if(visibility === null){ visibility = 10; }
+
+  el("goXwAuto").innerHTML = xw ? fmt(xw,1) + " kt" : "—";
+  el("goReserveAuto").innerHTML = reserve ? fmt(reserve,2) + " hr" : "—";
+  el("goCeilAuto").innerHTML = fmt(ceiling,0) + " ft AGL";
+  el("goVisAuto").innerHTML = fmt(visibility,1) + " SM";
+
+  var score = 0;
+  var html = "";
+  function assess(name, level){
+    if(level > score){ score = level; }
+    html += pill(name, level === 2 ? "bad" : (level === 1 ? "warn" : "good"));
+  }
+
+  assess("Crosswind", xw > 17 ? 2 : (xw > 13 ? 1 : 0));
+  assess("Fuel", reserve && reserve < 0.75 ? 2 : (reserve && reserve < 1.25 ? 1 : 0));
+  assess("Ceiling", ceiling < 2000 ? 2 : (ceiling < 3500 ? 1 : 0));
+  assess("Visibility", visibility < 5 ? 2 : (visibility < 8 ? 1 : 0));
+
+  el("goOverall").innerHTML = score === 2 ? "🔴 HIGH RISK" : (score === 1 ? "🟡 MODERATE RISK" : "🟢 LOW RISK");
+  el("goDetails").innerHTML = html;
 }
 
 function startTank(tank){
-  localStorage.setItem("pc13_tank",tank);
-  localStorage.setItem("pc13_tankStart",String(Date.now()));
+  localStorage.setItem("pc131_tank", tank);
+  localStorage.setItem("pc131_tankStart", String(Date.now()));
   updateTank();
 }
+
 function stopTank(){
-  localStorage.removeItem("pc13_tankStart");
+  localStorage.removeItem("pc131_tankStart");
   updateTank();
 }
+
 function updateTank(){
-  const tank=localStorage.getItem("pc13_tank");
-  const start=parseInt(localStorage.getItem("pc13_tankStart")||"0",10);
-  $("tankName").textContent=tank||"—";
-  if(!start){$("tankElapsed").textContent="—";$("tankWarn").innerHTML="";return}
-  const min=(Date.now()-start)/60000;
-  $("tankElapsed").textContent=fmt(min,1)+" minutes";
-  $("tankWarn").innerHTML=min>=60?pill("SWITCH TANKS","bad"):min>=30?pill("Consider tank switch","warn"):pill("Timer running","good");
+  var tank = localStorage.getItem("pc131_tank");
+  var start = parseInt(localStorage.getItem("pc131_tankStart") || "0", 10);
+  el("tankName").innerHTML = tank || "—";
+
+  if(!start){
+    el("tankElapsed").innerHTML = "—";
+    el("tankWarn").innerHTML = "";
+    return;
+  }
+
+  var minutes = (Date.now() - start) / 60000;
+  el("tankElapsed").innerHTML = fmt(minutes,1) + " minutes";
+
+  if(minutes >= 60){ el("tankWarn").innerHTML = pill("SWITCH TANKS","bad"); }
+  else if(minutes >= 30){ el("tankWarn").innerHTML = pill("Consider tank switch","warn"); }
+  else { el("tankWarn").innerHTML = pill("Timer running","good"); }
 }
 
-function calcAll(){calcCross();calcWB();calcFuel();calcHobbs();calcGo();saveInputs()}
+function calculateAll(){
+  calculateCrosswind();
+  calculateWB();
+  calculateFuel();
+  calculateHobbs();
+  calculateGo();
+  saveInputs();
+}
 
-document.addEventListener("DOMContentLoaded",()=>{
-  buildTabs();
+window.onload = function(){
   loadInputs();
-  document.querySelectorAll("input").forEach(e=>e.addEventListener("input",calcAll));
-  $("leftTankBtn").addEventListener("click",()=>startTank("LEFT"));
-  $("rightTankBtn").addEventListener("click",()=>startTank("RIGHT"));
-  $("stopTankBtn").addEventListener("click",stopTank);
-  $("refreshGo").addEventListener("click",calcGo);
-  showTab(localStorage.getItem("pc13_tab")||"crosswind");
-  setInterval(updateTank,1000);
+
+  var inputs = document.getElementsByTagName("input");
+  for(var i=0;i<inputs.length;i++){
+    inputs[i].addEventListener("input", calculateAll);
+  }
+
+  el("leftTankBtn").onclick = function(){ startTank("LEFT"); };
+  el("rightTankBtn").onclick = function(){ startTank("RIGHT"); };
+  el("stopTankBtn").onclick = stopTank;
+  el("refreshGo").onclick = calculateGo;
+
+  var savedTab = localStorage.getItem("pc131_tab") || "crosswind";
+  showTab(savedTab);
+  calculateAll();
   updateTank();
-  if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
-});
+  setInterval(updateTank, 1000);
+
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js");
+  }
+};
 </script>
 </body>
 </html>

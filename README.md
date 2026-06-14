@@ -1,4 +1,4 @@
-# Tom's Pilot Companion v1.3
+# Tom's Pilot Companion v1.3.1
 
 Clean lean offline PWA for N41498.
 
@@ -10,10 +10,4 @@ Clean lean offline PWA for N41498.
 - Hobbs/Tach Rental Tracker
 - Go / No-Go
 
-Removed:
-- Emergency Reference
-- ATIS Scratchpad
-- Flight Log
-- Density Altitude
-
-Upload these files to the same GitHub repository root and replace the existing files.
+This version uses static tabs and simplified JavaScript for iPhone Safari reliability.
