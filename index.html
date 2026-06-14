@@ -11,7 +11,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style></head><body><header><h1>John's Pilot Companion v2.2</h1><div class='sub'>Personal Flight Toolkit • Local Airport Database</div></header><main>
+</style></head><body><header><h1>John's Pilot Companion v2.3</h1><div class='sub'>Personal Flight Toolkit • JSON Airport Database</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
@@ -68,14 +68,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>Local VFR shows airport weather/tower/ground/CTAF. VFR + Flight Following adds departure/approach/center. IFR shows all available entries. Verify frequencies with current charts/ForeFlight.</p>
 </section>
 <section id='airports' class='card hidden'><h2>Airport Database</h2>
-<div class='small'>Local offline airport database. Search built-in airports, add custom airports, and edit saved airport frequency cards.</div>
+<div class='small'>Search the uploaded JSON airport database files, save airports locally, and use them offline in Route Frequencies.</div>
 
 <h3>Search Local Database</h3>
 <div class='grid'>
 <div><label>ICAO / FAA ID</label><input id='airportSearch' placeholder='KBJC, KASE, KBDU'></div>
 <div><label>&nbsp;</label><button class='btn' id='searchAirportBtn'>Add / Load Airport</button></div>
 </div>
-<div class='result' id='airportSearchResult'>Search a built-in airport to add it to My Airports.</div>
+<div class='result' id='airportSearchResult'>Search an airport from the uploaded JSON database files.</div>
 
 <h3>Add Custom Airport</h3>
 <div class='grid'>
@@ -97,7 +97,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <h3>My Airports</h3>
 <div id='myAirportsList'></div>
 
-<p class='small'>Local database version: v2.2. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
+<p class='small'>JSON database version: v2.3. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
@@ -126,9 +126,82 @@ var builtInAirports={
 'KASE':{code:'KASE',name:'Aspen/Pitkin County',elevation:'7820',runways:[],updated:'local v2.2',source:'Local',freqs:[['ATIS/AWOS','verify current','vfr'],['Tower/CTAF','verify current','vfr'],['Ground','verify current','vfr'],['Approach/Departure','verify current','ff'],['Clearance','verify current','ifr']]},
 'KEGE':{code:'KEGE',name:'Eagle County Regional',elevation:'6548',runways:[],updated:'local v2.2',source:'Local',freqs:[['ATIS/AWOS','verify current','vfr'],['Tower/CTAF','verify current','vfr'],['Ground','verify current','vfr'],['Approach/Departure','verify current','ff'],['Clearance','verify current','ifr']]},
 'KGJT':{code:'KGJT',name:'Grand Junction Regional',elevation:'4858',runways:[],updated:'local v2.2',source:'Local',freqs:[['ATIS/AWOS','verify current','vfr'],['Ground','verify current','vfr'],['Tower','verify current','vfr'],['Approach/Departure','verify current','ff'],['Clearance','verify current','ifr']]}
+
 };
 
+var externalAirportDb = null;
+var externalDbLoading = null;
+
+function mapExternalMode(freq){
+  var t=((freq.type||'')+' '+(freq.description||'')).toUpperCase();
+  if(freq.mode){return freq.mode;}
+  if(t.includes('APP')||t.includes('DEP')||t.includes('CENTER')||t.includes('CTR'))return 'ff';
+  if(t.includes('CLD')||t.includes('CLEARANCE')||t.includes('DELIVERY'))return 'ifr';
+  return 'vfr';
+}
+
+function normalizeExternalAirport(raw){
+  if(!raw)return null;
+  var code=(raw.ident||raw.code||raw.gps_code||raw.local_code||'').toUpperCase();
+  if(!code)return null;
+  var freqs=(raw.frequencies||[]).map(function(f){
+    return [
+      f.type || f.description || 'Frequency',
+      f.mhz || f.frequency_mhz || f.frequency || '',
+      mapExternalMode(f)
+    ];
+  }).filter(function(f){return f[1]});
+  var runways=(raw.runways||[]).map(function(r){
+    return r.ident || ((r.le_ident||'') + '/' + (r.he_ident||'')) || '';
+  }).filter(Boolean);
+  return {
+    code: code,
+    name: raw.name || code,
+    elevation: raw.elevation_ft || '',
+    runways: runways,
+    updated: 'JSON database v3',
+    source: 'JSON',
+    freqs: freqs
+  };
+}
+
+async function loadExternalDb(){
+  if(externalAirportDb)return externalAirportDb;
+  if(externalDbLoading)return externalDbLoading;
+
+  externalDbLoading = Promise.all([
+    fetch('./airport_database_A_M.json?v=3', {cache:'reload'}).then(function(r){if(!r.ok)throw new Error('A-M database missing'); return r.json();}),
+    fetch('./airport_database_N_Z.json?v=3', {cache:'reload'}).then(function(r){if(!r.ok)throw new Error('N-Z database missing'); return r.json();})
+  ]).then(function(parts){
+    var all={};
+    parts.forEach(function(p){
+      var airports=p.airports||{};
+      Object.keys(airports).forEach(function(k){all[k.toUpperCase()]=airports[k]});
+    });
+    externalAirportDb=all;
+    return externalAirportDb;
+  });
+  return externalDbLoading;
+}
+
+async function findExternalAirport(code){
+  var db=await loadExternalDb();
+  code=normalizeCode(code);
+  if(db[code])return normalizeExternalAirport(db[code]);
+
+  // Also search local_code / gps_code / iata_code if airport ident differs.
+  var keys=Object.keys(db);
+  for(var i=0;i<keys.length;i++){
+    var a=db[keys[i]];
+    if(((a.local_code||'').toUpperCase()===code) || ((a.gps_code||'').toUpperCase()===code) || ((a.iata_code||'').toUpperCase()===code)){
+      return normalizeExternalAirport(a);
+    }
+  }
+  return null;
+}
+
 function el(id){return document.getElementById(id)}
+
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
 function fmt(x,d){return isFinite(x)?Number(x).toFixed(d):'—'}
 function pill(t,k){return '<span class="pill '+k+'">'+t+'</span>'}
@@ -146,19 +219,36 @@ function saveSavedAirports(obj){localStorage.jp_savedAirports=JSON.stringify(obj
 function airportCodes(){return Object.keys(getSavedAirports()).sort()}
 function airportRecord(code){return getSavedAirports()[code]||builtInAirports[code]}
 
-function searchAirport(){
+async function searchAirport(){
  var code=normalizeCode(el('airportSearch').value);
  if(!code){el('airportSearchResult').innerHTML='Enter an airport code.';return}
  var saved=getSavedAirports();
+
+ if(saved[code]){
+   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>'+pill('Already saved locally','good');
+   renderMyAirports(); renderAirports(); return;
+ }
+
  if(builtInAirports[code]){
    saved[code]=clone(builtInAirports[code]);
-   saved[code].updated='local v2.2';
+   saved[code].updated='local v2.3';
    saveSavedAirports(saved);
-   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>Elevation: '+(saved[code].elevation||'—')+' ft<br>Frequencies: '+saved[code].freqs.length+'<br>'+pill('Loaded from local database','good');
- } else if(saved[code]){
-   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>'+pill('Already saved','good');
- } else {
-   el('airportSearchResult').innerHTML=pill('Not found locally','warn')+' Add it as a custom airport below.';
+   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>Elevation: '+(saved[code].elevation||'—')+' ft<br>Frequencies: '+saved[code].freqs.length+'<br>'+pill('Loaded from built-in backup','good');
+   renderMyAirports(); renderAirports(); return;
+ }
+
+ el('airportSearchResult').innerHTML='Searching JSON database for '+code+'...';
+ try{
+   var rec=await findExternalAirport(code);
+   if(rec){
+     saved[rec.code]=rec;
+     saveSavedAirports(saved);
+     el('airportSearchResult').innerHTML='<b>'+rec.code+'</b><br>'+rec.name+'<br>Elevation: '+(rec.elevation||'—')+' ft<br>Frequencies: '+rec.freqs.length+'<br>Runways: '+rec.runways.length+'<br>'+pill('Loaded from JSON database','good');
+     renderMyAirports(); renderAirports(); return;
+   }
+   el('airportSearchResult').innerHTML=pill('Not found','warn')+' Airport not found in uploaded JSON database. Add it as a custom airport below.';
+ }catch(e){
+   el('airportSearchResult').innerHTML=pill('Database load failed','bad')+' '+e.message+'<br><span class="small">Make sure airport_database_A_M.json and airport_database_N_Z.json are uploaded to the repo root.</span>';
  }
  renderMyAirports(); renderAirports();
 }
