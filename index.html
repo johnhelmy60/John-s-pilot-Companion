@@ -1,17 +1,17 @@
 <!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'><meta name='theme-color' content='#071018'><link rel='manifest' href='manifest.webmanifest'><title>John's Pilot Companion</title>
 <style>
 :root{--c:#101d2a;--l:#2d4358;--t:#f4f7fb;--m:#9fb0c0;--b:#58b7ff;--g:#76e06b;--y:#ffd166;--r:#ff6b6b}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:192px}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:205px}
 header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--l);position:sticky;top:0;z-index:3}h1{font-size:22px;margin:0}.sub,.small{font-size:12px;color:var(--m);line-height:1.45}.card{background:rgba(16,29,42,.96);border:1px solid var(--l);border-radius:18px;padding:14px;margin:12px}.hidden{display:none}
 h2{margin:0 0 12px;font-size:19px}h3{font-size:15px;color:var(--b);margin:16px 0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--m);font-size:13px;margin:9px 0 5px}input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--t);font-size:16px}
 .btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--b);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--t);border:1px solid var(--l)}.result{background:#061018;border:1px solid var(--l);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}
 .pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--g);border:1px solid #2c7440}.warn{background:#33270c;color:var(--y);border:1px solid #806b2b}.bad{background:#371517;color:var(--r);border:1px solid #864141}.bluepill{background:#081c33;color:var(--b);border:1px solid #2b6b98}
 table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--l);text-align:right}td:first-child,th:first-child{text-align:left}
-.tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
+.tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style></head><body><header><h1>John's Pilot Companion v2.0</h1><div class='sub'>Personal Flight Toolkit • VFR / FF / IFR Ready</div></header><main>
+</style></head><body><header><h1>John's Pilot Companion v2.1</h1><div class='sub'>Personal Flight Toolkit • Dynamic Airport Database</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
@@ -67,34 +67,48 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div id='freqList'></div>
 <p class='small'>Local VFR shows airport weather/tower/ground/CTAF. VFR + Flight Following adds departure/approach/center. IFR shows all available entries. Verify frequencies with current charts/ForeFlight.</p>
 </section>
+<section id='airports' class='card hidden'><h2>Airport Database</h2>
+<div class='small'>Search airports online, save them locally, then use them offline in Route Frequencies.</div>
+
+<h3>Search Airport</h3>
+<div class='grid'>
+<div><label>ICAO / FAA ID</label><input id='airportSearch' placeholder='KBJC, KASE, KBDU'></div>
+<div><label>&nbsp;</label><button class='btn' id='searchAirportBtn'>Search / Update</button></div>
+</div>
+<div class='result' id='airportSearchResult'>Search an airport to add it.</div>
+
+<h3>My Airports</h3>
+<button class='btn btn2' id='updateAllAirportsBtn'>Update All Saved Airports</button>
+<div id='myAirportsList'></div>
+
+<p class='small'>Online search uses OurAirports public data when available. Saved airports remain available offline. Always verify frequencies with current FAA/ForeFlight data before flight.</p>
+</section>
+
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind' onclick="showTab('crosswind')">X-Wind</button><button class='tab' id='tab-aircraft' onclick="showTab('aircraft')">Aircraft</button><button class='tab' id='tab-wb' onclick="showTab('wb')">W&B</button><button class='tab' id='tab-fuel' onclick="showTab('fuel')">Fuel</button><button class='tab' id='tab-tank' onclick="showTab('tank')">Tank</button><button class='tab' id='tab-hobbs' onclick="showTab('hobbs')">Hobbs</button><button class='tab' id='tab-freq' onclick="showTab('freq')">Freq</button><button class='tab' id='tab-gono' onclick="showTab('gono')">Go/No</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-crosswind' onclick="showTab('crosswind')">X-Wind</button><button class='tab' id='tab-aircraft' onclick="showTab('aircraft')">Aircraft</button><button class='tab' id='tab-wb' onclick="showTab('wb')">W&B</button><button class='tab' id='tab-fuel' onclick="showTab('fuel')">Fuel</button><button class='tab' id='tab-tank' onclick="showTab('tank')">Tank</button><button class='tab' id='tab-hobbs' onclick="showTab('hobbs')">Hobbs</button><button class='tab' id='tab-freq' onclick="showTab('freq')">Freq</button><button class='tab' id='tab-airports' onclick="showTab('airports')">Airports</button><button class='tab' id='tab-gono' onclick="showTab('gono')">Go/No</button></div>
 <script>
 var lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','gono'];
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','gono'];
 var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
+var airportDataCache=null;
 var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1443,emptyArm:87.1,maxWt:2440,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60}];
 
-var airportDb={
-'KBJC':[
- ['ATIS','126.25','vfr'],['Ground','121.7','vfr'],['Tower','118.6','vfr'],['Tower Secondary','121.0','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']
-],
-'KBDU':[['AWOS','120.775','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KLMO':[['AWOS','118.925','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KEIK':[['AWOS','120.725','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KFMM':[['AWOS','132.95','vfr'],['CTAF','123.05','vfr'],['Denver Center','118.475','ff']],
-'KAKO':[['ASOS','135.475','vfr'],['CTAF','122.8','vfr'],['Denver Center','133.95','ff']],
-'KAPA':[['ATIS','120.3','vfr'],['Ground','121.85','vfr'],['Tower','118.9','vfr'],['Tower Secondary','123.7','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']],
-'KFNL':[['ATIS','128.425','vfr'],['Ground','121.65','vfr'],['Tower/CTAF','118.4','vfr'],['Departure/Approach','Denver - verify','ff']],
-'KCFO':[['AWOS','119.025','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KFTG':[['AWOS','119.025','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KLIC':[['AWOS','118.525','vfr'],['CTAF','122.8','vfr'],['Denver Center','verify current','ff']],
-'KFLY':[['AWOS','120.175','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Colorado Springs - verify','ff']],
-'00V':[['AWOS','verify current','vfr'],['CTAF','122.9','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KPUB':[['ATIS','125.7','vfr'],['Ground','121.9','vfr'],['Tower','119.1','vfr'],['Approach/Departure','Pueblo - verify','ff'],['Clearance','verify current','ifr']],
-'KCOS':[['ATIS','124.3','vfr'],['Ground','121.7','vfr'],['Tower','119.9','vfr'],['Approach/Departure','Colorado Springs - verify','ff'],['Clearance','verify current','ifr']],
-'KGXY':[['ATIS/AWOS','verify current','vfr'],['Tower/CTAF','verify current','vfr'],['Ground','verify current','vfr'],['Approach/Departure','Denver - verify','ff']],
-'KDEN':[['ATIS','verify current','vfr'],['Ground','verify current','vfr'],['Tower','verify current','vfr'],['Departure/Approach','Denver - verify','ff'],['Clearance','verify current','ifr']]
+var fallbackAirports={
+'KBJC':{code:'KBJC',name:'Rocky Mountain Metro',elevation:'5673',runways:[],updated:'preloaded',freqs:[['ATIS','126.25','vfr'],['Ground','121.7','vfr'],['Tower','118.6','vfr'],['Tower Secondary','121.0','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']]},
+'KBDU':{code:'KBDU',name:'Boulder Municipal',elevation:'5288',runways:[],updated:'preloaded',freqs:[['AWOS','120.775','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KLMO':{code:'KLMO',name:'Vance Brand',elevation:'5055',runways:[],updated:'preloaded',freqs:[['AWOS','118.925','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KEIK':{code:'KEIK',name:'Erie Municipal',elevation:'5130',runways:[],updated:'preloaded',freqs:[['AWOS','120.725','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KFMM':{code:'KFMM',name:'Fort Morgan Municipal',elevation:'4569',runways:[],updated:'preloaded',freqs:[['AWOS','132.95','vfr'],['CTAF','123.05','vfr'],['Denver Center','118.475','ff']]},
+'KAKO':{code:'KAKO',name:'Colorado Plains Regional',elevation:'4714',runways:[],updated:'preloaded',freqs:[['ASOS','135.475','vfr'],['CTAF','122.8','vfr'],['Denver Center','133.95','ff']]},
+'KAPA':{code:'KAPA',name:'Centennial',elevation:'5885',runways:[],updated:'preloaded',freqs:[['ATIS','120.3','vfr'],['Ground','121.85','vfr'],['Tower','118.9','vfr'],['Tower Secondary','123.7','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']]},
+'KFNL':{code:'KFNL',name:'Northern Colorado Regional',elevation:'5016',runways:[],updated:'preloaded',freqs:[['ATIS','128.425','vfr'],['Ground','121.65','vfr'],['Tower/CTAF','118.4','vfr'],['Departure/Approach','Denver - verify','ff']]},
+'KCFO':{code:'KCFO',name:'Colorado Air and Space Port',elevation:'5515',runways:[],updated:'preloaded',freqs:[['AWOS','119.025','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KFTG':{code:'KFTG',name:'Front Range',elevation:'5512',runways:[],updated:'preloaded',freqs:[['AWOS','119.025','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KLIC':{code:'KLIC',name:'Limon Municipal',elevation:'5374',runways:[],updated:'preloaded',freqs:[['AWOS','118.525','vfr'],['CTAF','122.8','vfr'],['Denver Center','verify current','ff']]},
+'KFLY':{code:'KFLY',name:'Meadow Lake',elevation:'6874',runways:[],updated:'preloaded',freqs:[['AWOS','120.175','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Colorado Springs - verify','ff']]},
+'00V':{code:'00V',name:'Meadow Lake / verify identifier',elevation:'',runways:[],updated:'preloaded',freqs:[['AWOS','verify current','vfr'],['CTAF','122.9','vfr'],['Approach/Departure','Denver - verify','ff']]},
+'KPUB':{code:'KPUB',name:'Pueblo Memorial',elevation:'4726',runways:[],updated:'preloaded',freqs:[['ATIS','125.7','vfr'],['Ground','121.9','vfr'],['Tower','119.1','vfr'],['Approach/Departure','Pueblo - verify','ff'],['Clearance','verify current','ifr']]},
+'KCOS':{code:'KCOS',name:'Colorado Springs',elevation:'6187',runways:[],updated:'preloaded',freqs:[['ATIS','124.3','vfr'],['Ground','121.7','vfr'],['Tower','119.9','vfr'],['Approach/Departure','Colorado Springs - verify','ff'],['Clearance','verify current','ifr']]}
 };
 
 function el(id){return document.getElementById(id)}
@@ -103,12 +117,101 @@ function fmt(x,d){return isFinite(x)?Number(x).toFixed(d):'—'}
 function pill(t,k){return '<span class="pill '+k+'">'+t+'</span>'}
 function norm(d){return((d%360)+360)%360}
 function diff(f,t){return((f-t+540)%360)-180}
+function today(){return new Date().toISOString().slice(0,10)}
+function csvParse(text){
+ var rows=[],row=[],cur='',q=false;
+ for(var i=0;i<text.length;i++){var c=text[i],n=text[i+1];
+  if(c=='"'&&q&&n=='"'){cur+='"';i++}
+  else if(c=='"'){q=!q}
+  else if(c==','&&!q){row.push(cur);cur=''}
+  else if((c=='\n'||c=='\r')&&!q){if(cur.length||row.length){row.push(cur);rows.push(row);row=[];cur=''} if(c=='\r'&&n=='\n')i++}
+  else cur+=c
+ }
+ if(cur.length||row.length){row.push(cur);rows.push(row)}
+ return rows
+}
+function rowsToObjects(rows){var h=rows[0]||[];return rows.slice(1).map(function(r){var o={};h.forEach(function(k,i){o[k]=r[i]||''});return o})}
+
+function getSavedAirports(){
+ try{var x=JSON.parse(localStorage.jp_savedAirports||'null'); if(x)return x}catch(e){}
+ var start={}; Object.keys(fallbackAirports).forEach(function(k){start[k]=fallbackAirports[k]}); localStorage.jp_savedAirports=JSON.stringify(start); return start;
+}
+function saveSavedAirports(obj){localStorage.jp_savedAirports=JSON.stringify(obj)}
+function airportCodes(){return Object.keys(getSavedAirports()).sort()}
+function airportRecord(code){var a=getSavedAirports()[code];return a||fallbackAirports[code]}
+function normalizeCode(code){code=(code||'').trim().toUpperCase(); if(code.length==3&&/^[A-Z]{3}$/.test(code))code='K'+code; return code}
+
+async function loadOurAirportsData(){
+ if(airportDataCache)return airportDataCache;
+ var urls={airports:'https://ourairports.com/data/airports.csv',freqs:'https://ourairports.com/data/airport-frequencies.csv',runways:'https://ourairports.com/data/runways.csv'};
+ var out={};
+ for(var k in urls){var res=await fetch(urls[k],{cache:'no-store'}); if(!res.ok)throw new Error('Network error loading '+k); out[k]=rowsToObjects(csvParse(await res.text()))}
+ airportDataCache=out; return out;
+}
+function mapFreqType(type,desc){
+ var s=((type||'')+' '+(desc||'')).toUpperCase();
+ if(s.includes('CTAF')||s.includes('UNICOM')||s.includes('MULTICOM'))return 'vfr';
+ if(s.includes('ATIS')||s.includes('AWOS')||s.includes('ASOS'))return 'vfr';
+ if(s.includes('TOWER')||s.includes('GROUND'))return 'vfr';
+ if(s.includes('APP')||s.includes('DEP')||s.includes('CENTER'))return 'ff';
+ if(s.includes('CLEARANCE')||s.includes('DELIVERY'))return 'ifr';
+ return 'vfr';
+}
+async function fetchAirport(code){
+ code=normalizeCode(code);
+ var data=await loadOurAirportsData();
+ var ap=data.airports.find(function(a){return (a.ident||'').toUpperCase()==code || (a.local_code||'').toUpperCase()==code});
+ if(!ap)throw new Error('Airport not found in OurAirports');
+ var ident=(ap.ident||code).toUpperCase();
+ var freqs=data.freqs.filter(function(f){return (f.airport_ident||'').toUpperCase()==ident}).map(function(f){
+  return [f.type||'Frequency', f.frequency_mhz||'', mapFreqType(f.type,f.description)]
+ }).filter(function(f){return f[1]});
+ var runways=data.runways.filter(function(r){return (r.airport_ident||'').toUpperCase()==ident}).map(function(r){
+  var le=r.le_ident||'', he=r.he_ident||'', len=r.length_ft||''; return (le&&he?le+'/'+he:le||he)+' '+(len?len+' ft':'')
+ });
+ return {code:ident,name:ap.name||ident,elevation:ap.elevation_ft||'',runways:runways,updated:today(),source:'OurAirports',freqs:freqs};
+}
+async function searchAirport(){
+ var code=normalizeCode(el('airportSearch').value);
+ if(!code){el('airportSearchResult').innerHTML='Enter an airport code.';return}
+ el('airportSearchResult').innerHTML='Searching '+code+'...';
+ try{
+  var rec=await fetchAirport(code);
+  var saved=getSavedAirports(); saved[rec.code]=rec; saveSavedAirports(saved);
+  el('airportSearchResult').innerHTML='<b>'+rec.code+'</b><br>'+rec.name+'<br>Elevation: '+(rec.elevation||'—')+' ft<br>Frequencies: '+rec.freqs.length+'<br>Runways: '+rec.runways.length+'<br>'+pill('Saved offline','good');
+  renderMyAirports(); renderAirports();
+ }catch(e){
+  var fb=fallbackAirports[code];
+  if(fb){var saved=getSavedAirports();saved[code]=fb;saveSavedAirports(saved);el('airportSearchResult').innerHTML='<b>'+code+'</b><br>Online search failed, but preloaded data was saved.<br>'+pill('Saved fallback','warn');renderMyAirports();renderAirports()}
+  else el('airportSearchResult').innerHTML=pill('Search failed','bad')+' '+e.message+'<br><span class="small">Check internet or verify the airport code.</span>';
+ }
+}
+async function updateAllAirports(){
+ var saved=getSavedAirports(), codes=Object.keys(saved);
+ el('myAirportsList').innerHTML='Updating '+codes.length+' airports...';
+ for(var i=0;i<codes.length;i++){
+  try{saved[codes[i]]=await fetchAirport(codes[i])}catch(e){saved[codes[i]].updateError='Update failed'}
+ }
+ saveSavedAirports(saved); renderMyAirports(); renderAirports();
+}
+function renderMyAirports(){
+ var box=el('myAirportsList'); if(!box)return;
+ var saved=getSavedAirports(), codes=Object.keys(saved).sort();
+ if(!codes.length){box.innerHTML='<div class="small">No saved airports yet.</div>';return}
+ box.innerHTML='';
+ codes.forEach(function(code){
+  var a=saved[code], d=document.createElement('div'); d.className='freqGroup';
+  var status=(a.updated=='preloaded')?pill('Preloaded','warn'):pill('Updated '+a.updated,'good');
+  d.innerHTML='<h3>'+code+'</h3><b>'+((a&&a.name)||'')+'</b><br><span class="small">Elevation: '+(a.elevation||'—')+' ft • Frequencies: '+((a.freqs||[]).length)+' • Runways: '+((a.runways||[]).length)+'</span><br>'+status;
+  var del=document.createElement('button'); del.className='btn btn2'; del.textContent='Remove '+code; del.onclick=function(){if(confirm('Remove '+code+' from My Airports?')){var s=getSavedAirports();delete s[code];saveSavedAirports(s);airportRoute=airportRoute.filter(function(x){return x!=code});saveRoute();renderMyAirports();renderAirports()}};
+  d.appendChild(del); box.appendChild(d);
+ });
+}
 
 function getList(){try{return JSON.parse(localStorage.jp_aircraft)||defaults}catch(e){return defaults}}
 function saveList(l){localStorage.jp_aircraft=JSON.stringify(l)}
 function acId(){return localStorage.jp_selectedAc||'N41498'}
 function ac(){var l=getList(),a=l.find(function(x){return x.id===acId()});return a||l[0]||defaults[0]}
-
 function populateAc(){
  var s=el('aircraftSelect'),l=getList();s.innerHTML='';
  l.forEach(function(a){var o=document.createElement('option');o.value=a.id;o.textContent=a.n+' • '+a.type;s.appendChild(o)});
@@ -193,7 +296,7 @@ function updateModeButtons(){
 function shouldShow(freqType){if(freqMode=='ifr')return true;if(freqMode=='ff')return freqType=='vfr'||freqType=='ff';return freqType=='vfr'}
 function renderAirports(){
  var bank=el('airportBank');bank.innerHTML='';
- Object.keys(airportDb).sort().forEach(function(code){var b=document.createElement('button');b.className='bubble'+(airportRoute.includes(code)?' selected':'');b.textContent=code;b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};bank.appendChild(b)});
+ airportCodes().forEach(function(code){var b=document.createElement('button');b.className='bubble'+(airportRoute.includes(code)?' selected':'');b.textContent=code;b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};bank.appendChild(b)});
  renderRoute();renderFreqs();
 }
 function saveRoute(){localStorage.jp_route=JSON.stringify(airportRoute)}
@@ -216,8 +319,8 @@ function renderFreqs(){
  el('standbyFreqLabel').innerHTML=standbyFreq?standbyFreq.replaceAll('|',' • '):'—';
  if(!airportRoute.length){list.innerHTML='<div class="small">No airports selected.</div>';return}
  airportRoute.forEach(function(code){
-  var g=document.createElement('div');g.className='freqGroup';g.innerHTML='<h3>'+code+'</h3>';
-  (airportDb[code]||[]).filter(function(f){return shouldShow(f[2])}).forEach(function(f){
+  var a=airportRecord(code), g=document.createElement('div');g.className='freqGroup';g.innerHTML='<h3>'+code+'</h3><div class="small">'+((a&&a.name)||'')+' • Updated: '+((a&&a.updated)||'—')+'</div>';
+  ((a&&a.freqs)||[]).filter(function(f){return shouldShow(f[2])}).forEach(function(f){
    var k=code+'|'+f[0]+'|'+f[1],btn=document.createElement('button');
    btn.className='freqBtn'+(activeFreq==k?' activeFreq':standbyFreq==k?' standbyFreq':'');
    btn.innerHTML='<span>'+f[0]+'</span> '+f[1];btn.onclick=function(){tapFreq(k)};g.appendChild(btn);
@@ -228,6 +331,7 @@ function renderFreqs(){
 
 window.onload=function(){
  if(!localStorage.jp_aircraft)saveList(defaults);
+ getSavedAirports();
  loadInputs();populateAc();
  try{airportRoute=JSON.parse(localStorage.jp_route||'[]')}catch(e){airportRoute=[]}
  activeFreq=localStorage.jp_activeFreq||null;standbyFreq=localStorage.jp_standbyFreq||null;freqMode=localStorage.jp_freqMode||'local';
@@ -238,7 +342,8 @@ window.onload=function(){
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
  el('refreshGo').onclick=calcGo;el('clearRouteBtn').onclick=function(){airportRoute=[];activeFreq=null;standbyFreq=null;saveRoute();renderAirports()};
  el('modeLocal').onclick=function(){setMode('local')};el('modeFF').onclick=function(){setMode('ff')};el('modeIFR').onclick=function(){setMode('ifr')};
- renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
+ el('searchAirportBtn').onclick=searchAirport; el('updateAllAirportsBtn').onclick=updateAllAirports;
+ renderMyAirports();renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')
 }
 </script></body></html>

@@ -1,5 +1,5 @@
-# John's Pilot Companion v2.0
+# John's Pilot Companion v2.1
 
-Adds VFR / VFR + Flight Following / IFR frequency modes, enhanced tank timer presets, aircraft profiles, and route frequency radio stack.
+Adds Airport Database/Search powered by OurAirports CSV data when online, local offline caching, Update All Airports, and Route Builder airport bubbles from saved airports.
 
-Verify all aviation data with current official sources, ForeFlight, POH/W&B, and school procedures.
+Verify all aviation data with current FAA sources, ForeFlight, POH/W&B, and school procedures.
