@@ -9,7 +9,7 @@
 <style>
 :root{--card:#101d2a;--line:#2d4358;--text:#f4f7fb;--muted:#9fb0c0;--blue:#58b7ff;--green:#76e06b;--yellow:#ffd166;--red:#ff6b6b}
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:92px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:150px}
 header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
 h1{font-size:22px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
 main{max-width:980px;margin:auto;padding:12px}
@@ -31,15 +31,38 @@ table{width:100%;border-collapse:collapse;font-size:13px}
 td,th{padding:8px 3px;border-bottom:1px solid var(--line);text-align:right}
 td:first-child,th:first-child{text-align:left}
 .hidden{display:none}
-.tabs{position:fixed;bottom:0;left:0;right:0;background:#071018;border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:5}
-.tab{min-width:96px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}
-.tab.active{color:#001018;background:var(--blue)}
+.tabs{
+position:fixed;
+left:8px;
+right:8px;
+bottom:calc(env(safe-area-inset-bottom) + 14px);
+background:#071018;
+border:1px solid var(--line);
+border-radius:18px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:6px;
+padding:8px;
+z-index:5;
+box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+.tab{
+min-width:0;
+padding:11px 6px;
+border:1px solid var(--line);
+border-radius:12px;
+background:#101d2a;
+color:var(--muted);
+font-weight:900;
+font-size:13px;
+}
+.tab.active{color:#001018;background:var(--blue);border-color:var(--blue)}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
-<h1>Tom's Pilot Companion v1.3.1</h1>
+<h1>Tom's Pilot Companion v1.3.2</h1>
 <div class="sub">N41498 quick tools • Verify with POH/W&amp;B and school procedures</div>
 </header>
 
@@ -156,7 +179,7 @@ td:first-child,th:first-child{text-align:left}
 <button class="tab" id="tab-fuel" onclick="showTab('fuel')">Fuel</button>
 <button class="tab" id="tab-tank" onclick="showTab('tank')">Tank</button>
 <button class="tab" id="tab-hobbs" onclick="showTab('hobbs')">Hobbs</button>
-<button class="tab" id="tab-gono" onclick="showTab('gono')">Go/No-Go</button>
+<button class="tab" id="tab-gono" onclick="showTab('gono')">Go/No</button>
 </div>
 
 <script>
@@ -179,14 +202,14 @@ function showTab(id){
     if(el(s)){ el(s).className = s === id ? "card" : "card hidden"; }
     if(el("tab-"+s)){ el("tab-"+s).className = s === id ? "tab active" : "tab"; }
   }
-  localStorage.setItem("pc131_tab", id);
+  localStorage.setItem("pc132_tab", id);
   calculateAll();
 }
 
 function saveInputs(){
   var inputs = document.getElementsByTagName("input");
   for(var i=0;i<inputs.length;i++){
-    if(inputs[i].id){ localStorage.setItem("pc131_"+inputs[i].id, inputs[i].value); }
+    if(inputs[i].id){ localStorage.setItem("pc132_"+inputs[i].id, inputs[i].value); }
   }
 }
 
@@ -194,7 +217,7 @@ function loadInputs(){
   var inputs = document.getElementsByTagName("input");
   for(var i=0;i<inputs.length;i++){
     if(inputs[i].id){
-      var v = localStorage.getItem("pc131_"+inputs[i].id);
+      var v = localStorage.getItem("pc132_"+inputs[i].id);
       if(v !== null){ inputs[i].value = v; }
     }
   }
@@ -339,19 +362,19 @@ function calculateGo(){
 }
 
 function startTank(tank){
-  localStorage.setItem("pc131_tank", tank);
-  localStorage.setItem("pc131_tankStart", String(Date.now()));
+  localStorage.setItem("pc132_tank", tank);
+  localStorage.setItem("pc132_tankStart", String(Date.now()));
   updateTank();
 }
 
 function stopTank(){
-  localStorage.removeItem("pc131_tankStart");
+  localStorage.removeItem("pc132_tankStart");
   updateTank();
 }
 
 function updateTank(){
-  var tank = localStorage.getItem("pc131_tank");
-  var start = parseInt(localStorage.getItem("pc131_tankStart") || "0", 10);
+  var tank = localStorage.getItem("pc132_tank");
+  var start = parseInt(localStorage.getItem("pc132_tankStart") || "0", 10);
   el("tankName").innerHTML = tank || "—";
 
   if(!start){
@@ -390,7 +413,7 @@ window.onload = function(){
   el("stopTankBtn").onclick = stopTank;
   el("refreshGo").onclick = calculateGo;
 
-  var savedTab = localStorage.getItem("pc131_tab") || "crosswind";
+  var savedTab = localStorage.getItem("pc132_tab") || "crosswind";
   showTab(savedTab);
   calculateAll();
   updateTank();
