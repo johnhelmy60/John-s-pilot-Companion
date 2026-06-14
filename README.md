@@ -1,15 +1,11 @@
-# John's Pilot Companion v2.3
+# John's Pilot Companion v2.4
 
-Wires the app to search uploaded JSON airport database files:
+Updates:
+- Frequency cards show airport quick info: elevation, runway count, frequency count, runway preview
+- Remove airport directly from Route Frequencies page
+- Improved radio stack behavior:
+  - 1st tap = active
+  - 2nd tap = standby
+  - 3rd new frequency makes old standby active and new selection standby
 
-- airport_database_A_M.json
-- airport_database_N_Z.json
-
-Keep both JSON files in the GitHub repository root.
-
-Search flow:
-1. Saved/custom airports
-2. Built-in backup airports
-3. Uploaded JSON database files
-
-Verify all aviation data with current FAA sources, ForeFlight, POH/W&B, and school procedures.
+Keep airport_database_A_M.json and airport_database_N_Z.json in the repository root.

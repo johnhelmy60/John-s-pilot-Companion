@@ -1,7 +1,7 @@
 {
   "name": "John's Pilot Companion",
   "short_name": "Pilot Companion",
-  "start_url": "./index.html?v=2.3",
+  "start_url": "./index.html?v=2.4",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",

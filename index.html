@@ -9,9 +9,9 @@ h2{margin:0 0 12px;font-size:19px}h3{font-size:15px;color:var(--b);margin:16px 0
 table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--l);text-align:right}td:first-child,th:first-child{text-align:left}
 .tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
-.freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
+.freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.airportInfo{background:#061018;border:1px solid var(--l);border-radius:12px;padding:10px;margin:8px 0;color:var(--m);font-size:12px;line-height:1.45}.miniBtn{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 4px 0}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style></head><body><header><h1>John's Pilot Companion v2.3</h1><div class='sub'>Personal Flight Toolkit • JSON Airport Database</div></header><main>
+</style></head><body><header><h1>John's Pilot Companion v2.4</h1><div class='sub'>Personal Flight Toolkit • Airport Info + Radio Stack</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
@@ -97,7 +97,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <h3>My Airports</h3>
 <div id='myAirportsList'></div>
 
-<p class='small'>JSON database version: v2.3. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
+<p class='small'>JSON database version: v2.4. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
@@ -152,7 +152,14 @@ function normalizeExternalAirport(raw){
     ];
   }).filter(function(f){return f[1]});
   var runways=(raw.runways||[]).map(function(r){
-    return r.ident || ((r.le_ident||'') + '/' + (r.he_ident||'')) || '';
+    var ident = r.ident || ((r.le_ident||'') + (r.he_ident?('/'+r.he_ident):'')) || '';
+    var bits = [];
+    if(ident) bits.push(ident);
+    if(r.length_ft) bits.push(r.length_ft + ' ft');
+    if(r.width_ft) bits.push('x ' + r.width_ft);
+    if(r.surface) bits.push(r.surface);
+    if(String(r.closed)==='1') bits.push('CLOSED');
+    return bits.join(' • ');
   }).filter(Boolean);
   return {
     code: code,
@@ -400,12 +407,46 @@ function renderRoute(){
  if(!airportRoute.length){box.innerHTML='<span class="small">Tap airports above to build your route.</span>';return}
  airportRoute.forEach(function(code,i){var b=document.createElement('button');b.className='bubble routeBubble';b.textContent=code+' ×';b.onclick=function(){airportRoute.splice(i,1);saveRoute();renderAirports()};box.appendChild(b)});
 }
+function removeRouteAirport(code){
+ airportRoute=airportRoute.filter(function(x){return x!==code});
+ if(activeFreq && activeFreq.indexOf(code+'|')===0) activeFreq=null;
+ if(standbyFreq && standbyFreq.indexOf(code+'|')===0) standbyFreq=null;
+ localStorage.jp_activeFreq=activeFreq||'';
+ localStorage.jp_standbyFreq=standbyFreq||'';
+ saveRoute();
+ renderAirports();
+}
+
+function airportInfoHtml(a){
+ if(!a)return '';
+ var runwayCount=(a.runways||[]).length;
+ var freqCount=(a.freqs||[]).length;
+ var preview=(a.runways||[]).slice(0,4).join('<br>');
+ if(!preview) preview='Runway details not loaded';
+ return '<div class="airportInfo">'
+   + '<b>'+((a&&a.name)||'')+'</b><br>'
+   + 'Elevation: '+(a.elevation||'—')+' ft • Runways: '+runwayCount+' • Frequencies: '+freqCount+'<br>'
+   + '<b>Runways:</b><br>'+preview
+   + (runwayCount>4?'<br>+'+(runwayCount-4)+' more':'')
+   + '</div>';
+}
+
 function tapFreq(k){
- if(activeFreq==k){activeFreq=null}
- else if(standbyFreq==k){standbyFreq=null}
- else if(!activeFreq){activeFreq=k}
- else{standbyFreq=k}
- localStorage.jp_activeFreq=activeFreq||'';localStorage.jp_standbyFreq=standbyFreq||'';renderFreqs();
+ if(activeFreq==k){
+   activeFreq=null;
+ } else if(standbyFreq==k){
+   standbyFreq=null;
+ } else if(!activeFreq){
+   activeFreq=k;
+ } else if(!standbyFreq){
+   standbyFreq=k;
+ } else {
+   activeFreq=standbyFreq;
+   standbyFreq=k;
+ }
+ localStorage.jp_activeFreq=activeFreq||'';
+ localStorage.jp_standbyFreq=standbyFreq||'';
+ renderFreqs();
 }
 function renderFreqs(){
  updateModeButtons();
@@ -414,11 +455,25 @@ function renderFreqs(){
  el('standbyFreqLabel').innerHTML=standbyFreq?standbyFreq.replaceAll('|',' • '):'—';
  if(!airportRoute.length){list.innerHTML='<div class="small">No airports selected.</div>';return}
  airportRoute.forEach(function(code){
-  var a=airportRecord(code), g=document.createElement('div');g.className='freqGroup';g.innerHTML='<h3>'+code+'</h3><div class="small">'+((a&&a.name)||'')+' • '+((a&&a.updated)||'—')+'</div>';
-  ((a&&a.freqs)||[]).filter(function(f){return shouldShow(f[2])}).forEach(function(f){
+  var a=airportRecord(code), g=document.createElement('div');
+  g.className='freqGroup';
+  g.innerHTML='<h3>'+code+'</h3>'
+    + airportInfoHtml(a)
+    + '<button class="btn btn2 miniBtn">Remove from Route</button>';
+  g.querySelector('button').onclick=function(){removeRouteAirport(code)};
+  var shown=((a&&a.freqs)||[]).filter(function(f){return shouldShow(f[2])});
+  if(!shown.length){
+    var empty=document.createElement('div');
+    empty.className='small';
+    empty.innerHTML='No frequencies for this mode.';
+    g.appendChild(empty);
+  }
+  shown.forEach(function(f){
    var k=code+'|'+f[0]+'|'+f[1],btn=document.createElement('button');
    btn.className='freqBtn'+(activeFreq==k?' activeFreq':standbyFreq==k?' standbyFreq':'');
-   btn.innerHTML='<span>'+f[0]+'</span> '+f[1];btn.onclick=function(){tapFreq(k)};g.appendChild(btn);
+   btn.innerHTML='<span>'+f[0]+'</span> '+f[1];
+   btn.onclick=function(){tapFreq(k)};
+   g.appendChild(btn);
   });
   list.appendChild(g);
  });
