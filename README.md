@@ -1,5 +1,5 @@
-# John's Pilot Companion v1.4
+# John's Pilot Companion v2.0
 
-Adds aircraft profiles, route-frequency bubbles, app rename, and subtitle.
+Adds VFR / VFR + Flight Following / IFR frequency modes, enhanced tank timer presets, aircraft profiles, and route frequency radio stack.
 
-Verify all frequencies and aircraft data with current official sources/ForeFlight/POH.
+Verify all aviation data with current official sources, ForeFlight, POH/W&B, and school procedures.

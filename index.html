@@ -1,48 +1,244 @@
 <!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'><meta name='theme-color' content='#071018'><link rel='manifest' href='manifest.webmanifest'><title>John's Pilot Companion</title>
 <style>
 :root{--c:#101d2a;--l:#2d4358;--t:#f4f7fb;--m:#9fb0c0;--b:#58b7ff;--g:#76e06b;--y:#ffd166;--r:#ff6b6b}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:180px}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:192px}
 header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--l);position:sticky;top:0;z-index:3}h1{font-size:22px;margin:0}.sub,.small{font-size:12px;color:var(--m);line-height:1.45}.card{background:rgba(16,29,42,.96);border:1px solid var(--l);border-radius:18px;padding:14px;margin:12px}.hidden{display:none}
 h2{margin:0 0 12px;font-size:19px}h3{font-size:15px;color:var(--b);margin:16px 0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--m);font-size:13px;margin:9px 0 5px}input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--t);font-size:16px}
 .btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--b);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--t);border:1px solid var(--l)}.result{background:#061018;border:1px solid var(--l);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}
-.pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--g);border:1px solid #2c7440}.warn{background:#33270c;color:var(--y);border:1px solid #806b2b}.bad{background:#371517;color:var(--r);border:1px solid #864141}
+.pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--g);border:1px solid #2c7440}.warn{background:#33270c;color:var(--y);border:1px solid #806b2b}.bad{background:#371517;color:var(--r);border:1px solid #864141}.bluepill{background:#081c33;color:var(--b);border:1px solid #2b6b98}
 table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--l);text-align:right}td:first-child,th:first-child{text-align:left}
 .tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style></head><body><header><h1>John's Pilot Companion v1.4</h1><div class='sub'>Personal Flight Toolkit for N41498</div></header><main>
+</style></head><body><header><h1>John's Pilot Companion v2.0</h1><div class='sub'>Personal Flight Toolkit • VFR / FF / IFR Ready</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
 <section id='fuel' class='card hidden'><h2>Fuel & Reserve</h2><div class='small' id='fuelAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Fuel onboard gal</label><input id='fuelOnboard' type='number'></div><div><label>Planned flight time hr</label><input id='flightHours' type='number'></div><div><label>Fuel burn GPH</label><input id='fuelBurn' type='number' value='9'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id='fuelUsed'>—</td></tr><tr><td>Fuel remaining</td><td id='fuelRem'>—</td></tr><tr><td>Reserve time</td><td id='reserveTime'>—</td></tr><tr><td>Status</td><td id='fuelStatus'>—</td></tr></table></div></section>
-<section id='tank' class='card hidden'><h2>Fuel Tank Switch Timer</h2><div class='grid'><button class='btn' id='leftTankBtn'>Start LEFT</button><button class='btn' id='rightTankBtn'>Start RIGHT</button></div><button class='btn btn2' id='stopTankBtn'>Stop Timer</button><div class='result'><div class='small'>Current tank</div><div class='big' id='tankName'>—</div><div id='tankElapsed'>—</div><div id='tankWarn'></div></div></section>
+<section id='tank' class='card hidden'><h2>Fuel Tank Switch Timer</h2>
+<div class='small'>Choose a timer interval, start the current tank, then reset after switching.</div>
+<h3>Switch Interval</h3>
+<div class='grid'>
+<button class='btn btn2' id='tank30'>30 min</button>
+<button class='btn btn2' id='tank45'>45 min</button>
+<button class='btn btn2' id='tank60'>60 min</button>
+</div>
+<div class='result'><b>Selected interval:</b> <span id='tankIntervalLabel'>60</span> min</div>
+<div class='grid'>
+<button class='btn' id='leftTankBtn'>Start LEFT</button>
+<button class='btn' id='rightTankBtn'>Start RIGHT</button>
+</div>
+<button class='btn btn2' id='stopTankBtn'>Stop Timer</button>
+<div class='result'>
+<div class='small'>Current tank</div>
+<div class='big' id='tankName'>—</div>
+<div id='tankElapsed'>—</div>
+<div id='tankRemaining'>—</div>
+<div id='tankWarn'></div>
+</div>
+</section>
 <section id='hobbs' class='card hidden'><h2>Hobbs/Tach Rental Tracker</h2><div class='grid'><div><label>Start Hobbs</label><input id='startHobbs' type='number'></div><div><label>End Hobbs</label><input id='endHobbs' type='number'></div><div><label>Start Tach</label><input id='startTach' type='number'></div><div><label>End Tach</label><input id='endTach' type='number'></div><div><label>Hourly rental rate $</label><input id='rate' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Hobbs time</td><td id='hobbsTime'>—</td></tr><tr><td>Tach time</td><td id='tachTime'>—</td></tr><tr><td>Estimated cost</td><td id='rentalCost'>—</td></tr></table></div></section>
-<section id='freq' class='card hidden'><h2>Route Frequencies</h2><div class='small'>Tap airports to build your route. Frequency tap: first = green active, second = blue standby.</div><h3>Airport Bank</h3><div class='bubbleBox' id='airportBank'></div><h3>Selected Route</h3><div class='bubbleBox' id='routeBox'></div><button class='btn btn2' id='clearRouteBtn'>Clear Route</button><h3>Frequencies</h3><div id='freqList'></div><p class='small'>Verify frequencies with current charts/ForeFlight. Offline database may become outdated.</p></section>
+<section id='freq' class='card hidden'><h2>Route Frequencies</h2>
+<div class='small'>Build your route, choose flight mode, then tap frequencies like a simple radio stack.</div>
+
+<h3>Flight Mode</h3>
+<div class='grid'>
+<button class='btn btn2' id='modeLocal'>Local VFR</button>
+<button class='btn btn2' id='modeFF'>VFR + Flight Following</button>
+<button class='btn btn2' id='modeIFR'>IFR</button>
+</div>
+<div class='result'><b>Current Mode:</b> <span id='freqModeLabel'>Local VFR</span></div>
+
+<h3>Airport Bank</h3>
+<div class='bubbleBox' id='airportBank'></div>
+
+<h3>Selected Route</h3>
+<div class='bubbleBox' id='routeBox'></div>
+<button class='btn btn2' id='clearRouteBtn'>Clear Route</button>
+
+<h3>Radio Stack</h3>
+<div class='result'>
+<div><span class='pill good'>ACTIVE</span> <span id='activeFreqLabel'>—</span></div>
+<div><span class='pill bluepill'>STANDBY</span> <span id='standbyFreqLabel'>—</span></div>
+</div>
+
+<h3>Frequencies</h3>
+<div id='freqList'></div>
+<p class='small'>Local VFR shows airport weather/tower/ground/CTAF. VFR + Flight Following adds departure/approach/center. IFR shows all available entries. Verify frequencies with current charts/ForeFlight.</p>
+</section>
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
 </main><div class='tabs'><button class='tab active' id='tab-crosswind' onclick="showTab('crosswind')">X-Wind</button><button class='tab' id='tab-aircraft' onclick="showTab('aircraft')">Aircraft</button><button class='tab' id='tab-wb' onclick="showTab('wb')">W&B</button><button class='tab' id='tab-fuel' onclick="showTab('fuel')">Fuel</button><button class='tab' id='tab-tank' onclick="showTab('tank')">Tank</button><button class='tab' id='tab-hobbs' onclick="showTab('hobbs')">Hobbs</button><button class='tab' id='tab-freq' onclick="showTab('freq')">Freq</button><button class='tab' id='tab-gono' onclick="showTab('gono')">Go/No</button></div>
 <script>
-var lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null,sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','gono'],activeFreq=null,standbyFreq=null,airportRoute=[];
-var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1443,emptyArm:87.1,maxWt:2440,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17}];
-var airportDb={'KBJC':[['ATIS','126.25'],['Ground','121.7'],['Tower','118.6'],['Tower','121.0'],['Approach/Departure','Denver - verify']], 'KBDU':[['CTAF','122.975'],['AWOS','120.775']], 'KLMO':[['CTAF','122.975'],['AWOS','118.925']], 'KEIK':[['CTAF','123.0'],['AWOS','120.725']], 'KFMM':[['CTAF','122.8'],['AWOS/ASOS','verify current']], 'KAKO':[['CTAF','122.8'],['AWOS/ASOS','verify current']], 'KAPA':[['ATIS','120.3'],['Ground','121.85'],['Tower','118.9'],['Tower','123.7'],['App/Dep','Denver - verify']], 'KFNL':[['ATIS','128.425'],['Ground','121.65'],['Tower/CTAF','118.4']], 'KCFO':[['CTAF','123.0'],['AWOS','119.025']], 'KFTG':[['CTAF','122.7'],['AWOS','119.025']], 'KLIC':[['CTAF','122.8'],['AWOS','118.525']], 'KFLY':[['CTAF','122.7'],['AWOS','120.175']], '00V':[['CTAF','122.9'],['AWOS','verify']], 'KPUB':[['ATIS','125.7'],['Ground','121.9'],['Tower','119.1']], 'KCOS':[['ATIS','124.3'],['Ground','121.7'],['Tower','119.9']]};
-function el(id){return document.getElementById(id)} function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null} function fmt(x,d){return isFinite(x)?Number(x).toFixed(d):'—'} function pill(t,k){return '<span class="pill '+k+'">'+t+'</span>'} function norm(d){return((d%360)+360)%360} function diff(f,t){return((f-t+540)%360)-180}
-function getList(){try{return JSON.parse(localStorage.jp_aircraft)||defaults}catch(e){return defaults}} function saveList(l){localStorage.jp_aircraft=JSON.stringify(l)} function acId(){return localStorage.jp_selectedAc||'N41498'} function ac(){var l=getList(),a=l.find(x=>x.id===acId());return a||l[0]||defaults[0]}
-function populateAc(){var s=el('aircraftSelect'),l=getList();s.innerHTML='';l.forEach(a=>{var o=document.createElement('option');o.value=a.id;o.textContent=a.n+' • '+a.type;s.appendChild(o)});s.value=acId();loadAcForm()}
-function loadAcForm(){var a=ac();['N','Type','EmptyWt','EmptyArm','MaxWt','FuelPpg','FrontArm','RearArm','BagArm','FuelArm','FuelBurn','XwLimit'].forEach(k=>{var id='ac'+k,val=k=='N'?a.n:k=='Type'?a.type:a[k.charAt(0).toLowerCase()+k.slice(1)];el(id).value=val||''});el('xwLimit').value=a.xwLimit||17;el('fuelBurn').value=a.fuelBurn||9}
-function saveAc(){var l=getList(),id=acId(),n=el('acN').value.trim()||'NEW',a={id:id.indexOf('NEW_')===0?n:id,n:n,type:el('acType').value,emptyWt:nv('acEmptyWt')||0,emptyArm:nv('acEmptyArm')||0,maxWt:nv('acMaxWt')||0,fuelPpg:nv('acFuelPpg')||6,frontArm:nv('acFrontArm')||0,rearArm:nv('acRearArm')||0,bagArm:nv('acBagArm')||0,fuelArm:nv('acFuelArm')||0,fuelBurn:nv('acFuelBurn')||9,xwLimit:nv('acXwLimit')||17};var i=l.findIndex(x=>x.id===id);if(i>=0)l[i]=a;else l.push(a);saveList(l);localStorage.jp_selectedAc=a.id;populateAc();calcAll();alert('Aircraft saved.')}
-function newAc(){var l=getList(),id='NEW_'+Date.now();l.push({id:id,n:'',type:'',fuelPpg:6,fuelBurn:9,xwLimit:17});saveList(l);localStorage.jp_selectedAc=id;populateAc()} function delAc(){var l=getList();if(l.length<=1)return alert('Keep at least one aircraft.');if(confirm('Delete selected aircraft?')){l=l.filter(a=>a.id!==acId());saveList(l);localStorage.jp_selectedAc=l[0].id;populateAc();calcAll()}}
-function showTab(id){sections.forEach(s=>{if(el(s))el(s).className=s==id?'card':'card hidden';if(el('tab-'+s))el('tab-'+s).className=s==id?'tab active':'tab'});localStorage.jp_tab=id;calcAll()}
-function saveInputs(){[...document.getElementsByTagName('input')].forEach(i=>{if(i.id&&!i.id.startsWith('ac'))localStorage['jp_'+i.id]=i.value})} function loadInputs(){[...document.getElementsByTagName('input')].forEach(i=>{var v=localStorage['jp_'+i.id];if(v!=null)i.value=v})}
-function calcCross(){var r=nv('rwy'),wd=nv('windDir'),ws=nv('windSpeed'),g=nv('gust'),lim=nv('xwLimit'),rh=r==null?null:(r<=36?norm(r*10):norm(r));el('rwyOut').innerHTML=rh==null?'—':String(Math.round(rh)).padStart(3,'0')+'°';if(rh==null||wd==null||ws==null){lastCrosswind=null;lastGustCrosswind=null;return}var d=diff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180,xw=Math.abs(ws*Math.sin(rad)),gxw=(g!=null&&g>ws)?Math.abs(g*Math.sin(rad)):null,hw=ws*Math.cos(rad);lastCrosswind=xw;lastGustCrosswind=gxw;el('angleOut').innerHTML=fmt(abs,0)+'°';el('xwOut').innerHTML=fmt(xw,1)+' kt';el('gxwOut').innerHTML=gxw==null?'—':fmt(gxw,1)+' kt';el('hwOut').innerHTML=hw>=0?fmt(hw,1)+' kt headwind':fmt(Math.abs(hw),1)+' kt tailwind';var side=Math.abs(d)<2?'Mostly straight':d>0?'From RIGHT':'From LEFT',crab=Math.abs(d)<2?'Little/no crab':d>0?'Crab nose RIGHT':'Crab nose LEFT';el('sideOut').innerHTML=side;el('crabOut').innerHTML=crab;var check=gxw==null?xw:gxw,html=pill(side,'warn')+pill(crab,'good');if(lim!=null)html+=check>lim?pill('Over limit','bad'):check>lim*.8?pill('Near limit','warn'):pill('Within limit','good');if(hw<0)html+=pill('Tailwind','bad');el('windRisk').innerHTML=html}
-function calcWB(){var a=ac();el('wbAcLabel').innerHTML='Selected aircraft: '+a.n+' • '+a.type;var f=nv('frontWt')||0,r=nv('rearWt')||0,b=nv('bagWt')||0,fg=nv('fuelGal')||0,fw=fg*(a.fuelPpg||6),tot=(a.emptyWt||0)+f+r+b+fw,m=(a.emptyWt||0)*(a.emptyArm||0)+f*(a.frontArm||0)+r*(a.rearArm||0)+b*(a.bagArm||0)+fw*(a.fuelArm||0),cg=tot?m/tot:0,rem=(a.maxWt||0)-tot;el('wbWeight').innerHTML=fmt(tot,1)+' lb';el('wbCg').innerHTML=fmt(cg,2)+' in';el('wbRemain').innerHTML=fmt(rem,1)+' lb';el('wbStatus').innerHTML=(tot>(a.maxWt||0)?pill('OVER GROSS','bad'):pill('Weight OK','good'))+pill('Verify CG envelope','warn')}
-function calcFuel(){var a=ac();el('fuelAcLabel').innerHTML='Selected aircraft: '+a.n+' • '+a.type;var on=nv('fuelOnboard'),hrs=nv('flightHours'),burn=nv('fuelBurn')||(a.fuelBurn||9);if(on==null||hrs==null){lastReserveHours=null;return}var used=hrs*burn,rem=on-used,res=rem/burn;lastReserveHours=res;el('fuelUsed').innerHTML=fmt(used,1)+' gal';el('fuelRem').innerHTML=fmt(rem,1)+' gal';el('reserveTime').innerHTML=fmt(res,2)+' hr';el('fuelStatus').innerHTML=res<.75?pill('LOW RESERVE','bad'):res<1.25?pill('Caution','warn'):pill('Good reserve','good')}
-function calcHobbs(){var sh=nv('startHobbs'),eh=nv('endHobbs'),st=nv('startTach'),et=nv('endTach'),rate=nv('rate'),h=(sh!=null&&eh!=null)?eh-sh:null,t=(st!=null&&et!=null)?et-st:null;el('hobbsTime').innerHTML=h==null?'—':fmt(h,1);el('tachTime').innerHTML=t==null?'—':fmt(t,2);el('rentalCost').innerHTML=(h!=null&&rate!=null)?'$'+fmt(h*rate,2):'—'}
-function calcGo(){var x=lastGustCrosswind??lastCrosswind??0,res=lastReserveHours??0,c=nv('goCeil')??9999,v=nv('goVis')??10;el('goXwAuto').innerHTML=x?fmt(x,1)+' kt':'—';el('goReserveAuto').innerHTML=res?fmt(res,2)+' hr':'—';el('goCeilAuto').innerHTML=fmt(c,0)+' ft AGL';el('goVisAuto').innerHTML=fmt(v,1)+' SM';var score=0,html='';function a(n,l){score=Math.max(score,l);html+=pill(n,l==2?'bad':l==1?'warn':'good')}a('Crosswind',x>17?2:x>13?1:0);a('Fuel',res&&res<.75?2:res&&res<1.25?1:0);a('Ceiling',c<2000?2:c<3500?1:0);a('Visibility',v<5?2:v<8?1:0);el('goOverall').innerHTML=score==2?'🔴 HIGH RISK':score==1?'🟡 MODERATE RISK':'🟢 LOW RISK';el('goDetails').innerHTML=html}
-function startTank(t){localStorage.jp_tank=t;localStorage.jp_tankStart=Date.now();updateTank()}function stopTank(){localStorage.removeItem('jp_tankStart');updateTank()}function updateTank(){var t=localStorage.jp_tank,s=parseInt(localStorage.jp_tankStart||0);el('tankName').innerHTML=t||'—';if(!s){el('tankElapsed').innerHTML='—';el('tankWarn').innerHTML='';return}var m=(Date.now()-s)/60000;el('tankElapsed').innerHTML=fmt(m,1)+' minutes';el('tankWarn').innerHTML=m>=60?pill('SWITCH TANKS','bad'):m>=30?pill('Consider tank switch','warn'):pill('Timer running','good')}
-function renderAirports(){var bank=el('airportBank');bank.innerHTML='';Object.keys(airportDb).sort().forEach(code=>{var b=document.createElement('button');b.className='bubble'+(airportRoute.includes(code)?' selected':'');b.textContent=code;b.onclick=()=>{airportRoute.push(code);saveRoute();renderAirports()};bank.appendChild(b)});renderRoute();renderFreqs()}
-function saveRoute(){localStorage.jp_route=JSON.stringify(airportRoute)}function renderRoute(){var box=el('routeBox');box.innerHTML='';if(!airportRoute.length){box.innerHTML='<span class="small">Tap airports above to build your route.</span>';return}airportRoute.forEach((code,i)=>{var b=document.createElement('button');b.className='bubble routeBubble';b.textContent=code+' ×';b.onclick=()=>{airportRoute.splice(i,1);saveRoute();renderAirports()};box.appendChild(b)})}
-function tapFreq(k){if(activeFreq==k)activeFreq=null;else if(standbyFreq==k)standbyFreq=null;else if(!activeFreq)activeFreq=k;else standbyFreq=k;localStorage.jp_activeFreq=activeFreq||'';localStorage.jp_standbyFreq=standbyFreq||'';renderFreqs()}
-function renderFreqs(){var list=el('freqList');list.innerHTML='';if(!airportRoute.length){list.innerHTML='<div class="small">No airports selected.</div>';return}airportRoute.forEach(code=>{var g=document.createElement('div');g.className='freqGroup';g.innerHTML='<h3>'+code+'</h3>';(airportDb[code]||[]).forEach(f=>{var k=code+'|'+f[0]+'|'+f[1],btn=document.createElement('button');btn.className='freqBtn'+(activeFreq==k?' activeFreq':standbyFreq==k?' standbyFreq':'');btn.innerHTML='<span>'+f[0]+'</span> '+f[1];btn.onclick=()=>tapFreq(k);g.appendChild(btn)});list.appendChild(g)})}
+var lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null;
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','gono'];
+var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
+var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1443,emptyArm:87.1,maxWt:2440,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60}];
+
+var airportDb={
+'KBJC':[
+ ['ATIS','126.25','vfr'],['Ground','121.7','vfr'],['Tower','118.6','vfr'],['Tower Secondary','121.0','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']
+],
+'KBDU':[['AWOS','120.775','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KLMO':[['AWOS','118.925','vfr'],['CTAF','122.975','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KEIK':[['AWOS','120.725','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KFMM':[['AWOS','132.95','vfr'],['CTAF','123.05','vfr'],['Denver Center','118.475','ff']],
+'KAKO':[['ASOS','135.475','vfr'],['CTAF','122.8','vfr'],['Denver Center','133.95','ff']],
+'KAPA':[['ATIS','120.3','vfr'],['Ground','121.85','vfr'],['Tower','118.9','vfr'],['Tower Secondary','123.7','vfr'],['Departure','Denver Departure - verify','ff'],['Approach','Denver Approach - verify','ff'],['Clearance','verify current','ifr']],
+'KFNL':[['ATIS','128.425','vfr'],['Ground','121.65','vfr'],['Tower/CTAF','118.4','vfr'],['Departure/Approach','Denver - verify','ff']],
+'KCFO':[['AWOS','119.025','vfr'],['CTAF','123.0','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KFTG':[['AWOS','119.025','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KLIC':[['AWOS','118.525','vfr'],['CTAF','122.8','vfr'],['Denver Center','verify current','ff']],
+'KFLY':[['AWOS','120.175','vfr'],['CTAF','122.7','vfr'],['Approach/Departure','Colorado Springs - verify','ff']],
+'00V':[['AWOS','verify current','vfr'],['CTAF','122.9','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KPUB':[['ATIS','125.7','vfr'],['Ground','121.9','vfr'],['Tower','119.1','vfr'],['Approach/Departure','Pueblo - verify','ff'],['Clearance','verify current','ifr']],
+'KCOS':[['ATIS','124.3','vfr'],['Ground','121.7','vfr'],['Tower','119.9','vfr'],['Approach/Departure','Colorado Springs - verify','ff'],['Clearance','verify current','ifr']],
+'KGXY':[['ATIS/AWOS','verify current','vfr'],['Tower/CTAF','verify current','vfr'],['Ground','verify current','vfr'],['Approach/Departure','Denver - verify','ff']],
+'KDEN':[['ATIS','verify current','vfr'],['Ground','verify current','vfr'],['Tower','verify current','vfr'],['Departure/Approach','Denver - verify','ff'],['Clearance','verify current','ifr']]
+};
+
+function el(id){return document.getElementById(id)}
+function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
+function fmt(x,d){return isFinite(x)?Number(x).toFixed(d):'—'}
+function pill(t,k){return '<span class="pill '+k+'">'+t+'</span>'}
+function norm(d){return((d%360)+360)%360}
+function diff(f,t){return((f-t+540)%360)-180}
+
+function getList(){try{return JSON.parse(localStorage.jp_aircraft)||defaults}catch(e){return defaults}}
+function saveList(l){localStorage.jp_aircraft=JSON.stringify(l)}
+function acId(){return localStorage.jp_selectedAc||'N41498'}
+function ac(){var l=getList(),a=l.find(function(x){return x.id===acId()});return a||l[0]||defaults[0]}
+
+function populateAc(){
+ var s=el('aircraftSelect'),l=getList();s.innerHTML='';
+ l.forEach(function(a){var o=document.createElement('option');o.value=a.id;o.textContent=a.n+' • '+a.type;s.appendChild(o)});
+ s.value=acId();loadAcForm();
+}
+function loadAcForm(){
+ var a=ac();
+ el('acN').value=a.n||'';el('acType').value=a.type||'';el('acEmptyWt').value=a.emptyWt||'';el('acEmptyArm').value=a.emptyArm||'';el('acMaxWt').value=a.maxWt||'';el('acFuelPpg').value=a.fuelPpg||6;el('acFrontArm').value=a.frontArm||'';el('acRearArm').value=a.rearArm||'';el('acBagArm').value=a.bagArm||'';el('acFuelArm').value=a.fuelArm||'';el('acFuelBurn').value=a.fuelBurn||9;el('acXwLimit').value=a.xwLimit||17;
+ el('xwLimit').value=a.xwLimit||17;el('fuelBurn').value=a.fuelBurn||9;
+}
+function saveAc(){
+ var l=getList(),id=acId(),n=el('acN').value.trim()||'NEW';
+ var a={id:id.indexOf('NEW_')===0?n:id,n:n,type:el('acType').value,emptyWt:nv('acEmptyWt')||0,emptyArm:nv('acEmptyArm')||0,maxWt:nv('acMaxWt')||0,fuelPpg:nv('acFuelPpg')||6,frontArm:nv('acFrontArm')||0,rearArm:nv('acRearArm')||0,bagArm:nv('acBagArm')||0,fuelArm:nv('acFuelArm')||0,fuelBurn:nv('acFuelBurn')||9,xwLimit:nv('acXwLimit')||17,tankInterval:parseInt(localStorage.jp_tankInterval||'60')};
+ var i=l.findIndex(function(x){return x.id===id});if(i>=0)l[i]=a;else l.push(a);
+ saveList(l);localStorage.jp_selectedAc=a.id;populateAc();calcAll();alert('Aircraft saved.');
+}
+function newAc(){var l=getList(),id='NEW_'+Date.now();l.push({id:id,n:'',type:'',fuelPpg:6,fuelBurn:9,xwLimit:17,tankInterval:60});saveList(l);localStorage.jp_selectedAc=id;populateAc()}
+function delAc(){var l=getList();if(l.length<=1)return alert('Keep at least one aircraft.');if(confirm('Delete selected aircraft?')){l=l.filter(function(a){return a.id!==acId()});saveList(l);localStorage.jp_selectedAc=l[0].id;populateAc();calcAll()}}
+
+function showTab(id){sections.forEach(function(s){if(el(s))el(s).className=s==id?'card':'card hidden';if(el('tab-'+s))el('tab-'+s).className=s==id?'tab active':'tab'});localStorage.jp_tab=id;calcAll()}
+function saveInputs(){Array.from(document.getElementsByTagName('input')).forEach(function(i){if(i.id&&!i.id.startsWith('ac'))localStorage['jp_'+i.id]=i.value})}
+function loadInputs(){Array.from(document.getElementsByTagName('input')).forEach(function(i){var v=localStorage['jp_'+i.id];if(v!=null)i.value=v})}
+
+function calcCross(){
+ var r=nv('rwy'),wd=nv('windDir'),ws=nv('windSpeed'),g=nv('gust'),lim=nv('xwLimit'),rh=r==null?null:(r<=36?norm(r*10):norm(r));
+ el('rwyOut').innerHTML=rh==null?'—':String(Math.round(rh)).padStart(3,'0')+'°';
+ if(rh==null||wd==null||ws==null){lastCrosswind=null;lastGustCrosswind=null;return}
+ var d=diff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180,xw=Math.abs(ws*Math.sin(rad)),gxw=(g!=null&&g>ws)?Math.abs(g*Math.sin(rad)):null,hw=ws*Math.cos(rad);
+ lastCrosswind=xw;lastGustCrosswind=gxw;
+ el('angleOut').innerHTML=fmt(abs,0)+'°';el('xwOut').innerHTML=fmt(xw,1)+' kt';el('gxwOut').innerHTML=gxw==null?'—':fmt(gxw,1)+' kt';el('hwOut').innerHTML=hw>=0?fmt(hw,1)+' kt headwind':fmt(Math.abs(hw),1)+' kt tailwind';
+ var side=Math.abs(d)<2?'Mostly straight':d>0?'From RIGHT':'From LEFT',crab=Math.abs(d)<2?'Little/no crab':d>0?'Crab nose RIGHT':'Crab nose LEFT';
+ el('sideOut').innerHTML=side;el('crabOut').innerHTML=crab;
+ var check=gxw==null?xw:gxw,html=pill(side,'warn')+pill(crab,'good');
+ if(lim!=null)html+=check>lim?pill('Over limit','bad'):check>lim*.8?pill('Near limit','warn'):pill('Within limit','good');
+ if(hw<0)html+=pill('Tailwind','bad');el('windRisk').innerHTML=html;
+}
+function calcWB(){
+ var a=ac();el('wbAcLabel').innerHTML='Selected aircraft: '+a.n+' • '+a.type;
+ var f=nv('frontWt')||0,r=nv('rearWt')||0,b=nv('bagWt')||0,fg=nv('fuelGal')||0,fw=fg*(a.fuelPpg||6),tot=(a.emptyWt||0)+f+r+b+fw,m=(a.emptyWt||0)*(a.emptyArm||0)+f*(a.frontArm||0)+r*(a.rearArm||0)+b*(a.bagArm||0)+fw*(a.fuelArm||0),cg=tot?m/tot:0,rem=(a.maxWt||0)-tot;
+ el('wbWeight').innerHTML=fmt(tot,1)+' lb';el('wbCg').innerHTML=fmt(cg,2)+' in';el('wbRemain').innerHTML=fmt(rem,1)+' lb';el('wbStatus').innerHTML=(tot>(a.maxWt||0)?pill('OVER GROSS','bad'):pill('Weight OK','good'))+pill('Verify CG envelope','warn');
+}
+function calcFuel(){
+ var a=ac();el('fuelAcLabel').innerHTML='Selected aircraft: '+a.n+' • '+a.type;
+ var on=nv('fuelOnboard'),hrs=nv('flightHours'),burn=nv('fuelBurn')||(a.fuelBurn||9);
+ if(on==null||hrs==null){lastReserveHours=null;return}
+ var used=hrs*burn,rem=on-used,res=rem/burn;lastReserveHours=res;
+ el('fuelUsed').innerHTML=fmt(used,1)+' gal';el('fuelRem').innerHTML=fmt(rem,1)+' gal';el('reserveTime').innerHTML=fmt(res,2)+' hr';el('fuelStatus').innerHTML=res<.75?pill('LOW RESERVE','bad'):res<1.25?pill('Caution','warn'):pill('Good reserve','good');
+}
+function calcHobbs(){
+ var sh=nv('startHobbs'),eh=nv('endHobbs'),st=nv('startTach'),et=nv('endTach'),rate=nv('rate'),h=(sh!=null&&eh!=null)?eh-sh:null,t=(st!=null&&et!=null)?et-st:null;
+ el('hobbsTime').innerHTML=h==null?'—':fmt(h,1);el('tachTime').innerHTML=t==null?'—':fmt(t,2);el('rentalCost').innerHTML=(h!=null&&rate!=null)?'$'+fmt(h*rate,2):'—';
+}
+function calcGo(){
+ var x=lastGustCrosswind??lastCrosswind??0,res=lastReserveHours??0,c=nv('goCeil')??9999,v=nv('goVis')??10;
+ el('goXwAuto').innerHTML=x?fmt(x,1)+' kt':'—';el('goReserveAuto').innerHTML=res?fmt(res,2)+' hr':'—';el('goCeilAuto').innerHTML=fmt(c,0)+' ft AGL';el('goVisAuto').innerHTML=fmt(v,1)+' SM';
+ var score=0,html='';function a(n,l){score=Math.max(score,l);html+=pill(n,l==2?'bad':l==1?'warn':'good')}
+ a('Crosswind',x>17?2:x>13?1:0);a('Fuel',res&&res<.75?2:res&&res<1.25?1:0);a('Ceiling',c<2000?2:c<3500?1:0);a('Visibility',v<5?2:v<8?1:0);
+ el('goOverall').innerHTML=score==2?'🔴 HIGH RISK':score==1?'🟡 MODERATE RISK':'🟢 LOW RISK';el('goDetails').innerHTML=html;
+}
 function calcAll(){calcCross();calcWB();calcFuel();calcHobbs();calcGo();saveInputs()}
-window.onload=function(){if(!localStorage.jp_aircraft)saveList(defaults);loadInputs();populateAc();try{airportRoute=JSON.parse(localStorage.jp_route||'[]')}catch(e){airportRoute=[]}activeFreq=localStorage.jp_activeFreq||null;standbyFreq=localStorage.jp_standbyFreq||null;[...document.getElementsByTagName('input')].forEach(i=>i.addEventListener('input',calcAll));el('aircraftSelect').onchange=function(){localStorage.jp_selectedAc=this.value;loadAcForm();calcAll()};el('saveAcBtn').onclick=saveAc;el('newAcBtn').onclick=newAc;el('deleteAcBtn').onclick=delAc;el('leftTankBtn').onclick=()=>startTank('LEFT');el('rightTankBtn').onclick=()=>startTank('RIGHT');el('stopTankBtn').onclick=stopTank;el('refreshGo').onclick=calcGo;el('clearRouteBtn').onclick=()=>{airportRoute=[];activeFreq=null;standbyFreq=null;saveRoute();renderAirports()};renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')}
+
+function setTankInterval(min){localStorage.jp_tankInterval=String(min);el('tankIntervalLabel').innerHTML=String(min)}
+function tankInterval(){return parseInt(localStorage.jp_tankInterval||'60')}
+function startTank(t){localStorage.jp_tank=t;localStorage.jp_tankStart=Date.now();updateTank()}
+function stopTank(){localStorage.removeItem('jp_tankStart');updateTank()}
+function updateTank(){
+ var t=localStorage.jp_tank,s=parseInt(localStorage.jp_tankStart||0),int=tankInterval();el('tankIntervalLabel').innerHTML=String(int);el('tankName').innerHTML=t||'—';
+ if(!s){el('tankElapsed').innerHTML='—';el('tankRemaining').innerHTML='—';el('tankWarn').innerHTML='';return}
+ var m=(Date.now()-s)/60000,rem=int-m;el('tankElapsed').innerHTML='Elapsed: '+fmt(m,1)+' minutes';el('tankRemaining').innerHTML='Remaining: '+fmt(Math.max(rem,0),1)+' minutes';
+ el('tankWarn').innerHTML=rem<=0?pill('SWITCH TANKS','bad'):rem<=5?pill('Switch soon','warn'):pill('Timer running','good');
+}
+
+function setMode(m){freqMode=m;localStorage.jp_freqMode=m;renderFreqs();updateModeButtons()}
+function updateModeButtons(){
+ var label=freqMode=='local'?'Local VFR':freqMode=='ff'?'VFR + Flight Following':'IFR';
+ el('freqModeLabel').innerHTML=label;
+ ['modeLocal','modeFF','modeIFR'].forEach(function(id){el(id).className='btn btn2'});
+ if(freqMode=='local')el('modeLocal').className='btn';
+ if(freqMode=='ff')el('modeFF').className='btn';
+ if(freqMode=='ifr')el('modeIFR').className='btn';
+}
+function shouldShow(freqType){if(freqMode=='ifr')return true;if(freqMode=='ff')return freqType=='vfr'||freqType=='ff';return freqType=='vfr'}
+function renderAirports(){
+ var bank=el('airportBank');bank.innerHTML='';
+ Object.keys(airportDb).sort().forEach(function(code){var b=document.createElement('button');b.className='bubble'+(airportRoute.includes(code)?' selected':'');b.textContent=code;b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};bank.appendChild(b)});
+ renderRoute();renderFreqs();
+}
+function saveRoute(){localStorage.jp_route=JSON.stringify(airportRoute)}
+function renderRoute(){
+ var box=el('routeBox');box.innerHTML='';
+ if(!airportRoute.length){box.innerHTML='<span class="small">Tap airports above to build your route.</span>';return}
+ airportRoute.forEach(function(code,i){var b=document.createElement('button');b.className='bubble routeBubble';b.textContent=code+' ×';b.onclick=function(){airportRoute.splice(i,1);saveRoute();renderAirports()};box.appendChild(b)});
+}
+function tapFreq(k){
+ if(activeFreq==k){activeFreq=null}
+ else if(standbyFreq==k){standbyFreq=null}
+ else if(!activeFreq){activeFreq=k}
+ else{standbyFreq=k}
+ localStorage.jp_activeFreq=activeFreq||'';localStorage.jp_standbyFreq=standbyFreq||'';renderFreqs();
+}
+function renderFreqs(){
+ updateModeButtons();
+ var list=el('freqList');list.innerHTML='';
+ el('activeFreqLabel').innerHTML=activeFreq?activeFreq.replaceAll('|',' • '):'—';
+ el('standbyFreqLabel').innerHTML=standbyFreq?standbyFreq.replaceAll('|',' • '):'—';
+ if(!airportRoute.length){list.innerHTML='<div class="small">No airports selected.</div>';return}
+ airportRoute.forEach(function(code){
+  var g=document.createElement('div');g.className='freqGroup';g.innerHTML='<h3>'+code+'</h3>';
+  (airportDb[code]||[]).filter(function(f){return shouldShow(f[2])}).forEach(function(f){
+   var k=code+'|'+f[0]+'|'+f[1],btn=document.createElement('button');
+   btn.className='freqBtn'+(activeFreq==k?' activeFreq':standbyFreq==k?' standbyFreq':'');
+   btn.innerHTML='<span>'+f[0]+'</span> '+f[1];btn.onclick=function(){tapFreq(k)};g.appendChild(btn);
+  });
+  list.appendChild(g);
+ });
+}
+
+window.onload=function(){
+ if(!localStorage.jp_aircraft)saveList(defaults);
+ loadInputs();populateAc();
+ try{airportRoute=JSON.parse(localStorage.jp_route||'[]')}catch(e){airportRoute=[]}
+ activeFreq=localStorage.jp_activeFreq||null;standbyFreq=localStorage.jp_standbyFreq||null;freqMode=localStorage.jp_freqMode||'local';
+ Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
+ el('aircraftSelect').onchange=function(){localStorage.jp_selectedAc=this.value;loadAcForm();calcAll()};
+ el('saveAcBtn').onclick=saveAc;el('newAcBtn').onclick=newAc;el('deleteAcBtn').onclick=delAc;
+ el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
+ el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
+ el('refreshGo').onclick=calcGo;el('clearRouteBtn').onclick=function(){airportRoute=[];activeFreq=null;standbyFreq=null;saveRoute();renderAirports()};
+ el('modeLocal').onclick=function(){setMode('local')};el('modeFF').onclick=function(){setMode('ff')};el('modeIFR').onclick=function(){setMode('ifr')};
+ renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')
+}
 </script></body></html>
