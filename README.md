@@ -1,16 +1,5 @@
-# Tom's Pilot Companion v1.3.2
+# John's Pilot Companion v1.4
 
-Clean lean offline PWA for N41498.
+Adds aircraft profiles, route-frequency bubbles, app rename, and subtitle.
 
-## Active modules
-- Crosswind Calculator
-- N41498 Weight & Balance
-- Fuel & Reserve
-- Fuel Tank Switch Timer
-- Hobbs/Tach Rental Tracker
-- Go / No-Go
-
-## v1.3.2 fix
-- Bottom tabs moved above iPhone home indicator
-- Tabs use a 2-row grid instead of horizontal swipe
-- Better cockpit/iPhone usability
+Verify all frequencies and aircraft data with current official sources/ForeFlight/POH.
