@@ -1,8 +1,8 @@
-# Tom's Pilot Companion v1.2
+# Tom's Pilot Companion v1.3
 
-Lean offline PWA for N41498.
+Clean lean offline PWA for N41498.
 
-## Modules
+## Active modules
 - Crosswind Calculator
 - N41498 Weight & Balance
 - Fuel & Reserve
@@ -16,4 +16,4 @@ Removed:
 - Flight Log
 - Density Altitude
 
-Go / No-Go now auto-pulls crosswind and fuel reserve when available. Ceiling and visibility are manually entered.
+Upload these files to the same GitHub repository root and replace the existing files.

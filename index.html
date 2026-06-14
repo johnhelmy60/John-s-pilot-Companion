@@ -8,24 +8,41 @@
 <title>Tom's Pilot Companion</title>
 <style>
 :root{--bg:#071018;--card:#101d2a;--line:#2d4358;--text:#f4f7fb;--muted:#9fb0c0;--blue:#58b7ff;--green:#76e06b;--yellow:#ffd166;--red:#ff6b6b}
-*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:85px}
-header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3} h1{font-size:22px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
-main{max-width:980px;margin:auto;padding:12px}.tabs{position:fixed;bottom:0;left:0;right:0;background:#071018;border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:5}
-.tab{min-width:95px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}.tab.active{color:#001018;background:var(--blue)}
-.card{background:rgba(16,29,42,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}h2{margin:0 0 12px;font-size:19px}h3{color:var(--blue);margin:16px 0 8px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--muted);font-size:13px;margin:9px 0 5px}
-input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--text);font-size:16px}textarea{min-height:130px}
-.btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--blue);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--text);border:1px solid var(--line)}
-.result{background:#061018;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}.small{font-size:12px;color:var(--muted);line-height:1.45}
-.pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--green);border:1px solid #2c7440}.warn{background:#33270c;color:var(--yellow);border:1px solid #806b2b}.bad{background:#371517;color:var(--red);border:1px solid #864141}
-table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--line);text-align:right}td:first-child,th:first-child{text-align:left}
-.hide{display:none!important}.row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}.canvasWrap{background:#fff;border-radius:14px;overflow:hidden;margin-top:10px}canvas{width:100%;height:300px;display:block;touch-action:none}
-.logItem{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;background:#091421}
-@media(max-width:560px){.grid,.row{grid-template-columns:1fr}}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--text);padding-bottom:88px}
+header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3}
+h1{font-size:22px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:5px}
+main{max-width:980px;margin:auto;padding:12px}
+.card{background:rgba(16,29,42,.96);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+h2{margin:0 0 12px;font-size:19px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;color:var(--muted);font-size:13px;margin:9px 0 5px}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--text);font-size:16px}
+.btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--blue);color:#001018;font-weight:900;font-size:16px}
+.btn2{background:#172a3a;color:var(--text);border:1px solid var(--line)}
+.result{background:#061018;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.big{font-size:30px;font-weight:900}
+.small{font-size:12px;color:var(--muted);line-height:1.45}
+.pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}
+.good{background:#12321c;color:var(--green);border:1px solid #2c7440}
+.warn{background:#33270c;color:var(--yellow);border:1px solid #806b2b}
+.bad{background:#371517;color:var(--red);border:1px solid #864141}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:8px 3px;border-bottom:1px solid var(--line);text-align:right}
+td:first-child,th:first-child{text-align:left}
+.hide{display:none!important}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#071018;border-top:1px solid var(--line);display:flex;overflow-x:auto;z-index:5}
+.tab{min-width:105px;padding:10px 8px;border:0;background:transparent;color:var(--muted);font-weight:800}
+.tab.active{color:#001018;background:var(--blue)}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.tab{min-width:96px}}
 </style>
 </head>
 <body>
-<header><h1>Tom's Pilot Companion</h1><div class="sub">N41498 quick tools • Verify all data with POH/W&B</div></header>
+<header>
+<h1>Tom's Pilot Companion v1.3</h1>
+<div class="sub">N41498 quick tools • Verify with POH/W&B and school procedures</div>
+</header>
+
 <main>
 <section id="crosswind" class="card">
 <h2>Crosswind Calculator</h2>
@@ -38,13 +55,19 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </div>
 <div class="result"><div class="small">Runway heading</div><div class="big" id="rwyOut">—</div><div id="windRisk"></div></div>
 <div class="result"><table>
-<tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id="angleOut">—</td></tr><tr><td>Crosswind</td><td id="xwOut">—</td></tr><tr><td>Gust XW</td><td id="gxwOut">—</td></tr><tr><td>Head/Tailwind</td><td id="hwOut">—</td></tr><tr><td>Wind side</td><td id="sideOut">—</td></tr><tr><td>Crab/Nose</td><td id="crabOut">—</td></tr>
+<tr><th>Item</th><th>Result</th></tr>
+<tr><td>Angle</td><td id="angleOut">—</td></tr>
+<tr><td>Crosswind</td><td id="xwOut">—</td></tr>
+<tr><td>Gust crosswind</td><td id="gxwOut">—</td></tr>
+<tr><td>Head/Tailwind</td><td id="hwOut">—</td></tr>
+<tr><td>Wind side</td><td id="sideOut">—</td></tr>
+<tr><td>Crab/Nose</td><td id="crabOut">—</td></tr>
 </table></div>
 </section>
 
 <section id="wb" class="card hide">
 <h2>N41498 Weight & Balance</h2>
-<div class="small">Preloaded from your aircraft profile screenshots. Confirm with the aircraft W&B/POH before flight.</div>
+<div class="small">Preloaded values from your aircraft profile screenshots. Confirm with the airplane’s approved W&B sheet.</div>
 <div class="grid">
 <div><label>Pilot + front passenger lb</label><input id="frontWt" type="number"></div>
 <div><label>Rear passengers lb</label><input id="rearWt" type="number"></div>
@@ -52,7 +75,11 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>Fuel gallons</label><input id="fuelGal" type="number"></div>
 </div>
 <div class="result"><table>
-<tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id="wbWeight">—</td></tr><tr><td>Loaded CG</td><td id="wbCg">—</td></tr><tr><td>Useful load remaining</td><td id="wbRemain">—</td></tr><tr><td>Status</td><td id="wbStatus">—</td></tr>
+<tr><th>Item</th><th>Result</th></tr>
+<tr><td>Total weight</td><td id="wbWeight">—</td></tr>
+<tr><td>Loaded CG</td><td id="wbCg">—</td></tr>
+<tr><td>Useful load remaining</td><td id="wbRemain">—</td></tr>
+<tr><td>Status</td><td id="wbStatus">—</td></tr>
 </table></div>
 <div class="small">Arms used: empty 87.1, front 80.5, rear 118.1, baggage 142.8, fuel 95.0. Max TO weight 2440 lb. Empty weight 1443 lb.</div>
 </section>
@@ -64,14 +91,22 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>Planned flight time hr</label><input id="flightHours" type="number" step="0.1"></div>
 <div><label>Fuel burn GPH</label><input id="fuelBurn" type="number" value="9"></div>
 </div>
-<div class="result"><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id="fuelUsed">—</td></tr><tr><td>Fuel remaining</td><td id="fuelRem">—</td></tr><tr><td>Reserve time</td><td id="reserveTime">—</td></tr><tr><td>Status</td><td id="fuelStatus">—</td></tr></table></div>
+<div class="result"><table>
+<tr><th>Item</th><th>Result</th></tr>
+<tr><td>Fuel used</td><td id="fuelUsed">—</td></tr>
+<tr><td>Fuel remaining</td><td id="fuelRem">—</td></tr>
+<tr><td>Reserve time</td><td id="reserveTime">—</td></tr>
+<tr><td>Status</td><td id="fuelStatus">—</td></tr>
+</table></div>
 </section>
-
 
 <section id="tank" class="card hide">
 <h2>Fuel Tank Switch Timer</h2>
-<div class="grid"><button class="btn" onclick="startTank('LEFT')">Start LEFT Tank</button><button class="btn" onclick="startTank('RIGHT')">Start RIGHT Tank</button></div>
-<button class="btn btn2" onclick="stopTank()">Stop Timer</button>
+<div class="grid">
+<button class="btn" id="leftTankBtn">Start LEFT Tank</button>
+<button class="btn" id="rightTankBtn">Start RIGHT Tank</button>
+</div>
+<button class="btn btn2" id="stopTankBtn">Stop Timer</button>
 <div class="result"><div class="small">Current tank</div><div class="big" id="tankName">—</div><div id="tankElapsed">—</div><div id="tankWarn"></div></div>
 </section>
 
@@ -84,20 +119,22 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>End Tach</label><input id="endTach" type="number" step="0.01"></div>
 <div><label>Hourly rental rate $</label><input id="rate" type="number" step="1"></div>
 </div>
-<div class="result"><table><tr><th>Item</th><th>Result</th></tr><tr><td>Hobbs time</td><td id="hobbsTime">—</td></tr><tr><td>Tach time</td><td id="tachTime">—</td></tr><tr><td>Estimated cost</td><td id="rentalCost">—</td></tr></table></div>
+<div class="result"><table>
+<tr><th>Item</th><th>Result</th></tr>
+<tr><td>Hobbs time</td><td id="hobbsTime">—</td></tr>
+<tr><td>Tach time</td><td id="tachTime">—</td></tr>
+<tr><td>Estimated cost</td><td id="rentalCost">—</td></tr>
+</table></div>
 </section>
-
-
-
 
 <section id="gono" class="card hide">
 <h2>Go / No-Go</h2>
-<div class="small">Auto-pulls crosswind from X-Wind tab and fuel reserve from Fuel tab when available.</div>
+<div class="small">Auto-pulls crosswind from the X-Wind tab and fuel reserve from the Fuel tab when available.</div>
 <div class="grid">
 <div><label>Ceiling ft AGL</label><input id="goCeil" type="number" placeholder="9999 if no ceiling"></div>
 <div><label>Visibility SM</label><input id="goVis" type="number" placeholder="10 for 10SM"></div>
 </div>
-<button class="btn" onclick="calcGo()">Refresh Risk Check</button>
+<button class="btn" id="refreshGo">Refresh Risk Check</button>
 <div class="result">
 <table>
 <tr><th>Item</th><th>Value</th></tr>
@@ -109,51 +146,163 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div class="big" id="goOverall">—</div>
 <div id="goDetails"></div>
 </div>
-<p class="small">Ceiling: use BKN/OVC layer height. Example BKN030 = 3000 ft. If SKC/CLR/FEW/SCT only, enter 9999. Visibility: 10SM = 10, 6SM = 6, 1 1/2SM = 1.5.</p>
+<p class="small">Ceiling: BKN030/OVC030 = 3000 ft. If SKC/CLR/FEW/SCT only, enter 9999. Visibility: 10SM = 10, 6SM = 6, 1 1/2SM = 1.5.</p>
 </section>
 </main>
 
 <div class="tabs" id="tabs"></div>
+
 <script>
-let lastCrosswind=null, lastGustCrosswind=null, lastReserveHours=null;
+let lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null;
 const aircraft={emptyWt:1443,emptyArm:87.1,maxWt:2440,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelPpg:6};
-const names=[['crosswind','X-Wind'],['wb','W&B'],['fuel','Fuel'],['tank','Tank'],['hobbs','Hobbs'],['gono','Go/No-Go']];
-function $(id){return document.getElementById(id)} function num(id){let x=parseFloat($(id)?.value);return Number.isFinite(x)?x:null} function fmt(x,d=1){return Number.isFinite(x)?x.toFixed(d):'—'} function pill(t,c){return `<span class="pill ${c}">${t}</span>`}
-function save(){document.querySelectorAll('input,textarea,select').forEach(e=>localStorage.setItem('pc_'+e.id,e.value))}
-function load(){document.querySelectorAll('input,textarea,select').forEach(e=>{let v=localStorage.getItem('pc_'+e.id);if(v!==null)e.value=v}); if(!$('logDate').value)$('logDate').value=new Date().toISOString().slice(0,10)}
-names.forEach(([id,label])=>{let b=document.createElement('button');b.className='tab';b.textContent=label;b.onclick=()=>show(id);$('tabs').appendChild(b)})
-function show(id){names.forEach(([sid])=>$(sid).classList.toggle('hide',sid!==id));document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',names[i][0]===id));localStorage.setItem('pc_tab',id)}
-function signedDiff(from,to){return ((from-to+540)%360)-180} function norm(d){return ((d%360)+360)%360}
-function calcCross(){let r=num('rwy'),wd=num('windDir'),ws=num('windSpeed'),g=num('gust'),lim=num('xwLimit');let rh=r==null?null:(r<=36?norm(r*10):norm(r));$('rwyOut').textContent=rh==null?'—':String(Math.round(rh)).padStart(3,'0')+'°';if(rh==null||wd==null||ws==null)return;let d=signedDiff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180,xw=Math.abs(ws*Math.sin(rad)),gxw=(g&&g>ws)?Math.abs(g*Math.sin(rad)):null,hw=ws*Math.cos(rad);lastCrosswind=xw; lastGustCrosswind=gxw;
-$('angleOut').textContent=fmt(abs,0)+'°';$('xwOut').textContent=fmt(xw,1)+' kt';$('gxwOut').textContent=gxw?fmt(gxw,1)+' kt':'—';$('hwOut').textContent=hw>=0?fmt(hw,1)+' kt headwind':fmt(Math.abs(hw),1)+' kt tailwind';let side=Math.abs(d)<2?'Mostly straight':d>0?'From RIGHT':'From LEFT';let crab=Math.abs(d)<2?'Little/no crab':d>0?'Crab nose RIGHT':'Crab nose LEFT';$('sideOut').textContent=side;$('crabOut').textContent=crab;let check=gxw||xw,html=pill(side,'warn')+pill(crab,'good');if(lim)html+=check>lim?pill('Over limit','bad'):check>lim*.8?pill('Near limit','warn'):pill('Within limit','good');if(hw<0)html+=pill('Tailwind','bad');$('windRisk').innerHTML=html}
-function calcWB(){let f=num('frontWt')||0,r=num('rearWt')||0,b=num('bagWt')||0,fg=num('fuelGal')||0,fw=fg*6,total=aircraft.emptyWt+f+r+b+fw,m=aircraft.emptyWt*aircraft.emptyArm+f*aircraft.frontArm+r*aircraft.rearArm+b*aircraft.bagArm+fw*aircraft.fuelArm,cg=m/total,rem=aircraft.maxWt-total;$('wbWeight').textContent=fmt(total,1)+' lb';$('wbCg').textContent=fmt(cg,2)+' in';$('wbRemain').textContent=fmt(rem,1)+' lb';let status='';status+=total>aircraft.maxWt?pill('OVER GROSS','bad'):pill('Weight OK','good');status+=cg<83||cg>93?pill('Check CG limits','bad'):pill('CG likely OK','good');$('wbStatus').innerHTML=status}
-function calcFuel(){let on=num('fuelOnboard'),hrs=num('flightHours'),burn=num('fuelBurn')||9;if(on==null||hrs==null)return;let used=hrs*burn,rem=on-used,res=rem/burn;lastReserveHours=res;
-$('fuelUsed').textContent=fmt(used,1)+' gal';$('fuelRem').textContent=fmt(rem,1)+' gal';$('reserveTime').textContent=fmt(res,2)+' hr';$('fuelStatus').innerHTML=res<0.75?pill('LOW RESERVE','bad'):res<1.25?pill('Caution','warn'):pill('Good reserve','good')}
-let tankTimer=null;function startTank(t){localStorage.setItem('pc_tank',t);localStorage.setItem('pc_tankStart',Date.now());updateTank();clearInterval(tankTimer);tankTimer=setInterval(updateTank,1000)}function stopTank(){localStorage.removeItem('pc_tankStart');updateTank()}function updateTank(){let t=localStorage.getItem('pc_tank'),s=parseInt(localStorage.getItem('pc_tankStart')||'0');$('tankName').textContent=t||'—';if(!s){$('tankElapsed').textContent='—';$('tankWarn').innerHTML='';return}let min=(Date.now()-s)/60000;$('tankElapsed').textContent=fmt(min,1)+' minutes';$('tankWarn').innerHTML=min>=60?pill('SWITCH TANKS','bad'):min>=30?pill('Consider tank switch','warn'):pill('Timer running','good')}
-function calcHobbs(){let sh=num('startHobbs'),eh=num('endHobbs'),st=num('startTach'),et=num('endTach'),rate=num('rate');$('hobbsTime').textContent=(sh!=null&&eh!=null)?fmt(eh-sh,1):'—';$('tachTime').textContent=(st!=null&&et!=null)?fmt(et-st,2):'—';$('rentalCost').textContent=(sh!=null&&eh!=null&&rate)?'$'+fmt((eh-sh)*rate,2):'—'}
+const tabs=[["crosswind","X-Wind"],["wb","W&B"],["fuel","Fuel"],["tank","Tank"],["hobbs","Hobbs"],["gono","Go/No-Go"]];
+
+function $(id){return document.getElementById(id)}
+function num(id){const el=$(id); if(!el) return null; const x=parseFloat(el.value); return Number.isFinite(x)?x:null}
+function fmt(x,d=1){return Number.isFinite(x)?x.toFixed(d):"—"}
+function pill(t,c){return `<span class="pill ${c}">${t}</span>`}
+function norm(d){return ((d%360)+360)%360}
+function signedDiff(from,to){return ((from-to+540)%360)-180}
+
+function saveInputs(){document.querySelectorAll("input").forEach(e=>localStorage.setItem("pc13_"+e.id,e.value))}
+function loadInputs(){document.querySelectorAll("input").forEach(e=>{const v=localStorage.getItem("pc13_"+e.id); if(v!==null)e.value=v})}
+
+function showTab(id){
+  tabs.forEach(([sid])=>$(sid).classList.toggle("hide",sid!==id));
+  document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("active",tabs[i][0]===id));
+  localStorage.setItem("pc13_tab",id);
+  calcAll();
+}
+
+function buildTabs(){
+  const wrap=$("tabs");
+  wrap.innerHTML="";
+  tabs.forEach(([id,label])=>{
+    const b=document.createElement("button");
+    b.className="tab";
+    b.textContent=label;
+    b.addEventListener("click",()=>showTab(id));
+    wrap.appendChild(b);
+  });
+}
+
+function calcCross(){
+  const r=num("rwy"),wd=num("windDir"),ws=num("windSpeed"),g=num("gust"),lim=num("xwLimit");
+  const rh=r==null?null:(r<=36?norm(r*10):norm(r));
+  $("rwyOut").textContent=rh==null?"—":String(Math.round(rh)).padStart(3,"0")+"°";
+  if(rh==null||wd==null||ws==null){
+    lastCrosswind=null; lastGustCrosswind=null;
+    return;
+  }
+  const d=signedDiff(wd,rh),abs=Math.abs(d),rad=abs*Math.PI/180;
+  const xw=Math.abs(ws*Math.sin(rad));
+  const gxw=(g!==null&&g>ws)?Math.abs(g*Math.sin(rad)):null;
+  const hw=ws*Math.cos(rad);
+  lastCrosswind=xw; lastGustCrosswind=gxw;
+  $("angleOut").textContent=fmt(abs,0)+"°";
+  $("xwOut").textContent=fmt(xw,1)+" kt";
+  $("gxwOut").textContent=gxw==null?"—":fmt(gxw,1)+" kt";
+  $("hwOut").textContent=hw>=0?fmt(hw,1)+" kt headwind":fmt(Math.abs(hw),1)+" kt tailwind";
+  const side=Math.abs(d)<2?"Mostly straight":d>0?"From RIGHT":"From LEFT";
+  const crab=Math.abs(d)<2?"Little/no crab":d>0?"Crab nose RIGHT":"Crab nose LEFT";
+  $("sideOut").textContent=side;
+  $("crabOut").textContent=crab;
+  let html=pill(side,"warn")+pill(crab,"good");
+  const check=gxw??xw;
+  if(lim!==null){ html += check>lim?pill("Over limit","bad"):check>lim*.8?pill("Near limit","warn"):pill("Within limit","good"); }
+  if(hw<0) html += pill("Tailwind","bad");
+  $("windRisk").innerHTML=html;
+}
+
+function calcWB(){
+  const f=num("frontWt")||0,r=num("rearWt")||0,b=num("bagWt")||0,fg=num("fuelGal")||0;
+  const fw=fg*aircraft.fuelPpg;
+  const total=aircraft.emptyWt+f+r+b+fw;
+  const moment=aircraft.emptyWt*aircraft.emptyArm+f*aircraft.frontArm+r*aircraft.rearArm+b*aircraft.bagArm+fw*aircraft.fuelArm;
+  const cg=moment/total;
+  const rem=aircraft.maxWt-total;
+  $("wbWeight").textContent=fmt(total,1)+" lb";
+  $("wbCg").textContent=fmt(cg,2)+" in";
+  $("wbRemain").textContent=fmt(rem,1)+" lb";
+  let status="";
+  status += total>aircraft.maxWt?pill("OVER GROSS","bad"):pill("Weight OK","good");
+  status += cg<83||cg>93?pill("Check CG limits","bad"):pill("CG likely OK","good");
+  $("wbStatus").innerHTML=status;
+}
+
+function calcFuel(){
+  const on=num("fuelOnboard"),hrs=num("flightHours"),burn=num("fuelBurn")||9;
+  if(on==null||hrs==null){lastReserveHours=null;return}
+  const used=hrs*burn,rem=on-used,res=rem/burn;
+  lastReserveHours=res;
+  $("fuelUsed").textContent=fmt(used,1)+" gal";
+  $("fuelRem").textContent=fmt(rem,1)+" gal";
+  $("reserveTime").textContent=fmt(res,2)+" hr";
+  $("fuelStatus").innerHTML=res<0.75?pill("LOW RESERVE","bad"):res<1.25?pill("Caution","warn"):pill("Good reserve","good");
+}
+
+function calcHobbs(){
+  const sh=num("startHobbs"),eh=num("endHobbs"),st=num("startTach"),et=num("endTach"),rate=num("rate");
+  const hob=(sh!=null&&eh!=null)?eh-sh:null;
+  const tach=(st!=null&&et!=null)?et-st:null;
+  $("hobbsTime").textContent=hob==null?"—":fmt(hob,1);
+  $("tachTime").textContent=tach==null?"—":fmt(tach,2);
+  $("rentalCost").textContent=(hob!=null&&rate!=null)?"$"+fmt(hob*rate,2):"—";
+}
 
 function calcGo(){
-let x=(lastGustCrosswind||lastCrosswind||0),res=(lastReserveHours||0),ceil=num('goCeil'),vis=num('goVis');
-if(ceil==null) ceil=9999;
-if(vis==null) vis=10;
-$('goXwAuto').textContent=x?fmt(x,1)+' kt':'—';
-$('goReserveAuto').textContent=res?fmt(res,2)+' hr':'—';
-$('goCeilAuto').textContent=fmt(ceil,0)+' ft AGL';
-$('goVisAuto').textContent=fmt(vis,1)+' SM';
-let score=0,html='';
-function assess(name,level){score=Math.max(score,level);html+=pill(name,level==2?'bad':level==1?'warn':'good')}
-assess('Crosswind',x>17?2:x>13?1:0);
-assess('Fuel',res&&res<.75?2:res&&res<1.25?1:0);
-assess('Ceiling',ceil<2000?2:ceil<3500?1:0);
-assess('Visibility',vis<5?2:vis<8?1:0);
-$('goOverall').innerHTML=score==2?'🔴 HIGH RISK':score==1?'🟡 MODERATE RISK':'🟢 LOW RISK';
-$('goDetails').innerHTML=html
+  const x=lastGustCrosswind??lastCrosswind??0;
+  const res=lastReserveHours??0;
+  let ceil=num("goCeil"); if(ceil==null) ceil=9999;
+  let vis=num("goVis"); if(vis==null) vis=10;
+  $("goXwAuto").textContent=x?fmt(x,1)+" kt":"—";
+  $("goReserveAuto").textContent=res?fmt(res,2)+" hr":"—";
+  $("goCeilAuto").textContent=fmt(ceil,0)+" ft AGL";
+  $("goVisAuto").textContent=fmt(vis,1)+" SM";
+  let score=0,html="";
+  function assess(name,level){score=Math.max(score,level);html+=pill(name,level===2?"bad":level===1?"warn":"good")}
+  assess("Crosswind",x>17?2:x>13?1:0);
+  assess("Fuel",res&&res<.75?2:res&&res<1.25?1:0);
+  assess("Ceiling",ceil<2000?2:ceil<3500?1:0);
+  assess("Visibility",vis<5?2:vis<8?1:0);
+  $("goOverall").innerHTML=score===2?"🔴 HIGH RISK":score===1?"🟡 MODERATE RISK":"🟢 LOW RISK";
+  $("goDetails").innerHTML=html;
 }
-);localStorage.setItem('pc_logs',JSON.stringify(logs.slice(0,50)));renderLogs()}
- • ${l.aircraft}</b><br>${l.route}<br>Hobbs: ${l.hobbs} • Tach: ${l.tach}<br>Landings: ${l.landings}<br><span class="small">${l.remarks}</span></div>`).join('')}
-document.querySelectorAll('input,textarea,select').forEach(e=>e.addEventListener('input',()=>{save();calcCross();calcWB();calcFuel();calcHobbs();calcGo()}));
 
-load();calcCross();calcWB();calcFuel();calcHobbs();calcGo();show(localStorage.getItem('pc_tab')||'crosswind');updateTank();tankTimer=setInterval(updateTank,1000);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+function startTank(tank){
+  localStorage.setItem("pc13_tank",tank);
+  localStorage.setItem("pc13_tankStart",String(Date.now()));
+  updateTank();
+}
+function stopTank(){
+  localStorage.removeItem("pc13_tankStart");
+  updateTank();
+}
+function updateTank(){
+  const tank=localStorage.getItem("pc13_tank");
+  const start=parseInt(localStorage.getItem("pc13_tankStart")||"0",10);
+  $("tankName").textContent=tank||"—";
+  if(!start){$("tankElapsed").textContent="—";$("tankWarn").innerHTML="";return}
+  const min=(Date.now()-start)/60000;
+  $("tankElapsed").textContent=fmt(min,1)+" minutes";
+  $("tankWarn").innerHTML=min>=60?pill("SWITCH TANKS","bad"):min>=30?pill("Consider tank switch","warn"):pill("Timer running","good");
+}
+
+function calcAll(){calcCross();calcWB();calcFuel();calcHobbs();calcGo();saveInputs()}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  buildTabs();
+  loadInputs();
+  document.querySelectorAll("input").forEach(e=>e.addEventListener("input",calcAll));
+  $("leftTankBtn").addEventListener("click",()=>startTank("LEFT"));
+  $("rightTankBtn").addEventListener("click",()=>startTank("RIGHT"));
+  $("stopTankBtn").addEventListener("click",stopTank);
+  $("refreshGo").addEventListener("click",calcGo);
+  showTab(localStorage.getItem("pc13_tab")||"crosswind");
+  setInterval(updateTank,1000);
+  updateTank();
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
+});
 </script>
 </body>
 </html>
