@@ -1,7 +1,5 @@
-# John's Pilot Companion v2.1.1
+# John's Pilot Companion v2.2
 
-Bug fix release for Airport Database search.
+Switches Airport Database to reliable local/offline database only. Adds custom airport and custom frequency editing. No live API pulling.
 
-Fixes service worker/cache issue that blocked OurAirports CSV requests.
-
-Upload/replace files, then open with ?v=2.1.1.
+Verify all aviation data with current FAA sources, ForeFlight, POH/W&B, and school procedures.
