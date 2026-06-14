@@ -1,10 +1,13 @@
-# John's Pilot Companion v2.4.1
+# John's Pilot Companion v2.5
 
-Fixes runway display issue caused by older saved airport records.
-
-Updates:
-- Add / Load Airport now refreshes from JSON database first
-- Route Frequencies has a Refresh Route Airports from JSON button
-- This overwrites older saved local airport records with JSON records that include runways
+Adds CRAFT IFR Clearance builder:
+- Clearance limit
+- Route waypoint bubbles
+- Maintain / Expect altitude quick buttons
+- Expect time selector
+- Departure frequency bubbles from selected airport
+- Squawk input
+- Live readback generator
+- CRAFT completion checklist
 
 Keep airport_database_A_M.json and airport_database_N_Z.json in the repository root.

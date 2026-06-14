@@ -1,17 +1,17 @@
 <!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'><meta name='theme-color' content='#071018'><link rel='manifest' href='manifest.webmanifest'><title>John's Pilot Companion</title>
 <style>
 :root{--c:#101d2a;--l:#2d4358;--t:#f4f7fb;--m:#9fb0c0;--b:#58b7ff;--g:#76e06b;--y:#ffd166;--r:#ff6b6b}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:205px}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#0b1d2e,#02070b);color:var(--t);padding-bottom:220px}
 header{padding:16px;text-align:center;background:#071018;border-bottom:1px solid var(--l);position:sticky;top:0;z-index:3}h1{font-size:22px;margin:0}.sub,.small{font-size:12px;color:var(--m);line-height:1.45}.card{background:rgba(16,29,42,.96);border:1px solid var(--l);border-radius:18px;padding:14px;margin:12px}.hidden{display:none}
 h2{margin:0 0 12px;font-size:19px}h3{font-size:15px;color:var(--b);margin:16px 0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--m);font-size:13px;margin:9px 0 5px}input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #37526a;background:#061018;color:var(--t);font-size:16px}
 .btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--b);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--t);border:1px solid var(--l)}.result{background:#061018;border:1px solid var(--l);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}
 .pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--g);border:1px solid #2c7440}.warn{background:#33270c;color:var(--y);border:1px solid #806b2b}.bad{background:#371517;color:var(--r);border:1px solid #864141}.bluepill{background:#081c33;color:var(--b);border:1px solid #2b6b98}
 table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--l);text-align:right}td:first-child,th:first-child{text-align:left}
 .tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
-.bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
+.bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.active{background:var(--b);color:#001018;border-color:var(--b)}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.airportInfo{background:#061018;border:1px solid var(--l);border-radius:12px;padding:10px;margin:8px 0;color:var(--m);font-size:12px;line-height:1.45}.miniBtn{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 4px 0}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style></head><body><header><h1>John's Pilot Companion v2.4.1</h1><div class='sub'>Personal Flight Toolkit • Airport Info + Radio Stack</div></header><main>
+</style></head><body><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
@@ -100,12 +100,68 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>JSON database version: v2.4.1. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
 </section>
 
+<section id='craft' class='card hidden'>
+<h2>CRAFT IFR Clearance</h2>
+<div class='small'>Build and verify an IFR clearance readback. Always confirm against actual ATC before transmitting.</div>
+
+<h3>Flight Context</h3>
+<div class='grid'>
+<div><label>Callsign</label><input id='craftCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Departure Airport</label><input id='craftDep' placeholder='KBJC' autocorrect='off' autocapitalize='characters'></div>
+</div>
+
+<h3>C — Clearance Limit</h3>
+<div class='grid'>
+<div><label>Cleared To</label><input id='craftClearance' placeholder='KFMM / destination / fix' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Clearance Type</label><select id='craftClearType'><option value='Cleared to'>Cleared to</option><option value='Cleared as filed to'>Cleared as filed to</option><option value='Cleared direct to'>Cleared direct to</option></select></div>
+</div>
+
+<h3>R — Route</h3>
+<div class='grid'>
+<div><label>Waypoint / Fix / Airway</label><input id='routeEntry' placeholder='FMM, DCT, Vxxx' autocorrect='off' autocapitalize='characters' spellcheck='false'></div>
+<div><label>&nbsp;</label><button class='btn' id='addRouteTokenBtn'>Add Route Bubble</button></div>
+</div>
+<div class='bubbleBox' id='routeTokens'></div>
+<div class='grid'>
+<button class='btn btn2' id='routeAsFiledBtn'>As Filed</button>
+<button class='btn btn2' id='routeRadarVectorsBtn'>Radar Vectors</button>
+</div>
+<button class='btn btn2' id='clearRouteTokensBtn'>Clear Route</button>
+
+<h3>A — Altitude</h3>
+<label>Maintain</label>
+<div class='bubbleBox' id='maintainButtons'></div>
+<div class='grid'><div><label>Custom Maintain</label><input id='craftMaintain' type='number' inputmode='numeric' placeholder='7000'></div></div>
+
+<label>Expect</label>
+<div class='bubbleBox' id='expectButtons'></div>
+<div class='grid'><div><label>Custom Expect</label><input id='craftExpect' type='number' inputmode='numeric' placeholder='9000'></div></div>
+
+<label>Expect Time After Departure</label>
+<div class='bubbleBox' id='expectTimeButtons'></div>
+<div class='grid'><div><label>Custom Minutes</label><input id='craftExpectTime' type='number' inputmode='numeric' placeholder='10'></div></div>
+
+<h3>F — Frequency</h3>
+<div class='small'>Departure frequencies are pulled from the selected departure airport when available.</div>
+<div class='bubbleBox' id='departureFreqButtons'></div>
+<div class='grid'><div><label>Custom Departure Frequency</label><input id='craftFreq' inputmode='decimal' placeholder='125.125'></div></div>
+
+<h3>T — Transponder</h3>
+<div class='grid'><div><label>Squawk</label><input id='craftSquawk' type='number' inputmode='numeric' pattern='[0-9]*' maxlength='4' placeholder='1234'></div></div>
+
+<div class='result'><h3>CRAFT Checklist</h3><div id='craftChecklist'></div></div>
+<div class='result'><h3>Suggested Readback</h3><div class='big' style='font-size:20px;line-height:1.35' id='craftReadback'>—</div></div>
+<button class='btn btn2' id='clearCraftBtn'>Clear CRAFT</button>
+<p class='small'>10 minutes after departure is common, but ATC can issue 5, 10, 15, 20, or another time. Use exactly what ATC assigns.</p>
+</section>
+
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind' onclick="showTab('crosswind')">X-Wind</button><button class='tab' id='tab-aircraft' onclick="showTab('aircraft')">Aircraft</button><button class='tab' id='tab-wb' onclick="showTab('wb')">W&B</button><button class='tab' id='tab-fuel' onclick="showTab('fuel')">Fuel</button><button class='tab' id='tab-tank' onclick="showTab('tank')">Tank</button><button class='tab' id='tab-hobbs' onclick="showTab('hobbs')">Hobbs</button><button class='tab' id='tab-freq' onclick="showTab('freq')">Freq</button><button class='tab' id='tab-airports' onclick="showTab('airports')">Airports</button><button class='tab' id='tab-gono' onclick="showTab('gono')">Go/No</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-crosswind' onclick="showTab('crosswind')">X-Wind</button><button class='tab' id='tab-aircraft' onclick="showTab('aircraft')">Aircraft</button><button class='tab' id='tab-wb' onclick="showTab('wb')">W&B</button><button class='tab' id='tab-fuel' onclick="showTab('fuel')">Fuel</button><button class='tab' id='tab-tank' onclick="showTab('tank')">Tank</button><button class='tab' id='tab-hobbs' onclick="showTab('hobbs')">Hobbs</button><button class='tab' id='tab-freq' onclick="showTab('freq')">Freq</button><button class='tab' id='tab-airports' onclick="showTab('airports')">Airports</button><button class='tab' id='tab-craft' onclick="showTab('craft')">CRAFT</button><button class='tab' id='tab-gono' onclick="showTab('gono')">Go/No</button></div>
 <script>
 var lastCrosswind=null,lastGustCrosswind=null,lastReserveHours=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','gono'];
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','craft','gono'];
 var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
+var craftRouteTokens=[];
 var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1443,emptyArm:87.1,maxWt:2440,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60}];
 
 // Local database. Items marked "verify current" should be checked in ForeFlight/current FAA data before use.
@@ -497,6 +553,129 @@ function renderFreqs(){
  });
 }
 
+function craftVal(id){var e=el(id);return e?(e.value||'').trim():''}
+function setInput(id,val){if(el(id)){el(id).value=val;craftUpdate();saveCraft();}}
+function commaNumber(n){if(!n)return '';var x=parseInt(n,10);return isFinite(x)?x.toLocaleString():n}
+function saveCraft(){
+ var fields=['craftCallsign','craftDep','craftClearance','craftClearType','craftMaintain','craftExpect','craftExpectTime','craftFreq','craftSquawk'];
+ fields.forEach(function(id){if(el(id))localStorage['jp_'+id]=el(id).value});
+ localStorage.jp_craftRouteTokens=JSON.stringify(craftRouteTokens);
+}
+function loadCraft(){
+ var fields=['craftCallsign','craftDep','craftClearance','craftClearType','craftMaintain','craftExpect','craftExpectTime','craftFreq','craftSquawk'];
+ fields.forEach(function(id){var v=localStorage['jp_'+id];if(v!=null&&el(id))el(id).value=v});
+ try{craftRouteTokens=JSON.parse(localStorage.jp_craftRouteTokens||'[]')}catch(e){craftRouteTokens=[]}
+}
+function addRouteToken(){
+ var v=craftVal('routeEntry').toUpperCase().replace(/\s+/g,'');
+ if(!v)return;
+ craftRouteTokens.push(v);
+ el('routeEntry').value='';
+ renderRouteTokens();
+ craftUpdate();
+ saveCraft();
+}
+function renderRouteTokens(){
+ var box=el('routeTokens'); if(!box)return;
+ box.innerHTML='';
+ if(!craftRouteTokens.length){box.innerHTML='<span class="small">Add route bubbles or choose As Filed / Radar Vectors.</span>';return}
+ craftRouteTokens.forEach(function(tok,i){
+  var b=document.createElement('button');b.className='bubble routeBubble';b.textContent=tok+' ×';
+  b.onclick=function(){craftRouteTokens.splice(i,1);renderRouteTokens();craftUpdate();saveCraft()};
+  box.appendChild(b);
+ });
+}
+function setRoutePreset(txt){
+ craftRouteTokens=[txt];
+ renderRouteTokens();
+ craftUpdate();
+ saveCraft();
+}
+function renderAltitudeButtons(){
+ var maintain=[5000,6000,7000,8000,9000,10000,11000,12000];
+ var expect=[7000,8000,9000,10000,11000,12000,14000,16000];
+ var times=[5,10,15,20];
+ function render(list,boxId,targetId,suffix){
+  var box=el(boxId); if(!box)return; box.innerHTML='';
+  list.forEach(function(v){
+   var b=document.createElement('button');b.className='bubble';b.textContent=String(v)+(suffix||'');
+   b.onclick=function(){setInput(targetId,String(v))};
+   box.appendChild(b);
+  });
+ }
+ render(maintain,'maintainButtons','craftMaintain','');
+ render(expect,'expectButtons','craftExpect','');
+ render(times,'expectTimeButtons','craftExpectTime',' min');
+}
+function renderDepartureFreqs(){
+ var box=el('departureFreqButtons'); if(!box)return;
+ box.innerHTML='';
+ var code=normalizeCode(craftVal('craftDep'));
+ var a=airportRecord(code);
+ if(!a){box.innerHTML='<span class="small">Enter a saved departure airport to show departure frequencies.</span>';return}
+ var freqs=(a.freqs||[]).filter(function(f){
+   var label=((f[0]||'')+' '+(f[1]||'')).toUpperCase();
+   return label.indexOf('DEP')>=0 || label.indexOf('APP')>=0 || label.indexOf('CENTER')>=0 || f[2]=='ff';
+ });
+ if(!freqs.length){box.innerHTML='<span class="small">No departure/approach frequencies found for '+code+'. Use custom frequency.</span>';return}
+ freqs.forEach(function(f){
+  var b=document.createElement('button');b.className='bubble';b.textContent=f[0]+' '+f[1];
+  b.onclick=function(){setInput('craftFreq',f[1])};
+  box.appendChild(b);
+ });
+}
+function craftUpdate(){
+ renderDepartureFreqs();
+ var callsign=craftVal('craftCallsign')||'CALLSIGN';
+ var clearTo=craftVal('craftClearance').toUpperCase();
+ var clearType=craftVal('craftClearType')||'Cleared to';
+ var route=craftRouteTokens.join(' ');
+ var maintain=craftVal('craftMaintain');
+ var expect=craftVal('craftExpect');
+ var expectTime=craftVal('craftExpectTime')||'10';
+ var freq=craftVal('craftFreq');
+ var squawk=craftVal('craftSquawk');
+
+ var parts=[];
+ if(clearTo)parts.push(clearType+' '+clearTo);
+ if(route)parts.push(route.toLowerCase()==='as filed'?'as filed':route.toLowerCase()==='radar vectors'?'via radar vectors':'via '+route);
+ if(maintain)parts.push('maintain '+commaNumber(maintain));
+ if(expect)parts.push('expect '+commaNumber(expect)+' '+expectTime+' minutes after departure');
+ if(freq)parts.push('departure frequency '+freq);
+ if(squawk)parts.push('squawk '+squawk);
+
+ el('craftReadback').innerHTML=parts.length?parts.join(', ')+', '+callsign+'.':'—';
+ function ok(v){return v?pill('✅','good'):pill('❌','bad')}
+ el('craftChecklist').innerHTML =
+   '<div>C '+ok(clearTo)+' Clearance Limit</div>'+
+   '<div>R '+ok(route)+' Route</div>'+
+   '<div>A '+ok(maintain)+' Altitude</div>'+
+   '<div>F '+ok(freq)+' Frequency</div>'+
+   '<div>T '+ok(squawk)+' Transponder</div>';
+}
+function clearCraft(){
+ ['craftClearance','craftMaintain','craftExpect','craftExpectTime','craftFreq','craftSquawk','routeEntry'].forEach(function(id){if(el(id))el(id).value=''});
+ craftRouteTokens=[];
+ renderRouteTokens();
+ craftUpdate();
+ saveCraft();
+}
+function wireCraft(){
+ loadCraft();
+ renderRouteTokens();
+ renderAltitudeButtons();
+ craftUpdate();
+ if(el('addRouteTokenBtn'))el('addRouteTokenBtn').onclick=addRouteToken;
+ if(el('routeEntry'))el('routeEntry').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addRouteToken()}});
+ if(el('routeAsFiledBtn'))el('routeAsFiledBtn').onclick=function(){setRoutePreset('AS FILED')};
+ if(el('routeRadarVectorsBtn'))el('routeRadarVectorsBtn').onclick=function(){setRoutePreset('RADAR VECTORS')};
+ if(el('clearRouteTokensBtn'))el('clearRouteTokensBtn').onclick=function(){craftRouteTokens=[];renderRouteTokens();craftUpdate();saveCraft()};
+ if(el('clearCraftBtn'))el('clearCraftBtn').onclick=clearCraft;
+ ['craftCallsign','craftDep','craftClearance','craftClearType','craftMaintain','craftExpect','craftExpectTime','craftFreq','craftSquawk'].forEach(function(id){
+   if(el(id)){el(id).addEventListener('input',function(){craftUpdate();saveCraft()});el(id).addEventListener('change',function(){craftUpdate();saveCraft()})}
+ });
+}
+
 window.onload=function(){
  if(!localStorage.jp_aircraft)saveList(defaults);
  getSavedAirports();
@@ -511,7 +690,7 @@ window.onload=function(){
  el('refreshGo').onclick=calcGo;el('clearRouteBtn').onclick=function(){airportRoute=[];activeFreq=null;standbyFreq=null;saveRoute();renderAirports()};
  el('modeLocal').onclick=function(){setMode('local')};el('modeFF').onclick=function(){setMode('ff')};el('modeIFR').onclick=function(){setMode('ifr')};
  el('searchAirportBtn').onclick=searchAirport; el('addCustomAirportBtn').onclick=addCustomAirport; el('addFrequencyBtn').onclick=addFrequency; if(el('refreshRouteBtn'))el('refreshRouteBtn').onclick=refreshRouteAirports;
- renderMyAirports();renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
+ wireCraft();renderMyAirports();renderAirports();showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js')
 }
 </script></body></html>
