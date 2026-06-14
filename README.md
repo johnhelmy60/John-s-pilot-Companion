@@ -1,19 +1,19 @@
-# Tom's Pilot Companion
+# Tom's Pilot Companion v1.2
 
-Offline PWA for iPhone.
+Lean offline PWA for N41498.
 
-## GitHub Pages install
-1. Create a new GitHub repository named `toms-pilot-companion`.
-2. Upload these files to the repository root:
-   - index.html
-   - manifest.webmanifest
-   - sw.js
-   - icon.svg
-3. Go to Settings > Pages.
-4. Under Build and deployment, choose:
-   - Source: Deploy from a branch
-   - Branch: main / root
-5. Open the GitHub Pages link in Safari on iPhone.
-6. Tap Share > Add to Home Screen.
+## Modules
+- Crosswind Calculator
+- N41498 Weight & Balance
+- Fuel & Reserve
+- Fuel Tank Switch Timer
+- Hobbs/Tach Rental Tracker
+- Go / No-Go
 
-Verify all aviation data with the aircraft POH, W&B sheet, instructor, and school procedures.
+Removed:
+- Emergency Reference
+- ATIS Scratchpad
+- Flight Log
+- Density Altitude
+
+Go / No-Go now auto-pulls crosswind and fuel reserve when available. Ceiling and visibility are manually entered.
