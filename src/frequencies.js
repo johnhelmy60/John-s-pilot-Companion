@@ -43,7 +43,9 @@ export function renderAirports(){
 
   var del=document.createElement('button');
   del.className='airportRemove';
-  del.textContent='Remove from My Airports';
+  del.textContent='X';
+  del.title='Remove '+code+' from My Airports';
+  del.setAttribute('aria-label','Remove '+code+' from My Airports');
   del.onclick=function(){removeAirport(code)};
 
   item.appendChild(b);
