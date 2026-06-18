@@ -162,7 +162,7 @@ export function addFrequency(){
 }
 
 export function removeAirport(code){
- if(!confirm('Remove '+code+' from My Airports?'))return;
+ if(!confirm('Remove '+code+' from My Airports? You can add it again later from Airport Search.'))return;
  var saved=getSavedAirports(); delete saved[code]; saveSavedAirports(saved);
  if(ctx.onAirportRemoved)ctx.onAirportRemoved(code);
  renderMyAirports(); renderAirportsCallback();

@@ -1,4 +1,4 @@
-import { airportCodes, airportRecord, refreshRouteAirports } from './airports.js';
+import { airportCodes, airportRecord, refreshRouteAirports, removeAirport } from './airports.js';
 
 var ctx=null;
 var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
@@ -31,14 +31,38 @@ function shouldShow(freqType){if(freqMode=='ifr')return true;if(freqMode=='ff')r
 
 export function renderAirports(){
  var bank=ctx.el('airportBank');bank.innerHTML='';
- airportCodes().forEach(function(code){var b=document.createElement('button');b.className='bubble'+(airportRoute.includes(code)?' selected':'');b.textContent=code;b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};bank.appendChild(b)});
+ airportCodes().forEach(function(code){
+  var item=document.createElement('div');
+  item.className='airportBankItem';
+
+  var b=document.createElement('button');
+  b.className='bubble'+(airportRoute.includes(code)?' selected':'');
+  b.textContent=code;
+  b.title='Add '+code+' to route';
+  b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};
+
+  var del=document.createElement('button');
+  del.className='airportRemove';
+  del.textContent='Remove from My Airports';
+  del.onclick=function(){removeAirport(code)};
+
+  item.appendChild(b);
+  item.appendChild(del);
+  bank.appendChild(item);
+ });
  renderRoute();renderFreqs();
 }
 
 function renderRoute(){
  var box=ctx.el('routeBox');box.innerHTML='';
  if(!airportRoute.length){box.innerHTML='<span class="small">Tap airports above to build your route.</span>';return}
- airportRoute.forEach(function(code,i){var b=document.createElement('button');b.className='bubble routeBubble';b.textContent=code+' ×';b.onclick=function(){airportRoute.splice(i,1);saveRoute();renderAirports()};box.appendChild(b)});
+ airportRoute.forEach(function(code,i){
+  var b=document.createElement('button');
+  b.className='bubble routeBubble';
+  b.textContent=code+' - Remove from Route';
+  b.onclick=function(){removeRouteAirport(code)};
+  box.appendChild(b);
+ });
 }
 
 function removeRouteAirport(code){

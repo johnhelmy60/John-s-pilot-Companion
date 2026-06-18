@@ -2,11 +2,12 @@ import { initAircraft } from './aircraft.js';
 import { initAirports } from './airports.js';
 import { initFrequencies, renderAirports, onAirportRemoved } from './frequencies.js';
 import { initCraft } from './craft.js';
+import { initBriefing, renderBriefing } from './briefing.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','craft','gono'];
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','craft','gono'];
 
 function el(id){return document.getElementById(id)}
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
@@ -17,7 +18,7 @@ function diff(f,t){return((f-t+540)%360)-180}
 function today(){return new Date().toISOString().slice(0,10)}
 function clone(o){return JSON.parse(JSON.stringify(o))}
 
-function showTab(id){sections.forEach(function(s){if(el(s))el(s).className=s==id?'card':'card hidden';if(el('tab-'+s))el('tab-'+s).className=s==id?'tab active':'tab'});localStorage.jp_tab=id;calcAll()}
+function showTab(id){sections.forEach(function(s){if(el(s))el(s).className=s==id?'card':'card hidden';if(el('tab-'+s))el('tab-'+s).className=s==id?'tab active':'tab'});localStorage.jp_tab=id;calcAll();if(id=='brief')renderBriefing()}
 function saveInputs(){Array.from(document.getElementsByTagName('input')).forEach(function(i){if(i.id&&!i.id.startsWith('ac'))localStorage['jp_'+i.id]=i.value})}
 function loadInputs(){Array.from(document.getElementsByTagName('input')).forEach(function(i){var v=localStorage['jp_'+i.id];if(v!=null)i.value=v})}
 
@@ -69,7 +70,7 @@ function wireTabs(){
 }
 
 window.onload=function(){
- var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,renderAirports:renderAirports,onAirportRemoved:onAirportRemoved};
+ var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
  loadInputs();
  initFuel(context);
  initWb(context);
@@ -77,6 +78,7 @@ window.onload=function(){
  initAirports(context);
  initFrequencies(context);
  initCraft(context);
+ initBriefing(context);
  wireTabs();
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
