@@ -4,11 +4,12 @@ import { initFrequencies, renderAirports, onAirportRemoved } from './frequencies
 import { initCraft } from './craft.js';
 import { initBriefing, renderBriefing } from './briefing.js';
 import { initMinimums, getActiveMinimums, renderSummary as renderMinimumsSummary } from './minimums.js';
+import { initAtc } from './atc.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
 
 function el(id){return document.getElementById(id)}
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
@@ -113,6 +114,7 @@ window.onload=function(){
  initCraft(context);
  initBriefing(context);
  initMinimums(context);
+ initAtc(context);
  wireTabs();
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;

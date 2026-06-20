@@ -1,4 +1,4 @@
-const CACHE='johns-pilot-companion-v2-10';
+const CACHE='johns-pilot-companion-v2-11';
 const ASSETS=[
   './index.html',
   './manifest.webmanifest',
@@ -10,6 +10,7 @@ const ASSETS=[
   './src/craft.js',
   './src/briefing.js',
   './src/minimums.js',
+  './src/atc.js',
   './src/fuel.js',
   './src/wb.js',
   './data/airport_database_A_M.json?v=3',
