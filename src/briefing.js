@@ -24,6 +24,29 @@ function noteFor(code){
  return getNotes()[normalizeBriefCode(code)]||'';
 }
 
+function getPatternData(){
+ try{return JSON.parse(localStorage.jp_airportPatternBriefs||'{}')||{}}catch(e){return {}}
+}
+
+function patternFor(code){
+ var all=getPatternData();
+ return all[normalizeBriefCode(code)]||{altitude:'',direction:'Verify current',runwayNotes:'',patternNotes:''};
+}
+
+function savePattern(code){
+ code=normalizeBriefCode(code);
+ if(!code)return;
+ var all=getPatternData();
+ all[code]={
+  altitude:ctx.el('briefPatternAltitude')?(ctx.el('briefPatternAltitude').value||''):'',
+  direction:ctx.el('briefPatternDirection')?(ctx.el('briefPatternDirection').value||'Verify current'):'Verify current',
+  runwayNotes:ctx.el('briefRunwayNotes')?(ctx.el('briefRunwayNotes').value||''):'',
+  patternNotes:ctx.el('briefPatternNotes')?(ctx.el('briefPatternNotes').value||''):''
+ };
+ localStorage.jp_airportPatternBriefs=JSON.stringify(all);
+ renderPatternSummary(code);
+}
+
 function groupFrequency(f){
  var label=((f&&f[0])||'').toUpperCase();
  if(label.indexOf('ATIS')>=0||label.indexOf('AWOS')>=0||label.indexOf('ASOS')>=0)return 'Weather';
@@ -81,14 +104,43 @@ function aircraftHtml(){
 
 function reminderHtml(){
  return '<div class="result">'
-  + '<h3>Briefing Reminders</h3>'
+  + '<h3>Arrival Briefing Prompts</h3>'
   + '<ul class="briefList">'
-  + '<li>Verify weather and NOTAMs with current official sources.</li>'
-  + '<li>Confirm runway in use, runway condition, and traffic pattern.</li>'
-  + '<li>Verify frequencies with ForeFlight/current charts before transmitting.</li>'
-  + '<li>Confirm personal minimums, fuel, W&B, POH, instructor, and school procedures.</li>'
+  + '<li>Runway in use?</li>'
+  + '<li>Wind checked?</li>'
+  + '<li>Pattern altitude briefed?</li>'
+  + '<li>Left/right traffic verified?</li>'
+  + '<li>CTAF/tower frequency ready?</li>'
+  + '<li>Go-around plan briefed?</li>'
   + '</ul>'
   + '</div>';
+}
+
+function patternSummaryHtml(code){
+ var p=patternFor(code);
+ return '<div class="result" id="briefPatternSummary">'
+  + '<h3>Pattern Plan</h3>'
+  + '<table>'
+  + '<tr><td>Pattern altitude</td><td>'+(p.altitude||'Verify current')+'</td></tr>'
+  + '<tr><td>Traffic direction</td><td>'+(p.direction||'Verify current')+'</td></tr>'
+  + '<tr><td>Runway notes</td><td>'+(p.runwayNotes||'—')+'</td></tr>'
+  + '<tr><td>Student pattern notes</td><td>'+(p.patternNotes||'—')+'</td></tr>'
+  + '</table>'
+  + '<p class="small">User-entered pattern planning only. Verify current chart/ForeFlight before use.</p>'
+  + '</div>';
+}
+
+function renderPatternSummary(code){
+ var box=ctx.el('briefPatternSummary');
+ if(box)box.outerHTML=patternSummaryHtml(code);
+}
+
+function loadPatternForm(code){
+ var p=patternFor(code);
+ if(ctx.el('briefPatternAltitude'))ctx.el('briefPatternAltitude').value=p.altitude||'';
+ if(ctx.el('briefPatternDirection'))ctx.el('briefPatternDirection').value=p.direction||'Verify current';
+ if(ctx.el('briefRunwayNotes'))ctx.el('briefRunwayNotes').value=p.runwayNotes||'';
+ if(ctx.el('briefPatternNotes'))ctx.el('briefPatternNotes').value=p.patternNotes||'';
 }
 
 export function renderBriefing(){
@@ -126,6 +178,7 @@ function renderSelectedBriefing(){
   return;
  }
  if(notes){notes.disabled=false;notes.value=noteFor(currentCode)}
+ loadPatternForm(currentCode);
  box.innerHTML=
   '<div class="result">'
   + '<div class="small">Airport</div>'
@@ -133,6 +186,7 @@ function renderSelectedBriefing(){
   + '<b>'+((a&&a.name)||'')+'</b><br>'
   + '<span class="small">Elevation: '+(a.elevation||'—')+' ft • Source: '+(a.source||'Local')+' • Updated: '+(a.updated||'verify current')+'</span>'
   + '</div>'
+  + patternSummaryHtml(currentCode)
   + '<div class="result"><h3>Runways</h3>'+runwayHtml(a)+'</div>'
   + '<h3>Frequencies</h3>'
   + frequencyHtml(a)
@@ -147,5 +201,11 @@ export function initBriefing(context){
  var notes=ctx.el('briefStudentNotes');
  if(select)select.onchange=function(){currentCode=this.value;localStorage.jp_briefAirport=currentCode;renderSelectedBriefing()};
  if(notes)notes.addEventListener('input',function(){saveNote(currentCode,this.value)});
+ ['briefPatternAltitude','briefPatternDirection','briefRunwayNotes','briefPatternNotes'].forEach(function(id){
+  if(ctx.el(id)){
+   ctx.el(id).addEventListener('input',function(){savePattern(currentCode)});
+   ctx.el(id).addEventListener('change',function(){savePattern(currentCode)});
+  }
+ });
  renderBriefing();
 }
