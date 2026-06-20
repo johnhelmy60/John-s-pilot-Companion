@@ -37,8 +37,10 @@ function saveCurrentNotes(){
 
 export function saveAc(){
  var el=ctx.el,nv=ctx.nv,calcAll=ctx.calcAll,l=getList(),id=acId(),n=el('acN').value.trim()||'NEW';
+ var i=l.findIndex(function(x){return x.id===id}),existing=i>=0?l[i]:{};
  var a={id:id.indexOf('NEW_')===0?n:id,n:n,type:el('acType').value,emptyWt:nv('acEmptyWt')||0,emptyArm:nv('acEmptyArm')||0,maxWt:nv('acMaxWt')||0,fuelPpg:nv('acFuelPpg')||6,frontArm:nv('acFrontArm')||0,rearArm:nv('acRearArm')||0,bagArm:nv('acBagArm')||0,fuelArm:nv('acFuelArm')||0,fuelBurn:nv('acFuelBurn')||9,xwLimit:nv('acXwLimit')||17,tankInterval:parseInt(localStorage.jp_tankInterval||'60'),notes:readNotes()};
- var i=l.findIndex(function(x){return x.id===id});if(i>=0)l[i]=a;else l.push(a);
+ if(Array.isArray(existing.cgEnvelope))a.cgEnvelope=existing.cgEnvelope;
+ if(i>=0)l[i]=a;else l.push(a);
  saveList(l);localStorage.jp_selectedAc=a.id;populateAc();calcAll();alert('Aircraft saved.');
 }
 
