@@ -165,6 +165,10 @@ function render(){
  save();
 }
 
+export function renderFlightFollowing(){
+ if(ctx)render();
+}
+
 export function initFlightFollowing(context){
  ctx=context;
  load();

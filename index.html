@@ -229,6 +229,53 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>Examples are for confidence-building only. Actual phraseology varies by airport, controller, aircraft, and situation.</p>
 </section>
 
+<section id='following' class='card hidden'>
+<h2>Flight Following</h2>
+<div class='small'>Training/reference only. Listen to and comply with actual ATC instructions. Verify all frequencies and instructions before transmitting.</div>
+<div class='result'><b>Route context:</b> <span id='ffRouteHint'>—</span></div>
+<button class='btn btn2' id='ffRefreshDefaults'>Use Aircraft / Route Defaults</button>
+
+<h3>1. Initial Request Builder</h3>
+<div class='grid'>
+<div><label>Facility name</label><select id='ffFacilityPreset'><option value='Denver Approach'>Denver Approach</option><option value='Denver Departure'>Denver Departure</option><option value='Denver Center'>Denver Center</option><option value='custom'>Custom</option></select></div>
+<div><label>Custom facility</label><input id='ffFacilityCustom' placeholder='Approach / Center'></div>
+<div><label>Callsign</label><input id='ffCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Aircraft type</label><input id='ffAircraftType' placeholder='PA-28 / C172'></div>
+<div><label>Position</label><input id='ffPosition' placeholder='3 miles north of Rocky Mountain Metro'></div>
+<div><label>Altitude</label><input id='ffAltitude' placeholder='6,500'></div>
+<div><label>Destination</label><input id='ffDestination' placeholder='KFMM / Fort Morgan'></div>
+</div>
+<div class='result'><div id='ffInitialOut'>—</div><button class='btn btn2' id='ffCopyInitial'>Copy Initial Request</button></div>
+
+<h3>2. Squawk Readback</h3>
+<div class='grid'><div><label>Squawk code</label><input id='ffSquawk' placeholder='1234' inputmode='numeric'></div></div>
+<div class='result'><div id='ffSquawkOut'>—</div><button class='btn btn2' id='ffCopySquawk'>Copy Squawk Readback</button></div>
+
+<h3>3. Radar Contact / Altitude</h3>
+<div class='grid'>
+<div><label>Instruction</label><select id='ffAltitudeInstruction'><option value='vfr'>Maintain VFR</option><option value='below'>Maintain VFR at or below</option><option value='above'>Maintain VFR at or above</option></select></div>
+<div><label>Assigned altitude</label><input id='ffAssignedAltitude' placeholder='8,500'></div>
+<div><label>Altimeter optional</label><input id='ffAltimeter' placeholder='30.12'></div>
+</div>
+<div class='result'><div id='ffAltitudeOut'>—</div><button class='btn btn2' id='ffCopyAltitude'>Copy Altitude Readback</button></div>
+
+<h3>4. Frequency Change / Handoff</h3>
+<div class='small'>Saved approach/departure/center frequencies from the selected route appear below when available.</div>
+<div class='bubbleBox' id='ffFreqSuggestions'></div>
+<div class='grid'>
+<div><label>Next facility</label><input id='ffNextFacility' placeholder='Denver Center'></div>
+<div><label>Frequency</label><input id='ffFrequency' placeholder='118.475' inputmode='decimal'></div>
+</div>
+<div class='result'><div id='ffHandoffOut'>—</div><button class='btn btn2' id='ffCopyHandoff'>Copy Handoff Readback</button></div>
+
+<h3>5. Termination / Cancel</h3>
+<div class='grid'><div><label>Termination type</label><select id='ffTermination'><option value='cancel'>Cancel flight following</option><option value='terminated'>Radar service terminated</option><option value='approved'>Frequency change approved</option></select></div></div>
+<div class='result'><div id='ffTerminationOut'>—</div><button class='btn btn2' id='ffCopyTermination'>Copy Termination Call</button></div>
+
+<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small' id='ffCopyStatus'>Copy buttons use your browser clipboard when available.</span></div>
+<p class='small'>Flight following is workload-permitting ATC service. This tool is for practice and organization only; it does not replace ATC instructions, ForeFlight, charts, or pilot judgment.</p>
+</section>
+
 <section id='craft' class='card hidden'>
 <h2>CRAFT IFR Clearance</h2>
 <div class='small'>Build and verify an IFR clearance readback. Always confirm against actual ATC before transmitting.</div>
@@ -285,5 +332,5 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-atc'>ATC</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-atc'>ATC</button><button class='tab' id='tab-following'>FF</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
 <script type="module" src="./src/app.js"></script></body></html>

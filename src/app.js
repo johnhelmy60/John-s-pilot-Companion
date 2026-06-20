@@ -5,11 +5,12 @@ import { initCraft } from './craft.js';
 import { initBriefing, renderBriefing } from './briefing.js';
 import { initMinimums, getActiveMinimums, renderSummary as renderMinimumsSummary } from './minimums.js';
 import { initAtc } from './atc.js';
+import { initFlightFollowing, renderFlightFollowing } from './flightfollowing.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
+var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','atc','following','craft','gono'];
 
 function el(id){return document.getElementById(id)}
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
@@ -28,6 +29,7 @@ function showTab(id){
  localStorage.jp_tab=id;
  calcAll();
  if(id=='brief')renderBriefing();
+ if(id=='following')renderFlightFollowing();
 }
 
 function saveInputs(){
@@ -115,6 +117,7 @@ window.onload=function(){
  initBriefing(context);
  initMinimums(context);
  initAtc(context);
+ initFlightFollowing(context);
  wireTabs();
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
