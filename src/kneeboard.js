@@ -101,7 +101,7 @@ export function renderKneeboard(){
 
  renderAirportSelect();
  setText('boardAircraft',''+(aircraft.n||'-')+' - '+(aircraft.type||'-'));
- setText('boardRoute',route.length?route.join(' -> '):'No route selected');
+ setText('boardRoute',route.length?route.join(' -> '):'No selected airports selected yet. Add airports from the Frequency page.');
  setText('boardActiveFreq',formatFreq(radio.active));
  setText('boardStandbyFreq',formatFreq(radio.standby));
  setText('boardTank','Tank '+tank.tank+' - elapsed '+tank.elapsed+' - remaining '+tank.remaining);

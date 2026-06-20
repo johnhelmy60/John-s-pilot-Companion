@@ -128,7 +128,7 @@ export async function searchAirport(){
 }
 
 export async function refreshRouteAirports(route){
- if(!route.length){alert('No route airports to refresh.');return}
+ if(!route.length){alert('No selected airports to refresh. Add airports from the Frequency page.');return}
  var saved=getSavedAirports(),updated=0,failed=0;
  for(var i=0;i<route.length;i++){
    try{var rec=await findExternalAirport(route[i]); if(rec){saved[rec.code]=rec;updated++;} else failed++;}catch(e){failed++;}
@@ -136,7 +136,7 @@ export async function refreshRouteAirports(route){
  saveSavedAirports(saved);
  renderMyAirports();
  renderAirportsCallback();
- alert('Refreshed '+updated+' route airport(s). Failed: '+failed+'.');
+ alert('Refreshed '+updated+' selected airport(s). Failed: '+failed+'.');
 }
 
 export function addCustomAirport(){

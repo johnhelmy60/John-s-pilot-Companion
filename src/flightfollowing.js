@@ -90,7 +90,7 @@ function renderSuggestions(){
  var box=e('ffFreqSuggestions');
  if(!box)return;
  var freqs=matchingFreqs();
- if(!freqs.length){box.innerHTML='<span class="small">No approach/departure/center frequencies found in the selected route. Add route airports or saved frequencies on the Freq/Airports tabs.</span>';return}
+ if(!freqs.length){box.innerHTML='<span class="small">No approach/departure/center frequencies found in the selected airports. Add airports from the Frequency page or save frequencies on the Airport page.</span>';return}
  box.innerHTML='';
  freqs.forEach(function(f){
   var b=document.createElement('button');
@@ -161,7 +161,7 @@ function render(){
  setOut('ffHandoffOut',handoffText());
  setOut('ffTerminationOut',terminationText());
  var route=routeAirports();
- setOut('ffRouteHint',route.length?'Using selected route: '+route.join(' -> '):'No selected route found. You can still practice with custom values.');
+ setOut('ffRouteHint',route.length?'Using selected airports from Frequency page: '+route.join(' -> '):'No selected airports selected yet. Add airports from the Frequency page.');
  save();
 }
 

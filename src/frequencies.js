@@ -39,7 +39,7 @@ export function renderAirports(){
   var b=document.createElement('button');
   b.className='bubble'+(airportRoute.includes(code)?' selected':'');
   b.textContent=code;
-  b.title='Add '+code+' to route';
+  b.title='Add '+code+' to selected airport sequence';
   b.onclick=function(){airportRoute.push(code);saveRoute();renderAirports()};
 
   var del=document.createElement('button');
@@ -58,11 +58,11 @@ export function renderAirports(){
 
 function renderRoute(){
  var box=ctx.el('routeBox');box.innerHTML='';
- if(!airportRoute.length){box.innerHTML='<span class="small">Tap airports above to build your route.</span>';return}
+ if(!airportRoute.length){box.innerHTML='<span class="small">No selected airports selected yet. Add airports from the Frequency page.</span>';return}
  airportRoute.forEach(function(code,i){
   var b=document.createElement('button');
   b.className='bubble routeBubble';
-  b.textContent=code+' - Remove from Route';
+  b.textContent=code+' - Remove from Selected Airports';
   b.onclick=function(){removeRouteAirport(code)};
   box.appendChild(b);
  });
@@ -121,7 +121,7 @@ function renderFreqs(){
   g.className='freqGroup';
   g.innerHTML='<h3>'+code+'</h3>'
     + airportInfoHtml(a)
-    + '<button class="btn btn2 miniBtn">Remove from Route</button>';
+    + '<button class="btn btn2 miniBtn">Remove from Selected Airports</button>';
   g.querySelector('button').onclick=function(){removeRouteAirport(code)};
   var shown=((a&&a.freqs)||[]).filter(function(f){return shouldShow(f[2])});
   if(!shown.length){
