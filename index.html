@@ -112,6 +112,17 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <textarea id='briefStudentNotes' placeholder='Pattern notes, local cautions, instructor tips, school procedures, or reminders for this airport.'></textarea>
 <p class='small'>Student notes are created by you, stored locally on this device, and associated with the selected airport code.</p>
 
+<h3>Pattern Planning</h3>
+<div class='grid'>
+<div><label>Pattern altitude</label><input id='briefPatternAltitude' placeholder='6673 MSL'></div>
+<div><label>Traffic pattern direction</label><select id='briefPatternDirection'><option value='Verify current'>Verify current</option><option value='Left Traffic'>Left Traffic</option><option value='Right Traffic'>Right Traffic</option><option value='Both'>Both</option></select></div>
+</div>
+<label>Common runway notes</label>
+<textarea id='briefRunwayNotes' placeholder='30R commonly used with west flow'></textarea>
+<label>Student pattern notes</label>
+<textarea id='briefPatternNotes' placeholder='Abeam point, reporting points, instructor tips, go-around reminders, or school procedures.'></textarea>
+<p class='small'>Pattern details are user-entered only. Verify current chart/ForeFlight, ATIS/AWOS, tower/CTAF, NOTAMs, and local procedures before use.</p>
+
 <div id='briefContent'></div>
 </section>
 
