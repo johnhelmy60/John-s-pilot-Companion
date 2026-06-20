@@ -47,11 +47,12 @@ export function evaluateEnvelope(profile,weight,cg){
  var limits=limitsAtWeight(points,weight);
  if(cg<limits.forward)return {code:'forward',label:'CG Too Forward',points:points,limits:limits};
  if(cg>limits.aft)return {code:'aft',label:'CG Too Aft',points:points,limits:limits};
- return {code:'inside',label:'Within CG Envelope',points:points,limits:limits};
+ if(weight<points[0].weight||weight>points[points.length-1].weight)return {code:'outside',label:'Outside Envelope',points:points,limits:limits};
+ return {code:'inside',label:'Within Envelope',points:points,limits:limits};
 }
 
-function renderEnvelope(a,totalWeight,cg,over){
- var result=evaluateEnvelope(a,totalWeight,cg),host=e('wbEnvelopeGraph');
+function renderEnvelope(a,totalWeight,cg,over,result){
+ var host=e('wbEnvelopeGraph');
  if(!host)return result;
  if(result.code==='missing'){
   setText('wbEnvelopeStatus','CG envelope data missing — verify with POH/W&amp;B chart');
@@ -60,7 +61,6 @@ function renderEnvelope(a,totalWeight,cg,over){
  }
  var points=result.points,arms=[],weights=[];
  points.forEach(function(p){arms.push(p.forward,p.aft);weights.push(p.weight)});
- if(isFinite(cg)&&totalWeight>0){arms.push(cg);weights.push(totalWeight)}
  var max=val(a,'maxWt');if(max){weights.push(max)}
  var minArm=Math.min.apply(null,arms),maxArm=Math.max.apply(null,arms),minWeight=Math.min.apply(null,weights),maxWeight=Math.max.apply(null,weights);
  var armPad=Math.max((maxArm-minArm)*.12,1),weightPad=Math.max((maxWeight-minWeight)*.14,80);
@@ -68,6 +68,7 @@ function renderEnvelope(a,totalWeight,cg,over){
  var left=54,right=12,top=22,bottom=42,w=360,h=280,plotW=w-left-right,plotH=h-top-bottom;
  function x(v){return left+(v-minArm)/(maxArm-minArm)*plotW}
  function y(v){return top+(maxWeight-v)/(maxWeight-minWeight)*plotH}
+ function clamp(v,low,high){return Math.max(low,Math.min(high,v))}
  function path(kind){return points.map(function(p,i){return (i?'L':'M')+x(p[kind]).toFixed(1)+' '+y(p.weight).toFixed(1)}).join(' ')}
  var polygon=points.map(function(p){return x(p.forward).toFixed(1)+','+y(p.weight).toFixed(1)}).concat(points.slice().reverse().map(function(p){return x(p.aft).toFixed(1)+','+y(p.weight).toFixed(1)})).join(' ');
  var grid='',ticks=4;
@@ -77,10 +78,18 @@ function renderEnvelope(a,totalWeight,cg,over){
   grid+='<line x1="'+tx+'" y1="'+top+'" x2="'+tx+'" y2="'+(h-bottom)+'" stroke="#203447" stroke-width="1"/><text x="'+tx+'" y="'+(h-bottom+16)+'" fill="#9fb0c0" font-size="10" text-anchor="middle">'+ta.toFixed(1)+'</text>';
  }
  var gross=max?'<line x1="'+left+'" y1="'+y(max)+'" x2="'+(w-right)+'" y2="'+y(max)+'" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="6 4"/><text x="'+(w-right-2)+'" y="'+(y(max)-5)+'" fill="#ff6b6b" font-size="10" text-anchor="end">Max Gross Weight</text>':'';
- var point=totalWeight>0?'<circle cx="'+x(cg)+'" cy="'+y(totalWeight)+'" r="7" fill="'+(over||result.code!=='inside'?'#ff6b6b':'#76e06b')+'" stroke="#fff" stroke-width="3"/><text x="'+x(cg)+'" y="'+(y(totalWeight)-12)+'" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Current Loading Point</text>':'';
+ var rawX=x(cg),rawY=y(totalWeight),pointOutside=rawX<left||rawX>w-right||rawY<top||rawY>h-bottom;
+ var pointX=clamp(rawX,left+8,w-right-8),pointY=clamp(rawY,top+8,h-bottom-8);
+ var point=totalWeight>0?'<circle cx="'+pointX+'" cy="'+pointY+'" r="7" fill="'+(over||result.code!=='inside'?'#ff6b6b':'#76e06b')+'" stroke="#fff" stroke-width="3"/><text x="'+pointX+'" y="'+clamp(pointY-12,top+10,h-bottom-10)+'" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">Current: '+cg.toFixed(2)+' in / '+totalWeight.toFixed(0)+' lb</text>':'';
  host.innerHTML='<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="CG arm by total weight envelope graph">'+grid+'<polygon points="'+polygon+'" fill="#58b7ff18" stroke="none"/><path d="'+path('forward')+'" fill="none" stroke="#58b7ff" stroke-width="3"/><path d="'+path('aft')+'" fill="none" stroke="#ffd166" stroke-width="3"/>'+gross+point+'<text x="'+(left+plotW/2)+'" y="'+(h-7)+'" fill="#f4f7fb" font-size="12" text-anchor="middle">CG / Arm (in)</text><text x="13" y="'+(top+plotH/2)+'" fill="#f4f7fb" font-size="12" text-anchor="middle" transform="rotate(-90 13 '+(top+plotH/2)+')">Total Weight (lb)</text></svg>';
- setText('wbEnvelopeStatus',over?'Over Max Gross':result.label);
- return result;
+ if(pointOutside)host.innerHTML+='<div class="cgPlotWarning">Current loading point is outside graph bounds; marker is pinned to the nearest edge.</div>';
+ setText('wbEnvelopeStatus',over?'OVER MAX GROSS WEIGHT':result.label);
+ return {minCgArmIn:minArm,maxCgArmIn:maxArm,minWeightLb:minWeight,maxWeightLb:maxWeight,pointOutside:pointOutside};
+}
+
+function renderDebug(a,totalWeight,cg,result,ranges,error){
+ var data={aircraft:(a.n||'')+' '+(a.type||''),envelopeCoordinatesLoaded:result.points,currentLoadingPoint:{cgArmIn:Number(cg.toFixed(2)),totalWeightLb:Number(totalWeight.toFixed(1))},graphRanges:ranges||null,units:'CG/arms: inches from the aircraft profile datum; weight: pounds; moment: pound-inches',graphError:error?String(error.message||error):null};
+ setText('wbDebugOutput',JSON.stringify(data,null,2));
 }
 
 function setVal(id,value,d){
@@ -229,7 +238,7 @@ export function calcWB(){
  var max=val(a,'maxWt')||0;
  var remain=max?max-totalWeight:0;
  var over=max&&totalWeight>max;
- var envelope=renderEnvelope(a,totalWeight,cg,over);
+ var envelope=evaluateEnvelope(a,totalWeight,cg);
 
  setText('wbTotalWeightCell',fmt(totalWeight,1));
  setText('wbTotalArmCell',totalWeight?fmt(cg,2):'-');
@@ -240,8 +249,15 @@ export function calcWB(){
  setText('wbCg',totalWeight?fmt(cg,2)+' in':'-');
  setText('wbRemain',max?fmt(remain,1)+' lb':'-');
  setText('wbMaxGross',max?fmt(max,0)+' lb':'-');
- setText('wbWeightStatus',over?pill('Over max gross','bad'):pill('Within max gross','good'));
- setText('wbCgStatus',envelope.code==='missing'?pill('Envelope data missing','warn'):pill(envelope.label,envelope.code==='inside'?'good':'bad'));
+ setText('wbWeightStatus',over?pill('🔴 Overweight by '+fmt(totalWeight-max,1)+' lb','bad'):pill('🟢 Within Limits','good'));
+ setText('wbCgStatus',envelope.code==='missing'?pill('Envelope data missing','warn'):pill((envelope.code==='inside'?'🟢 ':'🔴 ')+envelope.label,envelope.code==='inside'?'good':'bad'));
+ var graphRanges=null,graphError=null;
+ try{graphRanges=renderEnvelope(a,totalWeight,cg,over,envelope)}catch(err){
+  graphError=err;
+  setText('wbEnvelopeStatus','CG graph unavailable');
+  setText('wbEnvelopeGraph','<div class="cgPlotWarning">CG graph could not render. Weight and CG status calculations remain active.</div>');
+ }
+ renderDebug(a,totalWeight,cg,envelope,graphRanges,graphError);
  localStorage.jp_wbMode=mode();
  localStorage.jp_wbMomentFormat=String(fmtFactor);
  activeInput=null;
