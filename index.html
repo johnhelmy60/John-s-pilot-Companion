@@ -11,6 +11,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.active{background:var(--b);color:#001018;border-color:var(--b)}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}.airportBankItem{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.airportRemove{width:32px;height:32px;padding:0;margin:0;background:#2a1720;color:var(--r);border:1px solid #864141;border-radius:999px;font-size:13px;font-weight:900}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.airportInfo{background:#061018;border:1px solid var(--l);border-radius:12px;padding:10px;margin:8px 0;color:var(--m);font-size:12px;line-height:1.45}.miniBtn{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 4px 0}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 .briefList{margin:8px 0 0;padding-left:20px;color:var(--m);font-size:13px;line-height:1.55}textarea{min-height:120px;resize:vertical;line-height:1.4}
+.boardBig{font-size:24px;font-weight:900;line-height:1.25}.boardMed{font-size:18px;font-weight:800;line-height:1.35}.boardGrid{display:grid;grid-template-columns:1fr;gap:10px}.boardGrid .result{margin-top:0}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style></head><body><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><b>Active minimums:</b> <span id='xwMinMode'>—</span><br><span class='small' id='xwMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
@@ -124,6 +125,30 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>Pattern details are user-entered only. Verify current chart/ForeFlight, ATIS/AWOS, tower/CTAF, NOTAMs, and local procedures before use.</p>
 
 <div id='briefContent'></div>
+</section>
+
+<section id='kneeboard' class='card hidden'>
+<h2>Kneeboard</h2>
+<div class='small'>Large-text cockpit reference. No maps, weather, navlog, GPS, or official data. Verify current sources before use.</div>
+
+<div class='boardGrid'>
+<div class='result'><div class='small'>Aircraft</div><div class='boardBig' id='boardAircraft'>—</div></div>
+<div class='result'><div class='small'>Route</div><div class='boardMed' id='boardRoute'>—</div></div>
+<div class='result'><div class='small'>ACTIVE</div><div class='boardBig' id='boardActiveFreq'>—</div><div class='small'>STANDBY</div><div class='boardMed' id='boardStandbyFreq'>—</div></div>
+<div class='result'><div class='small'>Tank Timer</div><div class='boardMed' id='boardTank'>—</div><div id='boardTankWarn'></div></div>
+<div class='result'><div class='small'>Personal Minimums</div><div class='boardMed' id='boardMinimums'>—</div></div>
+</div>
+
+<h3>Airport Notes / Pattern</h3>
+<label>Kneeboard Airport</label>
+<select id='boardAirportSelect'></select>
+<div class='result'><div class='boardMed' id='boardAirportTitle'>—</div><div class='small' id='boardAirportMeta'>—</div></div>
+<div class='result'><h3>Student Notes</h3><div class='boardMed' id='boardStudentNotes'>—</div></div>
+<div class='result'><h3>Pattern Brief</h3><div class='boardMed' id='boardPattern'>—</div></div>
+
+<h3>Radio Workflows</h3>
+<div class='grid'><button class='btn' id='boardAtcBtn'>ATC</button><button class='btn' id='boardFfBtn'>Flight Following</button><button class='btn' id='boardCraftBtn'>CRAFT</button></div>
+<p class='small'>Reference only. Verify airport, runway, frequency, pattern, weather, NOTAM, POH/W&B, instructor, and school procedure information with ForeFlight, FAA/current sources, and official documents before flight.</p>
 </section>
 
 <section id='minimums' class='card hidden'>
@@ -343,5 +368,5 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-atc'>ATC</button><button class='tab' id='tab-following'>FF</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-kneeboard'>Board</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-atc'>ATC</button><button class='tab' id='tab-following'>FF</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
 <script type="module" src="./src/app.js"></script></body></html>
