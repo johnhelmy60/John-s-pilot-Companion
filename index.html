@@ -13,7 +13,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 .briefList{margin:8px 0 0;padding-left:20px;color:var(--m);font-size:13px;line-height:1.55}textarea{min-height:120px;resize:vertical;line-height:1.4}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style></head><body><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><main>
-<section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
+<section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><b>Active minimums:</b> <span id='xwMinMode'>—</span><br><span class='small' id='xwMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
 <section id='fuel' class='card hidden'><h2>Fuel & Reserve</h2><div class='small' id='fuelAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Fuel onboard gal</label><input id='fuelOnboard' type='number'></div><div><label>Planned flight time hr</label><input id='flightHours' type='number'></div><div><label>Fuel burn GPH</label><input id='fuelBurn' type='number' value='9'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id='fuelUsed'>—</td></tr><tr><td>Fuel remaining</td><td id='fuelRem'>—</td></tr><tr><td>Reserve time</td><td id='reserveTime'>—</td></tr><tr><td>Status</td><td id='fuelStatus'>—</td></tr></table></div></section>
@@ -115,6 +115,40 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div id='briefContent'></div>
 </section>
 
+<section id='minimums' class='card hidden'>
+<h2>Personal Minimums</h2>
+<div class='small'>Set solo and dual limits for reference-only Go/No-Go and crosswind warnings. Always verify with your instructor and school procedures.</div>
+
+<label>Current Operation</label>
+<select id='minMode'><option value='solo'>Solo</option><option value='dual'>Dual</option></select>
+<div class='result' id='minActiveSummary'>Set and save your personal minimums.</div>
+
+<h3>Solo Minimums</h3>
+<div class='grid'>
+<div><label>Max crosswind kt</label><input id='minSoloXw' type='number'></div>
+<div><label>Max gust crosswind kt</label><input id='minSoloGustXw' type='number'></div>
+<div><label>Minimum ceiling ft AGL</label><input id='minSoloCeil' type='number'></div>
+<div><label>Minimum visibility SM</label><input id='minSoloVis' type='number'></div>
+<div><label>Minimum fuel reserve min</label><input id='minSoloReserve' type='number'></div>
+<div><label>Max surface wind kt</label><input id='minSoloSurfaceWind' type='number'></div>
+<div><label>Max gust kt</label><input id='minSoloGust' type='number'></div>
+</div>
+
+<h3>Dual Minimums</h3>
+<div class='grid'>
+<div><label>Max crosswind kt</label><input id='minDualXw' type='number'></div>
+<div><label>Max gust crosswind kt</label><input id='minDualGustXw' type='number'></div>
+<div><label>Minimum ceiling ft AGL</label><input id='minDualCeil' type='number'></div>
+<div><label>Minimum visibility SM</label><input id='minDualVis' type='number'></div>
+<div><label>Minimum fuel reserve min</label><input id='minDualReserve' type='number'></div>
+<div><label>Max surface wind kt</label><input id='minDualSurfaceWind' type='number'></div>
+<div><label>Max gust kt</label><input id='minDualGust' type='number'></div>
+</div>
+
+<div class='grid'><button class='btn' id='saveMinimumsBtn'>Save Minimums</button><button class='btn btn2' id='resetMinimumsBtn'>Reset Defaults</button></div>
+<p class='small'>These are personal reference limits only. They do not replace ForeFlight, FAA/current sources, POH/W&B, instructor guidance, or school procedures.</p>
+</section>
+
 <section id='craft' class='card hidden'>
 <h2>CRAFT IFR Clearance</h2>
 <div class='small'>Build and verify an IFR clearance readback. Always confirm against actual ATC before transmitting.</div>
@@ -170,6 +204,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>10 minutes after departure is common, but ATC can issue 5, 10, 15, 20, or another time. Use exactly what ATC assigns.</p>
 </section>
 
-<section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
+<section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
+</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
 <script type="module" src="./src/app.js"></script></body></html>
