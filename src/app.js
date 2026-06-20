@@ -48,7 +48,7 @@ function showTab(id){
   if(el('tab-'+s))el('tab-'+s).className=s==groupFor(id)?'tab active':'tab';
  });
  localStorage.jp_tab=groupFor(id)==='board'?'board':id;
- calcAll();
+ try{calcAll()}catch(err){console.error('Page calculation refresh failed:',err)}
  if(id=='brief')renderBriefing();
  if(id=='radio')renderFlightFollowing();
  if(id=='kneeboard')renderKneeboard();
@@ -133,6 +133,7 @@ function wireTabs(){
 window.onload=function(){
  var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
  window.jpShowTab=showTab;
+ wireTabs();
  loadInputs();
  initFuel(context);
  initWb(context);
@@ -145,7 +146,6 @@ window.onload=function(){
  initAtc(context);
  initFlightFollowing(context);
  initKneeboard(context);
- wireTabs();
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
