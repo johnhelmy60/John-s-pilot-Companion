@@ -111,6 +111,7 @@ export function renderKneeboard(){
 }
 
 function goTab(id){
+ if(window.jpShowTab){window.jpShowTab(id);return}
  var tab=ctx.el('tab-'+id);
  if(tab)tab.click();
 }
@@ -123,7 +124,7 @@ export function initKneeboard(context){
   renderAirportBrief();
  };
  if(ctx.el('boardAtcBtn'))ctx.el('boardAtcBtn').onclick=function(){goTab('atc')};
- if(ctx.el('boardFfBtn'))ctx.el('boardFfBtn').onclick=function(){goTab('following')};
+ if(ctx.el('boardFfBtn'))ctx.el('boardFfBtn').onclick=function(){goTab('radio')};
  if(ctx.el('boardCraftBtn'))ctx.el('boardCraftBtn').onclick=function(){goTab('craft')};
  renderKneeboard();
 }

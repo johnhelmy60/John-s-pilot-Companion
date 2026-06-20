@@ -7,14 +7,82 @@ h2{margin:0 0 12px;font-size:19px}h3{font-size:15px;color:var(--b);margin:16px 0
 .btn{width:100%;border:0;border-radius:14px;padding:13px;margin-top:8px;background:var(--b);color:#001018;font-weight:900;font-size:16px}.btn2{background:#172a3a;color:var(--t);border:1px solid var(--l)}.result{background:#061018;border:1px solid var(--l);border-radius:14px;padding:12px;margin-top:10px}.big{font-size:30px;font-weight:900}
 .pill{display:inline-block;padding:7px 10px;border-radius:999px;margin:4px 4px 0 0;font-weight:900;font-size:13px}.good{background:#12321c;color:var(--g);border:1px solid #2c7440}.warn{background:#33270c;color:var(--y);border:1px solid #806b2b}.bad{background:#371517;color:var(--r);border:1px solid #864141}.bluepill{background:#081c33;color:var(--b);border:1px solid #2b6b98}
 table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;border-bottom:1px solid var(--l);text-align:right}td:first-child,th:first-child{text-align:left}
-.tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
+.tabs{position:fixed;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 14px);background:#071018;border:1px solid var(--l);border-radius:18px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px;z-index:5;box-shadow:0 10px 30px #0008}.tab{padding:10px 4px;border:1px solid var(--l);border-radius:12px;background:#101d2a;color:var(--m);font-weight:900;font-size:12px}.tab.active{color:#001018;background:var(--b);border-color:var(--b)}
 .bubbleBox{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.bubble{border:1px solid var(--l);background:#0b1724;color:var(--t);border-radius:999px;padding:10px 12px;font-weight:900;font-size:14px}.bubble.active{background:var(--b);color:#001018;border-color:var(--b)}.bubble.selected{background:var(--b);color:#001018}.routeBubble{background:#102c21;border-color:#2c7440;color:var(--g)}.airportBankItem{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.airportRemove{width:32px;height:32px;padding:0;margin:0;background:#2a1720;color:var(--r);border:1px solid #864141;border-radius:999px;font-size:13px;font-weight:900}
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.airportInfo{background:#061018;border:1px solid var(--l);border-radius:12px;padding:10px;margin:8px 0;color:var(--m);font-size:12px;line-height:1.45}.miniBtn{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 4px 0}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 .briefList{margin:8px 0 0;padding-left:20px;color:var(--m);font-size:13px;line-height:1.55}textarea{min-height:120px;resize:vertical;line-height:1.4}
 .boardBig{font-size:24px;font-weight:900;line-height:1.25}.boardMed{font-size:18px;font-weight:800;line-height:1.35}.boardGrid{display:grid;grid-template-columns:1fr;gap:10px}.boardGrid .result{margin-top:0}
+.sectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toolCard{border:1px solid var(--l);background:#07111b;color:var(--t);border-radius:14px;padding:13px;text-align:left;font-weight:900;font-size:16px;min-height:64px}.toolCard span{display:block;color:var(--m);font-size:12px;font-weight:600;line-height:1.35;margin-top:4px}.sectionHint{margin-bottom:10px}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style></head><body><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><b>Active minimums:</b> <span id='xwMinMode'>—</span><br><span class='small' id='xwMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
+<section id='plan' class='card hidden'>
+<h2>Plan</h2>
+<div class='small sectionHint'>Preflight tools for student and private pilots. Reference only; verify with POH/W&B, instructor, school procedures, ForeFlight, and current sources.</div>
+<div class='sectionGrid'>
+<button class='toolCard' data-open='crosswind'>Crosswind<span>Runway wind component and personal minimum warnings</span></button>
+<button class='toolCard' data-open='aircraft'>Aircraft<span>Profiles, rental notes, and aircraft defaults</span></button>
+<button class='toolCard' data-open='wb'>W&amp;B<span>Weight, CG, and useful load check</span></button>
+<button class='toolCard' data-open='fuel'>Fuel<span>Fuel used, remaining, and reserve estimate</span></button>
+<button class='toolCard' data-open='minimums'>Minimums<span>Solo and dual personal minimums</span></button>
+<button class='toolCard' data-open='gono'>Go/No-Go<span>Reference-only risk snapshot</span></button>
+</div>
+</section>
+<section id='airport' class='card hidden'>
+<h2>Airport</h2>
+<div class='small sectionHint'>Saved airports, briefings, notes, pattern planning, and route frequencies. Verify airport data with current charts/ForeFlight and FAA sources.</div>
+<div class='sectionGrid'>
+<button class='toolCard' data-open='airports'>Airport Search<span>Search local database and manage My Airports</span></button>
+<button class='toolCard' data-open='brief'>Briefing<span>Airport notes, pattern plan, and student briefing</span></button>
+<button class='toolCard' data-open='freq'>Frequencies<span>Route frequencies and active/standby radio stack</span></button>
+</div>
+</section>
+<section id='radio' class='card hidden'>
+<h2>Radio</h2>
+<div class='small sectionHint'>Radio confidence tools only. Listen to and comply with actual ATC instructions. Verify all frequencies and instructions before transmitting.</div>
+<div class='sectionGrid'>
+<button class='toolCard' data-open='atc'>ATC Readback<span>Ground, tower, pattern, arrival, flight following, CTAF</span></button>
+<button class='toolCard' data-open='craft'>CRAFT<span>IFR clearance readback builder</span></button>
+</div>
+<h3>Flight Following Support</h3>
+<div class='small'>Small practice snippets for VFR flight following. This is no longer a standalone page.</div>
+<div class='result'><b>Route context:</b> <span id='ffRouteHint'>-</span></div>
+<button class='btn btn2' id='ffRefreshDefaults'>Use Aircraft / Route Defaults</button>
+<div class='grid'>
+<div><label>Facility</label><select id='ffFacilityPreset'><option value='Denver Approach'>Denver Approach</option><option value='Denver Departure'>Denver Departure</option><option value='Denver Center'>Denver Center</option><option value='custom'>Custom</option></select></div>
+<div><label>Custom facility</label><input id='ffFacilityCustom' placeholder='Approach / Center'></div>
+<div><label>Callsign</label><input id='ffCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Aircraft type</label><input id='ffAircraftType' placeholder='PA-28 / C172'></div>
+<div><label>Position</label><input id='ffPosition' placeholder='3 miles north of Rocky Mountain Metro'></div>
+<div><label>Altitude</label><input id='ffAltitude' placeholder='6,500'></div>
+<div><label>Destination</label><input id='ffDestination' placeholder='KFMM / Fort Morgan'></div>
+</div>
+<div class='result'><h3>Initial Request</h3><div id='ffInitialOut'>-</div><button class='btn btn2' id='ffCopyInitial'>Copy Initial Request</button></div>
+<div class='grid'>
+<div><label>Squawk code</label><input id='ffSquawk' placeholder='1234' inputmode='numeric'></div>
+<div><label>Altitude instruction</label><select id='ffAltitudeInstruction'><option value='vfr'>Maintain VFR</option><option value='below'>Maintain VFR at or below</option><option value='above'>Maintain VFR at or above</option></select></div>
+<div><label>Assigned altitude</label><input id='ffAssignedAltitude' placeholder='8,500'></div>
+<div><label>Altimeter optional</label><input id='ffAltimeter' placeholder='30.12'></div>
+</div>
+<div class='result'><h3>Readbacks</h3><div id='ffSquawkOut'>-</div><button class='btn btn2' id='ffCopySquawk'>Copy Squawk Readback</button><div style='margin-top:8px' id='ffAltitudeOut'>-</div><button class='btn btn2' id='ffCopyAltitude'>Copy Altitude Readback</button></div>
+<h3>Handoff / Cancel</h3>
+<div class='bubbleBox' id='ffFreqSuggestions'></div>
+<div class='grid'>
+<div><label>Next facility</label><input id='ffNextFacility' placeholder='Denver Center'></div>
+<div><label>Frequency</label><input id='ffFrequency' placeholder='118.475' inputmode='decimal'></div>
+<div><label>Termination type</label><select id='ffTermination'><option value='cancel'>Cancel flight following</option><option value='terminated'>Radar service terminated</option><option value='approved'>Frequency change approved</option></select></div>
+</div>
+<div class='result'><div id='ffHandoffOut'>-</div><button class='btn btn2' id='ffCopyHandoff'>Copy Handoff Readback</button><div style='margin-top:8px' id='ffTerminationOut'>-</div><button class='btn btn2' id='ffCopyTermination'>Copy Termination Call</button></div>
+<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small' id='ffCopyStatus'>Copy buttons use your browser clipboard when available.</span></div>
+</section>
+<section id='more' class='card hidden'>
+<h2>More</h2>
+<div class='small sectionHint'>Lower-frequency utilities and future training tools.</div>
+<div class='sectionGrid'>
+<button class='toolCard' data-open='tank'>Tank Timer<span>Fuel tank switch timer</span></button>
+<button class='toolCard' data-open='hobbs'>Hobbs/Tach<span>Rental time and estimated cost</span></button>
+</div>
+</section>
 <section id='aircraft' class='card hidden'><h2>Aircraft Profiles</h2><label>Selected Aircraft</label><select id='aircraftSelect'></select><div class='grid'><div><label>N-number</label><input id='acN'></div><div><label>Type</label><input id='acType'></div><div><label>Empty weight</label><input id='acEmptyWt' type='number'></div><div><label>Empty arm</label><input id='acEmptyArm' type='number'></div><div><label>Max gross</label><input id='acMaxWt' type='number'></div><div><label>Fuel lb/gal</label><input id='acFuelPpg' type='number'></div><div><label>Front arm</label><input id='acFrontArm' type='number'></div><div><label>Rear arm</label><input id='acRearArm' type='number'></div><div><label>Baggage arm</label><input id='acBagArm' type='number'></div><div><label>Fuel arm</label><input id='acFuelArm' type='number'></div><div><label>Fuel burn GPH</label><input id='acFuelBurn' type='number'></div><div><label>XW limit</label><input id='acXwLimit' type='number'></div></div><h3>Aircraft / Rental Notes</h3><div class='grid'><div><label>General notes</label><textarea id='acGeneralNotes' placeholder='General aircraft notes'></textarea></div><div><label>Rental quirks</label><textarea id='acRentalQuirks' placeholder='Rental quirks or reminders'></textarea></div><div><label>Avionics/radio notes</label><textarea id='acAvionicsNotes' placeholder='Radio, GPS, transponder, or avionics notes'></textarea></div><div><label>Fuel/oil notes</label><textarea id='acFuelOilNotes' placeholder='Fuel tabs, oil range, leaning notes, or school fuel procedures'></textarea></div><div><label>Dispatch/school procedure notes</label><textarea id='acDispatchNotes' placeholder='Dispatch, checkout, key, binder, or school-specific procedures'></textarea></div><div><label>Squawk reminders</label><textarea id='acSquawkNotes' placeholder='Reference-only squawk reminders. Not an official maintenance record.'></textarea></div></div><p class='small'>Reference only. Not an official maintenance record. Verify with school/dispatch and aircraft documents.</p><div class='grid'><button class='btn' id='saveAcBtn'>Save Aircraft</button><button class='btn btn2' id='newAcBtn'>Add New</button></div><button class='btn btn2' id='deleteAcBtn'>Delete Selected</button><p class='small'>Profiles save locally on this device and feed W&B/fuel/crosswind defaults.</p></section>
 <section id='wb' class='card hidden'><h2>Weight & Balance</h2><div class='small' id='wbAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Pilot + front passenger</label><input id='frontWt' type='number'></div><div><label>Rear passengers</label><input id='rearWt' type='number'></div><div><label>Baggage</label><input id='bagWt' type='number'></div><div><label>Fuel gallons</label><input id='fuelGal' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Total weight</td><td id='wbWeight'>—</td></tr><tr><td>Loaded CG</td><td id='wbCg'>—</td></tr><tr><td>Useful load remaining</td><td id='wbRemain'>—</td></tr><tr><td>Status</td><td id='wbStatus'>—</td></tr></table></div></section>
 <section id='fuel' class='card hidden'><h2>Fuel & Reserve</h2><div class='small' id='fuelAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Fuel onboard gal</label><input id='fuelOnboard' type='number'></div><div><label>Planned flight time hr</label><input id='flightHours' type='number'></div><div><label>Fuel burn GPH</label><input id='fuelBurn' type='number' value='9'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id='fuelUsed'>—</td></tr><tr><td>Fuel remaining</td><td id='fuelRem'>—</td></tr><tr><td>Reserve time</td><td id='reserveTime'>—</td></tr><tr><td>Status</td><td id='fuelStatus'>—</td></tr></table></div></section>
@@ -147,7 +215,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div class='result'><h3>Pattern Brief</h3><div class='boardMed' id='boardPattern'>—</div></div>
 
 <h3>Radio Workflows</h3>
-<div class='grid'><button class='btn' id='boardAtcBtn'>ATC</button><button class='btn' id='boardFfBtn'>Flight Following</button><button class='btn' id='boardCraftBtn'>CRAFT</button></div>
+<div class='grid'><button class='btn' id='boardAtcBtn'>ATC</button><button class='btn' id='boardFfBtn'>Radio</button><button class='btn' id='boardCraftBtn'>CRAFT</button></div>
 <p class='small'>Reference only. Verify airport, runway, frequency, pattern, weather, NOTAM, POH/W&B, instructor, and school procedure information with ForeFlight, FAA/current sources, and official documents before flight.</p>
 </section>
 
@@ -265,53 +333,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>Examples are for confidence-building only. Actual phraseology varies by airport, controller, aircraft, and situation.</p>
 </section>
 
-<section id='following' class='card hidden'>
-<h2>Flight Following</h2>
-<div class='small'>Training/reference only. Listen to and comply with actual ATC instructions. Verify all frequencies and instructions before transmitting.</div>
-<div class='result'><b>Route context:</b> <span id='ffRouteHint'>—</span></div>
-<button class='btn btn2' id='ffRefreshDefaults'>Use Aircraft / Route Defaults</button>
-
-<h3>1. Initial Request Builder</h3>
-<div class='grid'>
-<div><label>Facility name</label><select id='ffFacilityPreset'><option value='Denver Approach'>Denver Approach</option><option value='Denver Departure'>Denver Departure</option><option value='Denver Center'>Denver Center</option><option value='custom'>Custom</option></select></div>
-<div><label>Custom facility</label><input id='ffFacilityCustom' placeholder='Approach / Center'></div>
-<div><label>Callsign</label><input id='ffCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
-<div><label>Aircraft type</label><input id='ffAircraftType' placeholder='PA-28 / C172'></div>
-<div><label>Position</label><input id='ffPosition' placeholder='3 miles north of Rocky Mountain Metro'></div>
-<div><label>Altitude</label><input id='ffAltitude' placeholder='6,500'></div>
-<div><label>Destination</label><input id='ffDestination' placeholder='KFMM / Fort Morgan'></div>
-</div>
-<div class='result'><div id='ffInitialOut'>—</div><button class='btn btn2' id='ffCopyInitial'>Copy Initial Request</button></div>
-
-<h3>2. Squawk Readback</h3>
-<div class='grid'><div><label>Squawk code</label><input id='ffSquawk' placeholder='1234' inputmode='numeric'></div></div>
-<div class='result'><div id='ffSquawkOut'>—</div><button class='btn btn2' id='ffCopySquawk'>Copy Squawk Readback</button></div>
-
-<h3>3. Radar Contact / Altitude</h3>
-<div class='grid'>
-<div><label>Instruction</label><select id='ffAltitudeInstruction'><option value='vfr'>Maintain VFR</option><option value='below'>Maintain VFR at or below</option><option value='above'>Maintain VFR at or above</option></select></div>
-<div><label>Assigned altitude</label><input id='ffAssignedAltitude' placeholder='8,500'></div>
-<div><label>Altimeter optional</label><input id='ffAltimeter' placeholder='30.12'></div>
-</div>
-<div class='result'><div id='ffAltitudeOut'>—</div><button class='btn btn2' id='ffCopyAltitude'>Copy Altitude Readback</button></div>
-
-<h3>4. Frequency Change / Handoff</h3>
-<div class='small'>Saved approach/departure/center frequencies from the selected route appear below when available.</div>
-<div class='bubbleBox' id='ffFreqSuggestions'></div>
-<div class='grid'>
-<div><label>Next facility</label><input id='ffNextFacility' placeholder='Denver Center'></div>
-<div><label>Frequency</label><input id='ffFrequency' placeholder='118.475' inputmode='decimal'></div>
-</div>
-<div class='result'><div id='ffHandoffOut'>—</div><button class='btn btn2' id='ffCopyHandoff'>Copy Handoff Readback</button></div>
-
-<h3>5. Termination / Cancel</h3>
-<div class='grid'><div><label>Termination type</label><select id='ffTermination'><option value='cancel'>Cancel flight following</option><option value='terminated'>Radar service terminated</option><option value='approved'>Frequency change approved</option></select></div></div>
-<div class='result'><div id='ffTerminationOut'>—</div><button class='btn btn2' id='ffCopyTermination'>Copy Termination Call</button></div>
-
-<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small' id='ffCopyStatus'>Copy buttons use your browser clipboard when available.</span></div>
-<p class='small'>Flight following is workload-permitting ATC service. This tool is for practice and organization only; it does not replace ATC instructions, ForeFlight, charts, or pilot judgment.</p>
-</section>
-
 <section id='craft' class='card hidden'>
 <h2>CRAFT IFR Clearance</h2>
 <div class='small'>Build and verify an IFR clearance readback. Always confirm against actual ATC before transmitting.</div>
@@ -368,5 +389,5 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-crosswind'>X-Wind</button><button class='tab' id='tab-aircraft'>Aircraft</button><button class='tab' id='tab-wb'>W&B</button><button class='tab' id='tab-fuel'>Fuel</button><button class='tab' id='tab-tank'>Tank</button><button class='tab' id='tab-hobbs'>Hobbs</button><button class='tab' id='tab-freq'>Freq</button><button class='tab' id='tab-airports'>Airports</button><button class='tab' id='tab-brief'>Brief</button><button class='tab' id='tab-kneeboard'>Board</button><button class='tab' id='tab-minimums'>Minimums</button><button class='tab' id='tab-atc'>ATC</button><button class='tab' id='tab-following'>FF</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-gono'>Go/No</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-board'>Board</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-radio'>Radio</button><button class='tab' id='tab-more'>More</button></div>
 <script type="module" src="./src/app.js"></script></body></html>

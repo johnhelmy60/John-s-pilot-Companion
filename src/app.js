@@ -11,7 +11,8 @@ import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var sections=['crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','kneeboard','minimums','atc','following','craft','gono'];
+var mainTabs=['board','plan','airport','radio','more'];
+var sections=['plan','airport','radio','more','crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','kneeboard','minimums','atc','craft','gono'];
 
 function el(id){return document.getElementById(id)}
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
@@ -22,15 +23,34 @@ function diff(f,t){return((f-t+540)%360)-180}
 function today(){return new Date().toISOString().slice(0,10)}
 function clone(o){return JSON.parse(JSON.stringify(o))}
 
+function normalizeTab(id){
+ if(id==='board')return 'kneeboard';
+ if(id==='following')return 'radio';
+ if(sections.indexOf(id)>=0)return id;
+ return 'kneeboard';
+}
+
+function groupFor(id){
+ if(id==='kneeboard')return 'board';
+ if(['plan','crosswind','aircraft','wb','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
+ if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
+ if(['radio','atc','craft'].indexOf(id)>=0)return 'radio';
+ if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
+ return 'board';
+}
+
 function showTab(id){
+ id=normalizeTab(id);
  sections.forEach(function(s){
   if(el(s))el(s).className=s==id?'card':'card hidden';
-  if(el('tab-'+s))el('tab-'+s).className=s==id?'tab active':'tab';
  });
- localStorage.jp_tab=id;
+ mainTabs.forEach(function(s){
+  if(el('tab-'+s))el('tab-'+s).className=s==groupFor(id)?'tab active':'tab';
+ });
+ localStorage.jp_tab=groupFor(id)==='board'?'board':id;
  calcAll();
  if(id=='brief')renderBriefing();
- if(id=='following')renderFlightFollowing();
+ if(id=='radio')renderFlightFollowing();
  if(id=='kneeboard')renderKneeboard();
 }
 
@@ -101,14 +121,18 @@ function updateTank(){
 }
 
 function wireTabs(){
- sections.forEach(function(s){
+ mainTabs.forEach(function(s){
   var tab=el('tab-'+s);
   if(tab)tab.onclick=function(){showTab(s)};
+ });
+ Array.from(document.querySelectorAll('[data-open]')).forEach(function(btn){
+  btn.onclick=function(){showTab(btn.getAttribute('data-open'))};
  });
 }
 
 window.onload=function(){
  var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
+ window.jpShowTab=showTab;
  loadInputs();
  initFuel(context);
  initWb(context);
@@ -126,6 +150,6 @@ window.onload=function(){
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
  el('refreshGo').onclick=calcGo;
- showTab(localStorage.jp_tab||'crosswind');calcAll();updateTank();setInterval(updateTank,1000);
+ showTab(localStorage.jp_tab||'board');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 }
