@@ -113,7 +113,7 @@ export async function searchAirport(){
    }
  }catch(e){}
  if(saved[code]){
-   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>'+pill('Using saved local copy','warn')+'<br><span class="small">JSON refresh failed or airport not found in JSON.</span>';
+   el('airportSearchResult').innerHTML='<b>'+code+'</b><br>'+saved[code].name+'<br>'+pill('Using saved local airport','warn')+'<br><span class="small">Airport was not found in the local database files.</span>';
    renderMyAirports(); renderAirportsCallback(); return;
  }
  if(builtInAirports[code]){

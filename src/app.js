@@ -149,7 +149,6 @@ window.onload=function(){
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
- el('refreshGo').onclick=calcGo;
  showTab(localStorage.jp_tab||'board');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 }

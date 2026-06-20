@@ -103,11 +103,6 @@ function renderAtc(){
  saveAtc();
 }
 
-function clearAtc(){
- ['atcTaxiRoute','atcHoldShort','atcSquawk','atcFrequency'].forEach(function(id){if(ctx.el(id))ctx.el(id).value=''});
- renderAtc();
-}
-
 export function initAtc(context){
  ctx=context;
  loadAtc();
@@ -118,6 +113,5 @@ export function initAtc(context){
    ctx.el(id).addEventListener('change',renderAtc);
   }
  });
- if(ctx.el('clearAtcBtn'))ctx.el('clearAtcBtn').onclick=clearAtc;
  renderAtc();
 }

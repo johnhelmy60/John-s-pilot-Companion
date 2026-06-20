@@ -140,18 +140,6 @@ function setOut(id,text){
  if(e(id))e(id).innerHTML=text;
 }
 
-function copyText(text){
- if(navigator.clipboard&&navigator.clipboard.writeText){
-  navigator.clipboard.writeText(text).then(function(){setOut('ffCopyStatus','Copied. Verify before transmitting.')}).catch(function(){setOut('ffCopyStatus','Copy failed. Select and copy manually.')});
- }else{
-  setOut('ffCopyStatus','Clipboard unavailable. Select and copy manually.');
- }
-}
-
-function wireCopy(id,fn){
- if(e(id))e(id).onclick=function(){copyText(fn())};
-}
-
 function render(){
  fillDefaults();
  renderSuggestions();
@@ -181,11 +169,6 @@ export function initFlightFollowing(context){
    e(id).addEventListener('change',render);
   }
  });
- wireCopy('ffCopyInitial',requestText);
- wireCopy('ffCopySquawk',squawkText);
- wireCopy('ffCopyAltitude',altitudeText);
- wireCopy('ffCopyHandoff',handoffText);
- wireCopy('ffCopyTermination',terminationText);
  if(e('ffRefreshDefaults'))e('ffRefreshDefaults').onclick=function(){
   ['ffCallsign','ffAircraftType','ffPosition','ffDestination'].forEach(function(id){if(e(id))e(id).value=''});
   fillDefaults();

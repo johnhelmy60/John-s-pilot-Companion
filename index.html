@@ -13,7 +13,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 .freqGroup{border:1px solid var(--l);background:#07111b;border-radius:14px;padding:10px;margin-top:10px}.airportInfo{background:#061018;border:1px solid var(--l);border-radius:12px;padding:10px;margin:8px 0;color:var(--m);font-size:12px;line-height:1.45}.miniBtn{width:auto;padding:8px 10px;font-size:12px;margin:6px 6px 4px 0}.freqBtn{display:block;width:100%;text-align:left;border:1px solid var(--l);border-radius:12px;background:#111f2b;color:var(--t);padding:10px;margin:6px 0;font-weight:800}.freqBtn span{color:var(--m);font-size:12px;margin-right:6px}.activeFreq{background:#10351c!important;border-color:#2c7440!important;color:var(--g)!important}.standbyFreq{background:#081c33!important;border-color:#2b6b98!important;color:var(--b)!important;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 12px #58b7ff77}}
 .briefList{margin:8px 0 0;padding-left:20px;color:var(--m);font-size:13px;line-height:1.55}textarea{min-height:120px;resize:vertical;line-height:1.4}
 .boardBig{font-size:24px;font-weight:900;line-height:1.25}.boardMed{font-size:18px;font-weight:800;line-height:1.35}.boardGrid{display:grid;grid-template-columns:1fr;gap:10px}.boardGrid .result{margin-top:0}
-.sectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toolCard{border:1px solid var(--l);background:#07111b;color:var(--t);border-radius:14px;padding:13px;text-align:left;font-weight:900;font-size:16px;min-height:64px}.toolCard span{display:block;color:var(--m);font-size:12px;font-weight:600;line-height:1.35;margin-top:4px}.sectionHint{margin-bottom:10px}
+.sectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toolCard{border:1px solid var(--l);background:#07111b;color:var(--t);border-radius:14px;padding:13px;text-align:left;font-weight:900;font-size:16px;min-height:64px}.toolCard span{display:block;color:var(--m);font-size:12px;font-weight:600;line-height:1.35;margin-top:4px}.sectionHint{margin-bottom:10px}summary.btn{display:block;list-style:none;cursor:pointer}summary.btn::-webkit-details-marker{display:none}
 @media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style></head><body><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><main>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><b>Active minimums:</b> <span id='xwMinMode'>—</span><br><span class='small' id='xwMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
@@ -48,7 +48,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <h3>Flight Following Support</h3>
 <div class='small'>Small practice snippets for VFR flight following. This is no longer a standalone page.</div>
 <div class='result'><b>Selected airports from Frequency page:</b> <span id='ffRouteHint'>-</span></div>
-<button class='btn btn2' id='ffRefreshDefaults'>Use Aircraft / Frequency Page Defaults</button>
+<button class='btn btn2' id='ffRefreshDefaults'>Use Current Aircraft &amp; Airports</button>
 <div class='grid'>
 <div><label>Facility</label><select id='ffFacilityPreset'><option value='Denver Approach'>Denver Approach</option><option value='Denver Departure'>Denver Departure</option><option value='Denver Center'>Denver Center</option><option value='custom'>Custom</option></select></div>
 <div><label>Custom facility</label><input id='ffFacilityCustom' placeholder='Approach / Center'></div>
@@ -58,14 +58,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>Altitude</label><input id='ffAltitude' placeholder='6,500'></div>
 <div><label>Destination</label><input id='ffDestination' placeholder='KFMM / Fort Morgan'></div>
 </div>
-<div class='result'><h3>Initial Request</h3><div id='ffInitialOut'>-</div><button class='btn btn2' id='ffCopyInitial'>Copy Initial Request</button></div>
+<div class='result'><h3>Initial Request</h3><div id='ffInitialOut'>-</div></div>
 <div class='grid'>
 <div><label>Squawk code</label><input id='ffSquawk' placeholder='1234' inputmode='numeric'></div>
 <div><label>Altitude instruction</label><select id='ffAltitudeInstruction'><option value='vfr'>Maintain VFR</option><option value='below'>Maintain VFR at or below</option><option value='above'>Maintain VFR at or above</option></select></div>
 <div><label>Assigned altitude</label><input id='ffAssignedAltitude' placeholder='8,500'></div>
 <div><label>Altimeter optional</label><input id='ffAltimeter' placeholder='30.12'></div>
 </div>
-<div class='result'><h3>Readbacks</h3><div id='ffSquawkOut'>-</div><button class='btn btn2' id='ffCopySquawk'>Copy Squawk Readback</button><div style='margin-top:8px' id='ffAltitudeOut'>-</div><button class='btn btn2' id='ffCopyAltitude'>Copy Altitude Readback</button></div>
+<div class='result'><h3>Readbacks</h3><div id='ffSquawkOut'>-</div><div style='margin-top:8px' id='ffAltitudeOut'>-</div></div>
 <h3>Handoff / Cancel</h3>
 <div class='bubbleBox' id='ffFreqSuggestions'></div>
 <div class='grid'>
@@ -73,8 +73,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>Frequency</label><input id='ffFrequency' placeholder='118.475' inputmode='decimal'></div>
 <div><label>Termination type</label><select id='ffTermination'><option value='cancel'>Cancel flight following</option><option value='terminated'>Radar service terminated</option><option value='approved'>Frequency change approved</option></select></div>
 </div>
-<div class='result'><div id='ffHandoffOut'>-</div><button class='btn btn2' id='ffCopyHandoff'>Copy Handoff Readback</button><div style='margin-top:8px' id='ffTerminationOut'>-</div><button class='btn btn2' id='ffCopyTermination'>Copy Termination Call</button></div>
-<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small' id='ffCopyStatus'>Copy buttons use your browser clipboard when available.</span></div>
+<div class='result'><div id='ffHandoffOut'>-</div><div style='margin-top:8px' id='ffTerminationOut'>-</div></div>
+<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small'>Read and practice the phrase in the app before transmitting.</span></div>
 </section>
 <section id='more' class='card hidden'>
 <h2>More</h2>
@@ -125,23 +125,23 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </div>
 </section>
 <section id='hobbs' class='card hidden'><h2>Hobbs/Tach Rental Tracker</h2><div class='grid'><div><label>Start Hobbs</label><input id='startHobbs' type='number'></div><div><label>End Hobbs</label><input id='endHobbs' type='number'></div><div><label>Start Tach</label><input id='startTach' type='number'></div><div><label>End Tach</label><input id='endTach' type='number'></div><div><label>Hourly rental rate $</label><input id='rate' type='number'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Hobbs time</td><td id='hobbsTime'>—</td></tr><tr><td>Tach time</td><td id='tachTime'>—</td></tr><tr><td>Estimated cost</td><td id='rentalCost'>—</td></tr></table></div></section>
-<section id='freq' class='card hidden'><h2>Frequency Airports</h2>
+<section id='freq' class='card hidden'><h2>Frequencies</h2>
 <div class='small'>Select airports from My Airports, choose flight mode, then tap frequencies like a simple radio stack. This is not a navlog or route planner.</div>
 
 <h3>Flight Mode</h3>
 <div class='grid'>
 <button class='btn btn2' id='modeLocal'>Local VFR</button>
-<button class='btn btn2' id='modeFF'>VFR + Flight Following</button>
+<button class='btn btn2' id='modeFF'>Flight Following</button>
 <button class='btn btn2' id='modeIFR'>IFR</button>
 </div>
 <div class='result'><b>Current Mode:</b> <span id='freqModeLabel'>Local VFR</span></div>
 
-<h3>Airport Bank</h3>
+<h3>My Airports</h3>
 <div class='bubbleBox' id='airportBank'></div>
 
-<h3>Selected Airport Sequence</h3>
+<h3>Selected Airports</h3>
 <div class='bubbleBox' id='routeBox'></div>
-<button class='btn btn2' id='clearRouteBtn'>Clear Selected Airports</button><button class='btn btn2' id='refreshRouteBtn'>Refresh Selected Airports from JSON</button>
+<button class='btn btn2' id='clearRouteBtn'>Clear Airports</button>
 
 <h3>Radio Stack</h3>
 <div class='result'>
@@ -151,18 +151,20 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 
 <h3>Frequencies</h3>
 <div id='freqList'></div>
-<p class='small'>Local VFR shows airport weather/tower/ground/CTAF. VFR + Flight Following adds departure/approach/center. IFR shows all available entries. Verify frequencies with current charts/ForeFlight. Selected airports are for frequency organization only.</p>
+<p class='small'>Local VFR shows airport weather/tower/ground/CTAF. Flight Following adds departure/approach/center. IFR shows all available entries. Verify frequencies with current charts/ForeFlight. Selected airports are for frequency organization only.</p>
 </section>
 <section id='airports' class='card hidden'><h2>Airport Database</h2>
-<div class='small'>Search the uploaded JSON airport database files, save airports locally, and use them offline in Frequency Airports.</div>
+<div class='small'>Search the uploaded JSON airport database files, save airports locally, and use them offline in Frequencies.</div>
 
 <h3>Search Local Database</h3>
 <div class='grid'>
 <div><label>ICAO / FAA ID</label><input id='airportSearch' placeholder='KBJC, KASE, KBDU'></div>
-<div><label>&nbsp;</label><button class='btn' id='searchAirportBtn'>Add / Load Airport</button></div>
+<div><label>&nbsp;</label><button class='btn' id='searchAirportBtn'>Add Airport</button></div>
 </div>
 <div class='result' id='airportSearchResult'>Search an airport from the uploaded JSON database files.</div>
 
+<details>
+<summary class='btn btn2'>Advanced Airport Data</summary>
 <h3>Add Custom Airport</h3>
 <div class='grid'>
 <div><label>Airport ID</label><input id='customCode' placeholder='KXYZ'></div>
@@ -179,11 +181,12 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div><label>Mode</label><select id='freqModeAdd'><option value='vfr'>VFR</option><option value='ff'>Flight Following</option><option value='ifr'>IFR</option></select></div>
 </div>
 <button class='btn btn2' id='addFrequencyBtn'>Add Frequency</button>
+</details>
 
 <h3>My Airports</h3>
 <div id='myAirportsList'></div>
 
-<p class='small'>JSON database version: v2.4.1. Frequencies are reference only. Verify against ForeFlight/current FAA data before use.</p>
+<p class='small'>Airport and frequency data are reference only. Verify against ForeFlight/current FAA data before use.</p>
 </section>
 
 <section id='brief' class='card hidden'>
@@ -345,7 +348,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div class='result'><h3>Practice Call / Request</h3><div id='atcRequestOut'>—</div></div>
 <div class='result'><h3>Readback / Announcement Example</h3><div class='big' style='font-size:20px;line-height:1.35' id='atcReadbackOut'>—</div></div>
 <div class='result'><h3>Training Tip</h3><div class='small' id='atcTipOut'>—</div></div>
-<button class='btn btn2' id='clearAtcBtn'>Clear Assigned Codes</button>
 <p class='small'>Examples are for confidence-building only. Actual phraseology varies by airport, controller, aircraft, and situation.</p>
 </section>
 
@@ -368,14 +370,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <h3>R — Route</h3>
 <div class='grid'>
 <div><label>Waypoint / Fix / Airway</label><input id='routeEntry' placeholder='FMM, DCT, Vxxx' autocorrect='off' autocapitalize='characters' spellcheck='false'></div>
-<div><label>&nbsp;</label><button class='btn' id='addRouteTokenBtn'>Add Route Bubble</button></div>
+<div><label>&nbsp;</label><button class='btn' id='addRouteTokenBtn'>Add Route</button></div>
 </div>
 <div class='bubbleBox' id='routeTokens'></div>
 <div class='grid'>
 <button class='btn btn2' id='routeAsFiledBtn'>As Filed</button>
 <button class='btn btn2' id='routeRadarVectorsBtn'>Radar Vectors</button>
 </div>
-<button class='btn btn2' id='clearRouteTokensBtn'>Clear Route</button>
+<button class='btn btn2' id='clearRouteTokensBtn'>Clear CRAFT Route</button>
 
 <h3>A — Altitude</h3>
 <label>Maintain</label>
@@ -404,6 +406,6 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <p class='small'>10 minutes after departure is common, but ATC can issue 5, 10, 15, 20, or another time. Use exactly what ATC assigns.</p>
 </section>
 
-<section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><button class='btn' id='refreshGo'>Refresh</button><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
+<section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
 </main><div class='tabs'><button class='tab active' id='tab-board'>Board</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-radio'>Radio</button><button class='tab' id='tab-more'>More</button></div>
 <script type="module" src="./src/app.js"></script></body></html>

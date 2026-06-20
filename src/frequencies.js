@@ -1,4 +1,4 @@
-import { airportCodes, airportRecord, refreshRouteAirports, removeAirport } from './airports.js';
+import { airportCodes, airportRecord, removeAirport } from './airports.js';
 
 var ctx=null;
 var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
@@ -20,7 +20,7 @@ export function onAirportRemoved(code){
 export function setMode(m){freqMode=m;localStorage.jp_freqMode=m;renderFreqs();updateModeButtons()}
 
 function updateModeButtons(){
- var el=ctx.el,label=freqMode=='local'?'Local VFR':freqMode=='ff'?'VFR + Flight Following':'IFR';
+ var el=ctx.el,label=freqMode=='local'?'Local VFR':freqMode=='ff'?'Flight Following':'IFR';
  el('freqModeLabel').innerHTML=label;
  ['modeLocal','modeFF','modeIFR'].forEach(function(id){el(id).className='btn btn2'});
  if(freqMode=='local')el('modeLocal').className='btn';
@@ -62,7 +62,7 @@ function renderRoute(){
  airportRoute.forEach(function(code,i){
   var b=document.createElement('button');
   b.className='bubble routeBubble';
-  b.textContent=code+' - Remove from Selected Airports';
+  b.textContent=code+' - Remove';
   b.onclick=function(){removeRouteAirport(code)};
   box.appendChild(b);
  });
@@ -121,7 +121,7 @@ function renderFreqs(){
   g.className='freqGroup';
   g.innerHTML='<h3>'+code+'</h3>'
     + airportInfoHtml(a)
-    + '<button class="btn btn2 miniBtn">Remove from Selected Airports</button>';
+    + '<button class="btn btn2 miniBtn">Remove</button>';
   g.querySelector('button').onclick=function(){removeRouteAirport(code)};
   var shown=((a&&a.freqs)||[]).filter(function(f){return shouldShow(f[2])});
   if(!shown.length){
@@ -151,6 +151,5 @@ export function initFrequencies(context){
  ctx.el('modeLocal').onclick=function(){setMode('local')};
  ctx.el('modeFF').onclick=function(){setMode('ff')};
  ctx.el('modeIFR').onclick=function(){setMode('ifr')};
- if(ctx.el('refreshRouteBtn'))ctx.el('refreshRouteBtn').onclick=function(){refreshRouteAirports(airportRoute)};
  renderAirports();
 }
