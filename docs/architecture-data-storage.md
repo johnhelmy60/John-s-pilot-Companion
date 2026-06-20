@@ -109,9 +109,9 @@ Aircraft profiles support W&B, fuel planning, personal defaults, rental notes, a
   type: "PA-28-161",
   category: "airplane",
   class: "single-engine-land",
-  emptyWeightLb: 1443,
+  emptyWeightLb: 1433,
   emptyArmIn: 87.1,
-  maxGrossWeightLb: 2440,
+  maxGrossWeightLb: 2325,
   fuelWeightLbPerGal: 6,
   fuelCapacityGal: null,
   usableFuelGal: null,
@@ -122,6 +122,11 @@ Aircraft profiles support W&B, fuel planning, personal defaults, rental notes, a
     baggageIn: 142.8,
     fuelIn: 95
   },
+  cgEnvelope: [
+    { weight: 1400, forward: 83, aft: 93 },
+    { weight: 1950, forward: 83, aft: 93 },
+    { weight: 2325, forward: 87, aft: 93 }
+  ],
   limits: {
     personalCrosswindLimitKt: 17,
     schoolCrosswindLimitKt: null,

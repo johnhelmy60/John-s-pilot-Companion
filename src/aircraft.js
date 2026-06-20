@@ -1,4 +1,5 @@
-export var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1443,emptyArm:87.1,maxWt:2440,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60}];
+var n41498Envelope=[{weight:1400,forward:83,aft:93},{weight:1950,forward:83,aft:93},{weight:2325,forward:87,aft:93}];
+export var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1433,emptyArm:87.1,maxWt:2325,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60,cgEnvelope:n41498Envelope}];
 
 var ctx=null;
 var noteFields=['GeneralNotes','RentalQuirks','AvionicsNotes','FuelOilNotes','DispatchNotes','SquawkNotes'];
@@ -36,7 +37,7 @@ function readCgEnvelopeRows(){
  Array.from(host.getElementsByClassName('cgEnvelopeRow')).forEach(function(row,index){
   var values=['weight','forward','aft'].map(function(k){var input=row.getElementsByClassName('cgEnvelope'+k)[0];return input?input.value.trim():''});
   if(values.every(function(v){return v===''}))return;
-  if(values.some(function(v){return v===''||!isFinite(parseFloat(v)))){error='Complete all three numeric fields for envelope point '+(index+1)+'.';return}
+  if(values.some(function(v){return v===''||!isFinite(parseFloat(v))})){error='Complete all three numeric fields for envelope point '+(index+1)+'.';return}
   var point={weight:parseFloat(values[0]),forward:parseFloat(values[1]),aft:parseFloat(values[2])};
   if(point.forward>point.aft){error='Forward CG must not exceed aft CG at envelope point '+(index+1)+'.';return}
   points.push(point);
@@ -48,6 +49,22 @@ export function getList(){try{return JSON.parse(localStorage.jp_aircraft)||defau
 export function saveList(l){localStorage.jp_aircraft=JSON.stringify(l)}
 export function acId(){return localStorage.jp_selectedAc||'N41498'}
 export function ac(){var l=getList(),a=l.find(function(x){return x.id===acId()});return a||l[0]||defaults[0]}
+
+export function migrateN41498Profile(){
+ var migrationKey='jp_n41498WbCorrectionV1';
+ if(localStorage[migrationKey])return false;
+ var list=getList(),changed=false;
+ list.forEach(function(a){
+  if(a&&(a.id==='N41498'||a.n==='N41498')){
+   a.type='PA-28-161';a.emptyWt=1433;a.emptyArm=87.1;a.maxWt=2325;
+   a.cgEnvelope=n41498Envelope.map(function(p){return {weight:p.weight,forward:p.forward,aft:p.aft}});
+   changed=true;
+  }
+ });
+ if(changed)saveList(list);
+ localStorage[migrationKey]='1';
+ return changed;
+}
 
 export function populateAc(){
  var el=ctx.el,s=el('aircraftSelect'),l=getList();s.innerHTML='';
@@ -104,6 +121,7 @@ export function delAc(){
 export function initAircraft(context){
  ctx=context;
  if(!localStorage.jp_aircraft)saveList(defaults);
+ migrateN41498Profile();
  setupCgEnvelopeEditor();
  populateAc();
  ctx.el('aircraftSelect').onchange=function(){localStorage.jp_selectedAc=this.value;loadAcForm();ctx.calcAll()};
