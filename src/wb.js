@@ -1,59 +1,114 @@
 import { ac } from './aircraft.js';
 
 var ctx=null;
-var fuelMigrated=false;
+var activeInput=null;
 
 var rows=[
- {key:'empty',wt:'wbEmptyWt',arm:'wbEmptyArm',moment:'wbEmptyMoment',profile:function(a){return {weight:a.emptyWt||0,arm:a.emptyArm||0}}},
- {key:'pilot',wt:'frontWt',arm:'wbPilotArm',moment:'wbPilotMoment',profile:function(a){return {arm:a.frontArm||0}}},
- {key:'frontRight',wt:'wbFrontRightWt',arm:'wbFrontRightArm',moment:'wbFrontRightMoment',profile:function(a){return {arm:a.frontArm||0}}},
- {key:'rear',wt:'rearWt',arm:'wbRearArm',moment:'wbRearMoment',profile:function(a){return {arm:a.rearArm||0}}},
- {key:'bag',wt:'bagWt',arm:'wbBagArm',moment:'wbBagMoment',profile:function(a){return {arm:a.bagArm||0}}},
- {key:'fuel',wt:'fuelGal',arm:'wbFuelArm',moment:'wbFuelMoment',profile:function(a){return {arm:a.fuelArm||0}}},
+ {key:'empty',wt:'wbEmptyWt',arm:'wbEmptyArm',moment:'wbEmptyMoment',required:[['emptyWt','Empty Weight'],['emptyArm','Empty Weight Arm']]},
+ {key:'pilot',wt:'frontWt',arm:'wbPilotArm',moment:'wbPilotMoment',required:[['frontArm','Front Seat Arm']]},
+ {key:'frontRight',wt:'wbFrontRightWt',arm:'wbFrontRightArm',moment:'wbFrontRightMoment',required:[['frontArm','Front Seat Arm']]},
+ {key:'rear',wt:'rearWt',arm:'wbRearArm',moment:'wbRearMoment',required:[['rearArm','Rear Seat Arm']]},
+ {key:'bag',wt:'bagWt',arm:'wbBagArm',moment:'wbBagMoment',required:[['bagArm','Baggage Arm']]},
+ {key:'fuel',gal:'fuelGal',wt:'wbFuelWt',arm:'wbFuelArm',moment:'wbFuelMoment',required:[['fuelArm','Fuel Arm'],['fuelPpg','Fuel Weight Per Gallon']]},
  {key:'custom1',wt:'wbCustom1Wt',arm:'wbCustom1Arm',moment:'wbCustom1Moment'},
  {key:'custom2',wt:'wbCustom2Wt',arm:'wbCustom2Arm',moment:'wbCustom2Moment'}
 ];
 
 function e(id){return ctx.el(id)}
 function num(id){var n=e(id),x=n?parseFloat(n.value):NaN;return isFinite(x)?x:null}
-function setVal(id,value,d){
- var n=e(id);
- if(!n)return;
- n.value=value==null||!isFinite(value)?'':Number(value).toFixed(d).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
-}
+function has(a,k){return a&&a[k]!=null&&a[k]!==''&&isFinite(parseFloat(a[k]))}
+function val(a,k){return has(a,k)?parseFloat(a[k]):null}
 function setText(id,value){if(e(id))e(id).innerHTML=value}
 function mode(){return e('wbMode')?e('wbMode').value:'profile'}
 function factor(){return parseFloat(e('wbMomentFormat')?e('wbMomentFormat').value:'1')||1}
-function formatLabel(fmtFactor){return fmtFactor===1?'Moment':fmtFactor===100?'Moment / 100':'Moment / 1000'}
+function formatLabel(f){return f===1?'Moment':f===100?'Moment / 100':'Moment / 1000'}
 
-function migrateFuelGallons(a){
- if(fuelMigrated||localStorage.jp_wbFuelWeightMigrated)return;
- var n=e('fuelGal'),saved=localStorage.jp_fuelGal;
- if(n&&saved!=null&&saved!==''&&isFinite(parseFloat(saved))){
-  var gallons=parseFloat(saved);
-  var pounds=gallons*(a.fuelPpg||6);
-  n.value=Number(pounds).toFixed(1);
-  localStorage.jp_fuelGal=n.value;
- }
- localStorage.jp_wbFuelWeightMigrated='1';
- fuelMigrated=true;
+function setVal(id,value,d){
+ var n=e(id);
+ if(!n)return;
+ if(value==null||!isFinite(value)){n.value='';return}
+ n.value=Number(value).toFixed(d).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
 }
 
-function applyProfile(a){
- rows.forEach(function(r){
-  var p=r.profile?r.profile(a):null;
-  var arm=e(r.arm),wt=e(r.wt);
-  if(arm)arm.readOnly=false;
-  if(wt)wt.readOnly=false;
-  if(mode()==='profile'&&p){
-   if(p.weight!=null)setVal(r.wt,p.weight,1);
-   if(p.arm!=null)setVal(r.arm,p.arm,2);
-   if(r.key==='empty'&&wt)wt.readOnly=true;
-   if(arm)arm.readOnly=true;
-  }
+function markReadonly(id,locked){
+ var n=e(id);
+ if(n)n.readOnly=!!locked;
+}
+
+function profileMissing(a){
+ var seen={},missing=[];
+ var required=[['maxWt','Max Gross Weight']];
+ rows.forEach(function(r){(r.required||[]).forEach(function(pair){required.push(pair)})});
+ required.forEach(function(pair){
+  if(!seen[pair[0]]&&!has(a,pair[0]))missing.push(pair[1]);
+  seen[pair[0]]=true;
  });
- var label=formatLabel(factor());
- setText('wbModeHint',(mode()==='profile'?'Aircraft profile mode auto-fills empty weight and station arms from the selected aircraft profile. Fuel is entered as weight in pounds.':'Free-Fill mode lets you manually enter weight, arm, and moment values.')+' Selected moment display: '+label+'.');
+ return missing;
+}
+
+function profileFill(a){
+ var useProfile=mode()==='profile';
+ rows.forEach(function(r){
+  markReadonly(r.wt,false);
+  markReadonly(r.arm,false);
+  markReadonly(r.moment,false);
+  if(r.gal)markReadonly(r.gal,false);
+ });
+ if(!useProfile)return;
+
+ if(has(a,'emptyWt'))setVal('wbEmptyWt',val(a,'emptyWt'),1);
+ if(has(a,'emptyArm'))setVal('wbEmptyArm',val(a,'emptyArm'),2);
+ if(has(a,'frontArm')){
+  setVal('wbPilotArm',val(a,'frontArm'),2);
+  setVal('wbFrontRightArm',val(a,'frontArm'),2);
+ }
+ if(has(a,'rearArm'))setVal('wbRearArm',val(a,'rearArm'),2);
+ if(has(a,'bagArm'))setVal('wbBagArm',val(a,'bagArm'),2);
+ if(has(a,'fuelArm'))setVal('wbFuelArm',val(a,'fuelArm'),2);
+
+ markReadonly('wbEmptyWt',true);
+ markReadonly('wbEmptyArm',true);
+ markReadonly('wbPilotArm',true);
+ markReadonly('wbFrontRightArm',true);
+ markReadonly('wbRearArm',true);
+ markReadonly('wbBagArm',true);
+ markReadonly('wbFuelArm',true);
+}
+
+function restoreFuelGallonsIfNeeded(a){
+ if(localStorage.jp_wbFuelGallonsRestored)return;
+ if(localStorage.jp_wbFuelWeightMigrated&&localStorage.jp_fuelGal&&has(a,'fuelPpg')){
+  var maybePounds=parseFloat(localStorage.jp_fuelGal);
+  if(isFinite(maybePounds))localStorage.jp_fuelGal=String(Number(maybePounds/val(a,'fuelPpg')).toFixed(2));
+ }
+ localStorage.jp_wbFuelGallonsRestored='1';
+}
+
+function syncFuel(a){
+ var ppg=val(a,'fuelPpg')||6;
+ var gallons=num('fuelGal'),weight=num('wbFuelWt');
+ if(gallons==null&&weight==null){
+  var fuelPageGallons=num('fuelOnboard');
+  if(fuelPageGallons==null&&localStorage.jp_fuelOnboard!=null&&localStorage.jp_fuelOnboard!==''){
+   var saved=parseFloat(localStorage.jp_fuelOnboard);
+   fuelPageGallons=isFinite(saved)?saved:null;
+  }
+  if(fuelPageGallons!=null){
+   gallons=fuelPageGallons;
+   setVal('fuelGal',gallons,2);
+  }
+ }
+ if(activeInput==='wbFuelWt'&&weight!=null){
+  gallons=weight/ppg;
+  setVal('fuelGal',gallons,2);
+ }else if(gallons!=null){
+  weight=gallons*ppg;
+  setVal('wbFuelWt',weight,1);
+ }else if(weight!=null){
+  gallons=weight/ppg;
+  setVal('fuelGal',gallons,2);
+ }
+ return {gallons:gallons,weight:weight};
 }
 
 function rowValues(r,fmtFactor){
@@ -73,17 +128,28 @@ function rowValues(r,fmtFactor){
 
 function convertMomentDisplay(oldFactor,newFactor){
  rows.forEach(function(r){
-  var n=e(r.moment),v=num(r.moment);
-  if(n&&v!=null)setVal(r.moment,(v*oldFactor)/newFactor,2);
+  var v=num(r.moment);
+  if(v!=null)setVal(r.moment,(v*oldFactor)/newFactor,2);
  });
+}
+
+function renderProfileWarnings(a){
+ var missing=mode()==='profile'?profileMissing(a):[];
+ if(!missing.length){setText('wbProfileWarnings','');return}
+ setText('wbProfileWarnings','<div class="result"><span class="pill warn">Missing profile data</span><div class="small">'+missing.join(', ')+'</div></div>');
 }
 
 export function calcWB(){
  if(!ctx||!e('wbMode'))return;
  var a=ac(),fmt=ctx.fmt,pill=ctx.pill,fmtFactor=factor();
+ restoreFuelGallonsIfNeeded(a);
  setText('wbAcLabel','Selected aircraft: '+(a.n||'-')+' - '+(a.type||'-'));
- migrateFuelGallons(a);
- applyProfile(a);
+ profileFill(a);
+ var fuel=syncFuel(a);
+
+ var label=formatLabel(fmtFactor);
+ setText('wbModeHint',(mode()==='profile'?'Aircraft Profile mode is active. Available aircraft profile fields auto-fill the load sheet.':'Free-Fill mode is active. Enter any two values in a row to calculate the third.')+' Selected moment display: '+label+'.');
+ renderProfileWarnings(a);
 
  var totalWeight=0,totalMoment=0;
  rows.forEach(function(r){
@@ -92,15 +158,16 @@ export function calcWB(){
   totalMoment+=v.moment;
  });
  var cg=totalWeight?totalMoment/totalWeight:0;
- var max=a.maxWt||0;
+ var max=val(a,'maxWt')||0;
  var remain=max?max-totalWeight:0;
  var over=max&&totalWeight>max;
- var hasCgRange=a.cgMin!=null&&a.cgMax!=null;
- var cgOut=hasCgRange&&totalWeight&&(cg<a.cgMin||cg>a.cgMax);
+ var hasCgRange=has(a,'cgMin')&&has(a,'cgMax');
+ var cgOut=hasCgRange&&totalWeight&&(cg<val(a,'cgMin')||cg>val(a,'cgMax'));
 
  setText('wbTotalWeightCell',fmt(totalWeight,1));
  setText('wbTotalArmCell',totalWeight?fmt(cg,2):'-');
  setText('wbTotalMomentCell',fmt(totalMoment/fmtFactor,2));
+ setText('wbFuelSummary',fuel.gallons!=null||fuel.weight!=null?fmt(fuel.gallons||0,1)+' gal ('+fmt(fuel.weight||0,1)+' lb)':'-');
  setText('wbWeight',fmt(totalWeight,1)+' lb');
  setText('wbMoment',fmt(totalMoment/fmtFactor,2));
  setText('wbCg',totalWeight?fmt(cg,2)+' in':'-');
@@ -109,6 +176,7 @@ export function calcWB(){
  setText('wbStatus',(over?pill('OVER GROSS','bad'):pill('Weight OK','good'))+(cgOut?pill('CG OUT OF RANGE','bad'):pill('Verify CG envelope','warn')));
  localStorage.jp_wbMode=mode();
  localStorage.jp_wbMomentFormat=String(fmtFactor);
+ activeInput=null;
 }
 
 export function initWb(context){
@@ -123,8 +191,8 @@ export function initWb(context){
   ctx.calcAll();
  });
  rows.forEach(function(r){
-  [r.wt,r.arm,r.moment].forEach(function(id){
-   if(e(id))e(id).addEventListener('input',ctx.calcAll);
+  [r.gal,r.wt,r.arm,r.moment].forEach(function(id){
+   if(e(id))e(id).addEventListener('input',function(){activeInput=id;ctx.calcAll()});
   });
  });
  ['wbCustom1Label','wbCustom2Label'].forEach(function(id){
