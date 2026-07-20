@@ -15,7 +15,7 @@ var rows=[
 ];
 
 function e(id){return ctx.el(id)}
-function num(id){var n=e(id),x=n?parseFloat(n.value):NaN;return isFinite(x)?x:null}
+function num(id){return ctx.nv(id)}
 function has(a,k){return a&&a[k]!=null&&a[k]!==''&&isFinite(parseFloat(a[k]))}
 function val(a,k){return has(a,k)?parseFloat(a[k]):null}
 function setText(id,value){if(e(id))e(id).innerHTML=value}

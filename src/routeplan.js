@@ -1,5 +1,6 @@
 import { ac } from './aircraft.js';
 import { setRoute } from './frequencies.js';
+import { validateSection, validateInput } from './validation.js';
 
 var ctx=null;
 var routeTokens=[];
@@ -55,6 +56,7 @@ function renderSummary(plan){
 function addTokens(){
  var input=e('planRouteEntry');
  var added=parseTokens(input.value);
+ if(!validateInput(input,true)){input.focus();return}
  added.forEach(function(token){routeTokens.push(token)});
  input.value='';renderTokens();savePlan();
 }
@@ -70,8 +72,9 @@ function loadPlan(){
 
 function saveAndOpenCraft(){
  var plan=savePlan();
- if(!plan.callsign||!plan.departure||!plan.arrival){
-  e('planStatus').textContent='Enter a callsign, departure, and arrival before opening CRAFT.';
+ if(!validateSection(e('routeplan'),true)){
+  e('planStatus').textContent='Correct the highlighted flight-plan fields before opening CRAFT.';
+  var invalid=e('routeplan').querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();
   return;
  }
  e('planStatus').textContent='Plan saved and loaded into CRAFT.';

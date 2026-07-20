@@ -1,10 +1,12 @@
+import { validateInput } from './validation.js';
+
 var ctx=null;
 
 var fields=['atcScenario','atcCallsign','atcAirport','atcFacility','atcRunway','atcAtis','atcLocation','atcDirection','atcTaxiRoute','atcHoldShort','atcClearance','atcPattern','atcPosition','atcIntentions','atcAircraftType','atcAltitude','atcDestination','atcSquawk','atcFrequency'];
 
 function v(id){
  var e=ctx.el(id);
- return e?(e.value||'').trim():'';
+ return e&&validateInput(e,true)?(e.value||'').trim():'';
 }
 
 function label(id){

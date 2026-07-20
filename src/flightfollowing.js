@@ -1,6 +1,7 @@
 import { ac } from './aircraft.js';
 import { airportRecord } from './airports.js';
 import { getRoute } from './frequencies.js';
+import { validateInput } from './validation.js';
 
 var ctx=null;
 
@@ -10,7 +11,7 @@ var fields=[
 ];
 
 function e(id){return ctx.el(id)}
-function v(id){var node=e(id);return node?(node.value||'').trim():''}
+function v(id){var node=e(id);return node&&validateInput(node,true)?(node.value||'').trim():''}
 
 function save(){
  fields.forEach(function(id){if(e(id))localStorage['jp_'+id]=e(id).value});

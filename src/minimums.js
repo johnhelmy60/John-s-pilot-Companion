@@ -1,3 +1,5 @@
+import { validateSection } from './validation.js';
+
 var ctx=null;
 
 var defaults={
@@ -97,6 +99,7 @@ export function renderSummary(){
 }
 
 function saveFromForm(){
+ if(!validateSection(ctx.el('minimums'),true)){var invalid=ctx.el('minimums').querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();return}
  saveMinimums(readForm());
  renderSummary();
  ctx.calcAll();

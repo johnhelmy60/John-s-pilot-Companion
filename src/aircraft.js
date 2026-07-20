@@ -1,3 +1,5 @@
+import { validateSection } from './validation.js';
+
 var n41498Envelope=[{weight:1400,forward:83,aft:93},{weight:1950,forward:83,aft:93},{weight:2325,forward:87,aft:93}];
 export var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1433,emptyArm:87.1,maxWt:2325,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60,cgEnvelope:n41498Envelope}];
 
@@ -97,6 +99,7 @@ function saveCurrentNotes(){
 
 export function saveAc(){
  var el=ctx.el,nv=ctx.nv,calcAll=ctx.calcAll,l=getList(),id=acId(),n=el('acN').value.trim()||'NEW';
+ if(!validateSection(el('aircraft'),true)){var invalid=el('aircraft').querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();return}
  var i=l.findIndex(function(x){return x.id===id});
  var envelopeResult=readCgEnvelopeRows(),envelope=envelopeResult.points;
  if(envelopeResult.error)return alert(envelopeResult.error);

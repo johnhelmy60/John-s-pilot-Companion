@@ -1,3 +1,5 @@
+import { validateInput } from './validation.js';
+
 var ctx=null;
 var renderAirportsCallback=function(){};
 
@@ -100,7 +102,7 @@ export function airportRecord(code){return getSavedAirports()[code]||builtInAirp
 
 export async function searchAirport(){
  var el=ctx.el,pill=ctx.pill,code=normalizeCode(el('airportSearch').value);
- if(!code){el('airportSearchResult').innerHTML='Enter an airport code.';return}
+ if(!validateInput(el('airportSearch'),true)){el('airportSearch').focus();return}
  var saved=getSavedAirports();
  el('airportSearchResult').innerHTML='Searching JSON database for '+code+'...';
  try{
@@ -141,7 +143,7 @@ export async function refreshRouteAirports(route){
 
 export function addCustomAirport(){
  var el=ctx.el,pill=ctx.pill,code=normalizeCode(el('customCode').value),name=el('customName').value.trim(),elev=el('customElev').value.trim();
- if(!code||!name){alert('Enter airport ID and name.');return}
+ if(!validateInput(el('customCode'),true)||!validateInput(el('customName'),true)||!validateInput(el('customElev'),true)){var invalid=el('airports').querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();return}
  var saved=getSavedAirports();
  saved[code]={code:code,name:name,elevation:elev,runways:[],updated:ctx.today(),source:'Custom',freqs:[]};
  saveSavedAirports(saved);
@@ -151,7 +153,7 @@ export function addCustomAirport(){
 
 export function addFrequency(){
  var el=ctx.el,code=normalizeCode(el('freqCode').value),label=el('freqLabel').value.trim(),val=el('freqValue').value.trim(),mode=el('freqModeAdd').value;
- if(!code||!label||!val){alert('Enter airport, label, and frequency.');return}
+ if(!validateInput(el('freqCode'),true)||!validateInput(el('freqLabel'),true)||!validateInput(el('freqValue'),true)){var invalid=el('airports').querySelector('[aria-invalid="true"]');if(invalid)invalid.focus();return}
  var saved=getSavedAirports();
  if(!saved[code]){alert('Add/save the airport first.');return}
  saved[code].freqs.push([label,val,mode]);

@@ -1,5 +1,6 @@
 import { airportRecord, normalizeCode } from './airports.js';
 import { getRoutePlan } from './routeplan.js';
+import { validateInput } from './validation.js';
 
 var ctx=null;
 var craftRouteTokens=[];
@@ -23,6 +24,7 @@ function loadCraft(){
 function addRouteToken(){
  var v=craftVal('routeEntry').toUpperCase().replace(/\s+/g,'');
  if(!v)return;
+ if(!validateInput(ctx.el('routeEntry'),true)){ctx.el('routeEntry').focus();return}
  craftRouteTokens.push(v);
  ctx.el('routeEntry').value='';
  renderRouteTokens();
@@ -104,8 +106,8 @@ function craftUpdate(){
  var maintain=craftVal('craftMaintain');
  var expect=craftVal('craftExpect');
  var expectTime=craftVal('craftExpectTime')||'10';
- var freq=craftVal('craftFreq');
- var squawk=craftVal('craftSquawk');
+ var freq=validateInput(ctx.el('craftFreq'),true)?craftVal('craftFreq'):'';
+ var squawk=validateInput(ctx.el('craftSquawk'),true)?craftVal('craftSquawk'):'';
  var parts=[];
  if(clearTo)parts.push(clearType+' '+clearTo);
  if(route)parts.push(route.toLowerCase()==='as filed'?'as filed':route.toLowerCase()==='radar vectors'?'via radar vectors':'via '+route);
