@@ -219,28 +219,27 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div id='briefContent'></div>
 </section>
 
-<section id='kneeboard' class='card hidden'>
-<h2>Kneeboard</h2>
-<div class='small'>Large-text cockpit reference. No maps, weather, navlog, GPS, or official data. Verify current sources before use.</div>
-
-<div class='boardGrid'>
-<div class='result'><div class='small'>Aircraft</div><div class='boardBig' id='boardAircraft'>—</div></div>
-<div class='result'><div class='small'>Selected Airports</div><div class='boardMed' id='boardRoute'>—</div></div>
-<div class='result'><div class='small'>ACTIVE</div><div class='boardBig' id='boardActiveFreq'>—</div><div class='small'>STANDBY</div><div class='boardMed' id='boardStandbyFreq'>—</div></div>
-<div class='result'><div class='small'>Tank Timer</div><div class='boardMed' id='boardTank'>—</div><div id='boardTankWarn'></div></div>
-<div class='result'><div class='small'>Personal Minimums</div><div class='boardMed' id='boardMinimums'>—</div></div>
+<section id='routeplan' class='card hidden'>
+<h2>Plan Route</h2>
+<div class='small'>Set up the flight once, then load it into CRAFT. This is a planning aid, not an official flight plan or clearance.</div>
+<h3>Flight</h3>
+<div class='grid'>
+<div><label>Callsign</label><input id='planCallsign' placeholder='N41498' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Departure Airport</label><input id='planDeparture' placeholder='KBJC' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Arrival Airport</label><input id='planArrival' placeholder='KFMM' autocorrect='off' autocapitalize='characters'></div>
 </div>
-
-<h3>Airport Notes / Pattern</h3>
-<label>Kneeboard Airport</label>
-<select id='boardAirportSelect'></select>
-<div class='result'><div class='boardMed' id='boardAirportTitle'>—</div><div class='small' id='boardAirportMeta'>—</div></div>
-<div class='result'><h3>Student Notes</h3><div class='boardMed' id='boardStudentNotes'>—</div></div>
-<div class='result'><h3>Pattern Brief</h3><div class='boardMed' id='boardPattern'>—</div></div>
-
-<h3>Radio Workflows</h3>
-<div class='grid'><button class='btn' id='boardAtcBtn'>ATC</button><button class='btn' id='boardFfBtn'>Radio</button><button class='btn' id='boardCraftBtn'>CRAFT</button></div>
-<p class='small'>Reference only. Verify airport, runway, frequency, pattern, weather, NOTAM, POH/W&B, instructor, and school procedure information with ForeFlight, FAA/current sources, and official documents before flight.</p>
+<h3>Planned Route</h3>
+<div class='small'>Add fixes, waypoints, or airways in order. Separate entries with spaces or commas. Tap a route bubble to remove it.</div>
+<div class='grid'>
+<div><label>Fix / Waypoint / Airway</label><input id='planRouteEntry' placeholder='BJC RAMMS V8' autocorrect='off' autocapitalize='characters' spellcheck='false'></div>
+<div><label>&nbsp;</label><button class='btn' id='planAddRouteBtn'>Add to Route</button></div>
+</div>
+<div class='bubbleBox' id='planRouteTokens'></div>
+<button class='btn btn2' id='planClearRouteBtn'>Clear Planned Route</button>
+<div class='result'><div class='small'>Plan Preview</div><div class='boardMed' id='planRouteSummary'>FROM to TO</div></div>
+<button class='btn' id='planOpenCraftBtn'>Save Plan &amp; Open CRAFT</button>
+<div class='small' id='planStatus'></div>
+<p class='small'>Verify the route with ForeFlight, FAA/current sources, the filed flight plan, actual ATC instructions, and instructor or school procedures.</p>
 </section>
 
 <section id='minimums' class='card hidden'>
@@ -361,9 +360,12 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 <div class='small'>Build and verify an IFR clearance readback. Always confirm against actual ATC before transmitting.</div>
 
 <h3>Flight Context</h3>
+<button class='btn btn2' id='loadRoutePlanBtn'>Load Plan Route</button>
+<div class='small' id='craftPlanStatus'>Planned values are starting points only. Edit them to match the clearance ATC actually issues.</div>
 <div class='grid'>
 <div><label>Callsign</label><input id='craftCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
 <div><label>Departure Airport</label><input id='craftDep' placeholder='KBJC' autocorrect='off' autocapitalize='characters'></div>
+<div><label>Planned Arrival</label><input id='craftArrival' placeholder='KFMM' autocorrect='off' autocapitalize='characters' readonly></div>
 </div>
 
 <h3>C — Clearance Limit</h3>
@@ -412,5 +414,5 @@ table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 3px;b
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-board'>Board</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-radio'>Radio</button><button class='tab' id='tab-more'>More</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-route'>Route</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-radio'>Radio</button><button class='tab' id='tab-more'>More</button></div>
 <script type="module" src="./src/app.js"></script></body></html>

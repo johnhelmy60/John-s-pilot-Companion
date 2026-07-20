@@ -6,13 +6,13 @@ import { initBriefing, renderBriefing } from './briefing.js';
 import { initMinimums, getActiveMinimums, renderSummary as renderMinimumsSummary } from './minimums.js';
 import { initAtc } from './atc.js';
 import { initFlightFollowing, renderFlightFollowing } from './flightfollowing.js';
-import { initKneeboard, renderKneeboard } from './kneeboard.js';
+import { initRoutePlan } from './routeplan.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var mainTabs=['board','plan','airport','radio','more'];
-var sections=['plan','airport','radio','more','crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','kneeboard','minimums','atc','craft','gono'];
+var mainTabs=['route','plan','airport','radio','more'];
+var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
 
 function el(id){return document.getElementById(id)}
 function nv(id){var e=el(id),x=e?parseFloat(e.value):NaN;return isFinite(x)?x:null}
@@ -24,19 +24,19 @@ function today(){return new Date().toISOString().slice(0,10)}
 function clone(o){return JSON.parse(JSON.stringify(o))}
 
 function normalizeTab(id){
- if(id==='board')return 'kneeboard';
+ if(id==='board'||id==='route')return 'routeplan';
  if(id==='following')return 'radio';
  if(sections.indexOf(id)>=0)return id;
- return 'kneeboard';
+ return 'routeplan';
 }
 
 function groupFor(id){
- if(id==='kneeboard')return 'board';
+ if(id==='routeplan')return 'route';
  if(['plan','crosswind','aircraft','wb','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
  if(['radio','atc','craft'].indexOf(id)>=0)return 'radio';
  if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
- return 'board';
+ return 'route';
 }
 
 function showTab(id){
@@ -47,11 +47,10 @@ function showTab(id){
  mainTabs.forEach(function(s){
   if(el('tab-'+s))el('tab-'+s).className=s==groupFor(id)?'tab active':'tab';
  });
- localStorage.jp_tab=groupFor(id)==='board'?'board':id;
+ localStorage.jp_tab=groupFor(id)==='route'?'route':id;
  try{calcAll()}catch(err){console.error('Page calculation refresh failed:',err)}
  if(id=='brief')renderBriefing();
  if(id=='radio')renderFlightFollowing();
- if(id=='kneeboard')renderKneeboard();
 }
 
 function saveInputs(){
@@ -131,7 +130,7 @@ function wireTabs(){
 }
 
 window.onload=function(){
- var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
+ var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,showTab:showTab,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
  window.jpShowTab=showTab;
  wireTabs();
  loadInputs();
@@ -140,15 +139,15 @@ window.onload=function(){
  initAircraft(context);
  initAirports(context);
  initFrequencies(context);
+ initRoutePlan(context);
  initCraft(context);
  initBriefing(context);
  initMinimums(context);
  initAtc(context);
  initFlightFollowing(context);
- initKneeboard(context);
  Array.from(document.getElementsByTagName('input')).forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
- showTab(localStorage.jp_tab||'board');calcAll();updateTank();setInterval(updateTank,1000);
+ showTab(localStorage.jp_tab||'route');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 }

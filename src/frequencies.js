@@ -6,6 +6,12 @@ var activeFreq=null,standbyFreq=null,airportRoute=[],freqMode='local';
 export function getRoute(){return airportRoute}
 export function getRadioStack(){return {active:activeFreq,standby:standbyFreq}}
 
+export function setRoute(codes){
+ airportRoute=(codes||[]).map(function(code){return String(code||'').trim().toUpperCase()}).filter(Boolean);
+ saveRoute();
+ if(ctx)renderAirports();
+}
+
 function saveRoute(){localStorage.jp_route=JSON.stringify(airportRoute)}
 
 export function onAirportRemoved(code){

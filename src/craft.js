@@ -1,4 +1,5 @@
 import { airportRecord, normalizeCode } from './airports.js';
+import { getRoutePlan } from './routeplan.js';
 
 var ctx=null;
 var craftRouteTokens=[];
@@ -45,6 +46,18 @@ function setRoutePreset(txt){
  renderRouteTokens();
  craftUpdate();
  saveCraft();
+}
+
+function loadRoutePlan(plan){
+ plan=plan||getRoutePlan();
+ if(!plan)return;
+ if(plan.callsign)ctx.el('craftCallsign').value=plan.callsign;
+ if(plan.departure)ctx.el('craftDep').value=plan.departure;
+ if(plan.arrival){ctx.el('craftClearance').value=plan.arrival;if(ctx.el('craftArrival'))ctx.el('craftArrival').value=plan.arrival;}
+ craftRouteTokens=Array.isArray(plan.route)?plan.route.slice():[];
+ renderRouteTokens();craftUpdate();saveCraft();
+ var status=ctx.el('craftPlanStatus');
+ if(status)status.textContent='Loaded '+(plan.departure||'FROM')+' → '+(plan.arrival||'TO')+' from Plan Route. Edit any field to match the actual clearance.';
 }
 
 function renderAltitudeButtons(){
@@ -130,6 +143,8 @@ export function initCraft(context){
  if(ctx.el('routeRadarVectorsBtn'))ctx.el('routeRadarVectorsBtn').onclick=function(){setRoutePreset('RADAR VECTORS')};
  if(ctx.el('clearRouteTokensBtn'))ctx.el('clearRouteTokensBtn').onclick=function(){craftRouteTokens=[];renderRouteTokens();craftUpdate();saveCraft()};
  if(ctx.el('clearCraftBtn'))ctx.el('clearCraftBtn').onclick=clearCraft;
+ if(ctx.el('loadRoutePlanBtn'))ctx.el('loadRoutePlanBtn').onclick=function(){loadRoutePlan()};
+ window.addEventListener('jp:route-plan-saved',function(event){loadRoutePlan(event.detail)});
  ['craftCallsign','craftDep','craftClearance','craftClearType','craftMaintain','craftExpect','craftExpectTime','craftFreq','craftSquawk'].forEach(function(id){
    if(ctx.el(id)){ctx.el(id).addEventListener('input',function(){craftUpdate();saveCraft()});ctx.el(id).addEventListener('change',function(){craftUpdate();saveCraft()})}
  });
