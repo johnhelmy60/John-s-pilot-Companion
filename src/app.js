@@ -10,6 +10,7 @@ import { initWb, calcWB } from './wb.js';
 import { enhanceForms, validateInput } from './validation.js';
 import { initPerformance, renderPerformance } from './performance.js';
 import { loadPerformanceCatalog } from './performance-datasets.js';
+import { initPerformanceSetup, renderPerformanceSetup } from './performance-setup.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','craft','more'];
@@ -151,6 +152,7 @@ window.onload=function(){
  initFuel(context);
  initWb(context);
  initAircraft(context);
+ initPerformanceSetup(context);
  initAirports(context);
  initFrequencies(context);
  initRoutePlan(context);
@@ -158,7 +160,7 @@ window.onload=function(){
  initBriefing(context);
  initMinimums(context);
  initPerformance(context);
- loadPerformanceCatalog().then(function(){renderPerformance()});
+ loadPerformanceCatalog().then(function(){renderPerformance();renderPerformanceSetup()});
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;

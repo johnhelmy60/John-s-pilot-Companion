@@ -94,9 +94,18 @@ function currentView(aircraft,wb){
 
 function populateFlaps(dataset){
  var select=e('perfFlaps'),ready=datasetReady(dataset),prior=select.value;select.innerHTML='';
- var empty=document.createElement('option');empty.value='';empty.textContent=ready?'Select exact POH flap setting':'Performance data unavailable';select.appendChild(empty);
- if(ready){Array.from(new Set((dataset.configurations||[]).map(function(item){return String(item.flapSetting||'').trim()}).filter(Boolean))).forEach(function(value){var option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option)})}
+ var empty=document.createElement('option');empty.value='';empty.textContent=ready?'Select exact POH flap setting':'No verified POH performance data.';select.appendChild(empty);
+ if(ready){Array.from(new Set((dataset.configurations||[]).reduce(function(values,item){return values.concat([item.flapSetting,item.takeoffFlapSetting,item.landingFlapSetting],item.takeoffFlapSettings||[],item.landingFlapSettings||[])},[]).map(function(value){return String(value||'').trim()}).filter(Boolean))).forEach(function(value){var option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option)})}
  select.disabled=!ready;if(ready&&Array.from(select.options).some(function(option){return option.value===prior}))select.value=prior;
+}
+
+function renderChartAvailability(dataset){
+ var box=e('performance').querySelector('.chartLocked');if(!box)return;
+ box.innerHTML='';var wrap=document.createElement('div'),title=document.createElement('b');
+ if(!datasetReady(dataset)){title.textContent='Interactive POH chart unavailable';wrap.appendChild(title);var locked=document.createElement('div');locked.className='small';locked.textContent='Charts appear only after structured points, source pages, independent review, and administrator approval. Extrapolation remains prohibited.';wrap.appendChild(locked)}else{
+  title.textContent='Approved aircraft-specific POH charts';wrap.appendChild(title);var list=document.createElement('ul');['takeoff','landing','climb'].forEach(function(kind){(dataset.charts[kind]||[]).forEach(function(chart){var item=document.createElement('li');item.textContent=(chart.title||kind)+' — POH page '+(chart.page||'not supplied');list.appendChild(item)})});wrap.appendChild(list);
+ }
+ box.appendChild(wrap);
 }
 
 function renderAircraft(){
@@ -115,6 +124,7 @@ function renderAircraft(){
  text('perfPohPages',pages.length?Array.from(new Set(pages)).join(', '):'Not supplied');
  text('perfAssumptions',dataset&&dataset.assumptions.length?dataset.assumptions.join('; '):'None permitted until verified POH data is supplied');
  populateFlaps(dataset);
+ renderChartAvailability(dataset);
  return {aircraft:aircraft,dataset:dataset,wb:wb,view:view,wbReady:wbReady,landing:landing};
 }
 
