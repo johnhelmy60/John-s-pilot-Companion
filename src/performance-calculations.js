@@ -37,6 +37,14 @@ export function calculateClimbFromGradient(values){
  return gradientValues(gs,gradient);
 }
 
+export function calculateClimbPlan(values){
+ if(!finite(values.startAltitudeFt)||!finite(values.targetAltitudeFt)||!finite(values.verticalSpeedFpm)||!finite(values.indicatedAirspeedKt))return null;
+ var start=Number(values.startAltitudeFt),target=Number(values.targetAltitudeFt),rate=Number(values.verticalSpeedFpm),kias=Number(values.indicatedAirspeedKt);
+ if(target<=start||start< -1500||target>100000||rate<=0||rate>10000||kias<=0||kias>500)return null;
+ var minutes=(target-start)/rate;
+ return {climbMinutes:minutes,approximateDistanceNm:kias*minutes/60,altitudeToGainFt:target-start};
+}
+
 export function calculateFuelPlan(values){
  if(!finite(values.fuelOnboardGal)||!finite(values.fuelBurnGph)||!finite(values.reserveMinutes))return null;
  var fuel=Number(values.fuelOnboardGal),burn=Number(values.fuelBurnGph),reserve=Number(values.reserveMinutes),planned=finite(values.plannedMinutes)?Number(values.plannedMinutes):null;
@@ -46,9 +54,10 @@ export function calculateFuelPlan(values){
 }
 
 export function calculateDescentPlan(values){
- if(!finite(values.cruiseAltitudeFt)||!finite(values.targetAltitudeFt)||!finite(values.descentRateFpm)||!finite(values.groundSpeedKt))return null;
- var cruise=Number(values.cruiseAltitudeFt),target=Number(values.targetAltitudeFt),rate=Number(values.descentRateFpm),gs=Number(values.groundSpeedKt);
- if(cruise<=target||cruise>100000||target< -1500||rate<=0||rate>10000||gs<=0||gs>1000)return null;
+ var speed=finite(values.indicatedAirspeedKt)?values.indicatedAirspeedKt:values.groundSpeedKt;
+ if(!finite(values.cruiseAltitudeFt)||!finite(values.targetAltitudeFt)||!finite(values.descentRateFpm)||!finite(speed))return null;
+ var cruise=Number(values.cruiseAltitudeFt),target=Number(values.targetAltitudeFt),rate=Number(values.descentRateFpm),gs=Number(speed);
+ if(cruise<=target||cruise>100000||target< -1500||rate<=0||rate>10000||gs<=0||gs>500)return null;
  var minutes=(cruise-target)/rate;
  return {descentMinutes:minutes,distanceNm:gs*minutes/60,altitudeToLoseFt:cruise-target};
 }

@@ -1,4 +1,4 @@
-const CACHE='johns-pilot-companion-v2-36';
+const CACHE='johns-pilot-companion-v2-37';
 const ASSETS=[
   './index.html',
   './manifest.webmanifest',

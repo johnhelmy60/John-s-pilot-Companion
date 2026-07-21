@@ -2,7 +2,7 @@ import { ac } from './aircraft.js';
 import { airportCodes, airportRecord } from './airports.js';
 import { getWbSnapshot } from './wb.js';
 import { getActiveMinimums } from './minimums.js';
-import { calculateAtmosphere, calculateWindComponents, calculateClimbFromRate, calculateClimbFromGradient, calculateFuelPlan, calculateDescentPlan } from './performance-calculations.js';
+import { calculateAtmosphere, calculateWindComponents, calculateClimbFromRate, calculateClimbFromGradient, calculateClimbPlan, calculateFuelPlan, calculateDescentPlan } from './performance-calculations.js';
 
 var ctx=null;
 function e(id){return ctx.el(id)}
@@ -33,7 +33,8 @@ function prefillSavedValues(){
  if(e('mathCrosswindLimit').value===''&&Number.isFinite(Number(limits.maxCrosswindKt)))e('mathCrosswindLimit').value=Number(limits.maxCrosswindKt);
  if(e('mathReserveMinutes').value===''&&Number.isFinite(Number(limits.minFuelReserveMin)))e('mathReserveMinutes').value=Number(limits.minFuelReserveMin);
 }
-function renderAtmosphere(){var result=calculateAtmosphere({fieldElevationFt:value('mathElevation'),temperatureC:value('mathTemperature'),altimeterInHg:value('mathAltimeter')});text('mathPressureAltitude',result?Math.round(result.pressureAltitudeFt).toLocaleString()+' ft':'—');text('mathDensityAltitude',result?Math.round(result.densityAltitudeFt).toLocaleString()+' ft':'—');status('mathAtmosphereStatus',result?'Approximate rule-of-thumb density altitude; verify with an approved source.':'Enter valid elevation, temperature, and altimeter (25.00–35.00 inHg).',!result)}
+function renderAtmosphere(){normalizeAltimeter();var result=calculateAtmosphere({fieldElevationFt:value('mathElevation'),temperatureC:value('mathTemperature'),altimeterInHg:value('mathAltimeter')});text('mathPressureAltitude',result?Math.round(result.pressureAltitudeFt).toLocaleString()+' ft':'—');text('mathDensityAltitude',result?Math.round(result.densityAltitudeFt).toLocaleString()+' ft':'—');status('mathAtmosphereStatus',result?'Approximate rule-of-thumb density altitude; verify with an approved source.':'Enter valid elevation, temperature, and altimeter (25.00–35.00 inHg).',!result)}
+function normalizeAltimeter(){var node=e('mathAltimeter'),raw=Number(node.value);if(Number.isInteger(raw)&&raw>=2500&&raw<=3500)node.value=(raw/100).toFixed(2)}
 function componentLabel(number){return Math.abs(number).toFixed(1)+' kt '+(number>=0?'headwind':'tailwind')}
 function renderWind(){
  var gust=value('mathWindGust'),speed=value('mathWindSpeed'),result=calculateWindComponents({runwayHeadingDeg:value('mathRunwayHeading'),windDirectionDeg:value('mathWindDirection'),windSpeedKt:speed,gustSpeedKt:gust});
@@ -43,22 +44,27 @@ function renderWind(){
 }
 function renderClimb(){
  var mode=e('mathClimbMode').value;e('mathClimbRateWrap').classList.toggle('hidden',mode!=='rate');e('mathClimbGradientWrap').classList.toggle('hidden',mode!=='gradient');
- var result=mode==='rate'?calculateClimbFromRate({groundSpeedKt:value('mathClimbGroundspeed'),verticalSpeedFpm:value('mathClimbRate')}):calculateClimbFromGradient({groundSpeedKt:value('mathClimbGroundspeed'),gradientFtPerNm:value('mathClimbGradient')});
- text('mathRequiredFpm',result?Math.round(result.requiredFpm).toLocaleString()+' ft/min':'—');text('mathGradientResult',result?Math.round(result.gradientFtPerNm).toLocaleString()+' ft/NM':'—');text('mathClimbAngle',result?result.gradientPercent.toFixed(1)+'% / '+result.angleDegrees.toFixed(1)+'°':'—');status('mathClimbStatus',result?'Conversion assumes constant groundspeed and climb rate.':'Enter positive groundspeed and the selected climb value.',!result);
+ var speed=value('mathClimbGroundspeed'),result=mode==='rate'?calculateClimbFromRate({groundSpeedKt:speed,verticalSpeedFpm:value('mathClimbRate')}):calculateClimbFromGradient({groundSpeedKt:speed,gradientFtPerNm:value('mathClimbGradient')});
+ var usedFpm=result?result.requiredFpm:null,toc=calculateClimbPlan({startAltitudeFt:value('mathClimbStartAltitude'),targetAltitudeFt:value('mathClimbTargetAltitude'),verticalSpeedFpm:usedFpm,indicatedAirspeedKt:speed});
+ text('mathRequiredFpm',result?Math.round(result.requiredFpm).toLocaleString()+' ft/min':'—');text('mathGradientResult',result?Math.round(result.gradientFtPerNm).toLocaleString()+' ft/NM':'—');text('mathClimbAngle',result?result.gradientPercent.toFixed(1)+'% / '+result.angleDegrees.toFixed(1)+'°':'—');text('mathTocTime',toc?toc.climbMinutes.toFixed(1)+' min':'—');text('mathTocDistance',toc?toc.approximateDistanceNm.toFixed(1)+' NM':'—');
+ status('mathClimbStatus',result?(toc?'KIAS is used as a no-wind speed proxy. TOC distance and gradient are approximate; actual groundspeed changes them.':'Enter starting and higher target altitude to calculate TOC. KIAS-based distance is approximate.'):'Enter positive KIAS and the selected climb value.',!result);
 }
 function formatMinutes(minutes){if(!Number.isFinite(minutes))return '—';return Math.floor(minutes/60)+' hr '+Math.round(minutes%60)+' min'}
 function renderFuelDescent(){
- var fuel=calculateFuelPlan({fuelOnboardGal:value('mathFuelOnboard'),fuelBurnGph:value('mathFuelBurn'),reserveMinutes:value('mathReserveMinutes'),plannedMinutes:value('mathPlannedMinutes')});
+ var planned=value('mathPlannedMinutes'),plannedMinutes=planned==null?null:planned*(e('mathPlannedTimeUnit').value==='hours'?60:1),fuel=calculateFuelPlan({fuelOnboardGal:value('mathFuelOnboard'),fuelBurnGph:value('mathFuelBurn'),reserveMinutes:value('mathReserveMinutes'),plannedMinutes:plannedMinutes});
  text('mathTotalEndurance',fuel?formatMinutes(fuel.totalEnduranceMinutes):'—');text('mathUsableEndurance',fuel?formatMinutes(fuel.usableEnduranceMinutes):'—');text('mathFuelRemaining',fuel&&fuel.fuelRemainingGal!=null?fuel.fuelRemainingGal.toFixed(1)+' gal':'—');
- var descent=calculateDescentPlan({cruiseAltitudeFt:value('mathCruiseAltitude'),targetAltitudeFt:value('mathTargetAltitude'),descentRateFpm:value('mathDescentRate'),groundSpeedKt:value('mathDescentGroundspeed')});text('mathDescentTime',descent?descent.descentMinutes.toFixed(1)+' min':'—');text('mathDescentDistance',descent?descent.distanceNm.toFixed(1)+' NM':'—');
- var messages=[];if(!fuel)messages.push('Fuel: enter onboard fuel, positive burn, and reserve.');else if(fuel.reserveExceedsFuel)messages.push('WARNING: entered reserve requires more fuel than onboard.');else if(fuel.fuelRemainingGal!=null&&fuel.fuelRemainingGal<0)messages.push('WARNING: planned flight consumes more fuel than onboard.');if(!descent)messages.push('Descent: cruise altitude must exceed target; enter positive descent rate and groundspeed.');status('mathFuelStatus',messages.join(' '),messages.length>0);
+ var descent=calculateDescentPlan({cruiseAltitudeFt:value('mathCruiseAltitude'),targetAltitudeFt:value('mathTargetAltitude'),descentRateFpm:value('mathDescentRate'),indicatedAirspeedKt:value('mathDescentGroundspeed')});text('mathDescentTime',descent?descent.descentMinutes.toFixed(1)+' min':'—');text('mathDescentDistance',descent?descent.distanceNm.toFixed(1)+' NM':'—');
+ var messages=[];if(!fuel)messages.push('Fuel: enter onboard fuel, positive burn, reserve, and a valid planned time.');else if(fuel.reserveExceedsFuel)messages.push('WARNING: entered reserve requires more fuel than onboard.');else if(fuel.fuelRemainingGal!=null&&fuel.fuelRemainingGal<0)messages.push('WARNING: planned flight consumes more fuel than onboard.');if(!descent)messages.push('TOD: cruise altitude must exceed target; enter positive descent rate and KIAS.');else messages.push('TOD distance uses KIAS as a no-wind speed proxy and is approximate; wind and TAS change actual ground distance.');status('mathFuelStatus',messages.join(' '),messages.some(function(message){return message.indexOf('WARNING')===0||message.indexOf('TOD:')===0||message.indexOf('Fuel:')===0}));
 }
 function render(){if(!ctx)return;renderAtmosphere();renderWind();renderClimb();renderFuelDescent()}
 export function renderPerformance(){if(!ctx)return;prefillSavedValues();render()}
 export function initPerformance(context){
  ctx=context;populateAirports();populateRunways(false);prefillSavedValues();
+ if(localStorage.jp_mathPlannedTimeUnit==='hours')e('mathPlannedTimeUnit').value='hours';
  e('mathAirport').addEventListener('change',function(){localStorage.jp_mathAirport=e('mathAirport').value;localStorage.jp_mathRunway='';populateRunways(true);render()});
  e('mathRunway').addEventListener('change',function(){localStorage.jp_mathRunway=e('mathRunway').value;applyRunwayHeading();render()});
- ['mathElevation','mathTemperature','mathAltimeter','mathRunwayHeading','mathWindDirection','mathWindSpeed','mathWindGust','mathCrosswindLimit','mathClimbMode','mathClimbGroundspeed','mathClimbRate','mathClimbGradient','mathFuelOnboard','mathFuelBurn','mathReserveMinutes','mathPlannedMinutes','mathCruiseAltitude','mathTargetAltitude','mathDescentRate','mathDescentGroundspeed'].forEach(function(id){e(id).addEventListener('input',render);e(id).addEventListener('change',render)});
+ ['mathElevation','mathTemperature','mathAltimeter','mathRunwayHeading','mathWindDirection','mathWindSpeed','mathWindGust','mathCrosswindLimit','mathClimbMode','mathClimbGroundspeed','mathClimbRate','mathClimbGradient','mathClimbStartAltitude','mathClimbTargetAltitude','mathFuelOnboard','mathFuelBurn','mathReserveMinutes','mathPlannedMinutes','mathPlannedTimeUnit','mathCruiseAltitude','mathTargetAltitude','mathDescentRate','mathDescentGroundspeed'].forEach(function(id){e(id).addEventListener('input',render);e(id).addEventListener('change',render)});
+ e('mathAltimeter').addEventListener('input',function(){normalizeAltimeter();render()});
+ e('mathPlannedTimeUnit').addEventListener('change',function(){localStorage.jp_mathPlannedTimeUnit=e('mathPlannedTimeUnit').value});
  render();
 }
