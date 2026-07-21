@@ -1,19 +1,12 @@
-import { ac } from './aircraft.js';
-
-var ctx=null;
-var lastReserveHours=null;
-var lastFuelPlanningSnapshot=null;
-
+var ctx=null,lastReserveHours=null,lastFuelPlanningSnapshot=null,attempted=false,quantityUnit='gal',timeUnit='hours';
 export function getLastReserveHours(){return lastReserveHours}
 export function getFuelPlanningSnapshot(){return lastFuelPlanningSnapshot?Object.assign({},lastFuelPlanningSnapshot):null}
-
-export function calcFuel(){
- var el=ctx.el,nv=ctx.nv,fmt=ctx.fmt,pill=ctx.pill,a=ac();el('fuelAcLabel').textContent='Selected aircraft: '+a.n+' / '+a.type;
- var on=nv('fuelOnboard'),hrs=nv('flightHours'),burn=el('fuelBurn').value.trim()?nv('fuelBurn'):(a.fuelBurn||9);
- if(on==null||hrs==null||burn==null){lastReserveHours=null;lastFuelPlanningSnapshot=null;['fuelUsed','fuelRem','reserveTime'].forEach(function(id){el(id).textContent='—'});el('fuelStatus').innerHTML=pill('Enter valid fuel values','warn');return}
- var used=hrs*burn,rem=on-used,res=rem/burn;lastReserveHours=res;
- lastFuelPlanningSnapshot={startingFuelGallons:on,plannedFlightHours:hrs,fuelBurnGph:burn,plannedFlightFuelConsumedGallons:used,plannedFuelRemainingGallons:rem,calculatedAt:new Date().toISOString()};
- el('fuelUsed').textContent=fmt(used,1)+' gal';el('fuelRem').textContent=fmt(rem,1)+' gal';el('reserveTime').textContent=fmt(res,2)+' hr';el('fuelStatus').innerHTML=res<.75?pill('LOW RESERVE','bad'):res<1.25?pill('Caution','warn'):pill('Good reserve','good');
-}
-
-export function initFuel(context){ctx=context}
+function e(id){return ctx.el(id)}
+function n(id){var raw=e(id).value.trim(),value=Number(raw);return raw!==''&&Number.isFinite(value)?value:null}
+function save(id){localStorage['jp_'+id]=e(id).value}
+function core(){var onboard=n('fuelOnboard'),time=n('flightHours'),burn=n('fuelBurn'),density=n('fuelDensity')||6,hours=time==null?null:time*(timeUnit==='minutes'?1/60:1),gallons=onboard==null?null:onboard/(quantityUnit==='lb'?density:1);if(gallons==null||gallons<0||hours==null||hours<0||burn==null||burn<=0)return null;var used=hours*burn,remaining=gallons-used,reserve=remaining/burn;return {onboardGallons:gallons,hours:hours,burn:burn,used:used,remaining:remaining,reserve:reserve,density:density}}
+export function calcFuel(){if(!ctx)return;var result=core();lastReserveHours=result?result.reserve:null;lastFuelPlanningSnapshot=result?{startingFuelGallons:result.onboardGallons,plannedFlightHours:result.hours,fuelBurnGph:result.burn,plannedFlightFuelConsumedGallons:result.used,plannedFuelRemainingGallons:result.remaining,calculatedAt:new Date().toISOString()}:null;if(!attempted)return;e('fuelResults').classList.toggle('hidden',!result);if(!result){e('fuelResults').classList.remove('hidden');e('fuelUsed').textContent='—';e('fuelRem').textContent='—';e('reserveTime').textContent='—';e('fuelStatus').innerHTML=ctx.pill('Check fuel, time, density, and burn inputs','bad');e('fuelBreakdown').textContent='';return}e('fuelUsed').textContent=ctx.fmt(result.used,1)+' gal / '+ctx.fmt(result.used*result.density,1)+' lb';e('fuelRem').textContent=ctx.fmt(result.remaining,1)+' gal / '+ctx.fmt(result.remaining*result.density,1)+' lb';e('reserveTime').textContent=ctx.fmt(result.reserve,2)+' hr / '+ctx.fmt(result.reserve*60,0)+' min';e('fuelStatus').innerHTML=result.reserve<0?ctx.pill('Fuel exhausted before planned time','bad'):result.reserve<.75?ctx.pill('Low reserve','bad'):result.reserve<1.25?ctx.pill('Caution','warn'):ctx.pill('Reserve available','good');e('fuelBreakdown').textContent='Breakdown: planned hours × burn rate = fuel used; onboard gallons − fuel used = remaining; remaining ÷ burn rate = reserve time.'}
+function switchQuantity(next){var current=n('fuelOnboard'),density=n('fuelDensity')||6;if(current!=null&&next!==quantityUnit)e('fuelOnboard').value=(next==='lb'?current*density:current/density).toFixed(1).replace(/\.0$/,'');quantityUnit=next;localStorage.jp_fuelQuantityUnit=next;save('fuelOnboard');e('fuelDensityWrap').classList.toggle('hidden',next!=='lb');calcFuel()}
+function switchTime(next){var current=n('flightHours');if(current!=null&&next!==timeUnit)e('flightHours').value=(next==='minutes'?current*60:current/60).toFixed(2).replace(/\.00$/,'').replace(/(\.\d)0$/,'$1');timeUnit=next;localStorage.jp_fuelTimeUnit=next;save('flightHours');calcFuel()}
+function reset(){['fuelOnboard','flightHours','fuelBurn'].forEach(function(id){e(id).value='';localStorage.removeItem('jp_'+id)});attempted=false;lastReserveHours=null;lastFuelPlanningSnapshot=null;e('fuelResults').classList.add('hidden')}
+export function initFuel(context){ctx=context;quantityUnit=localStorage.jp_fuelQuantityUnit==='lb'?'lb':'gal';timeUnit=localStorage.jp_fuelTimeUnit==='minutes'?'minutes':'hours';e('fuelQuantityUnit').value=quantityUnit;e('fuelTimeUnit').value=timeUnit;e('fuelDensityWrap').classList.toggle('hidden',quantityUnit!=='lb');e('fuelQuantityUnit').addEventListener('change',function(){switchQuantity(e('fuelQuantityUnit').value)});e('fuelTimeUnit').addEventListener('change',function(){switchTime(e('fuelTimeUnit').value)});e('fuelCalculateBtn').addEventListener('click',function(){attempted=true;calcFuel()});e('fuelExampleBtn').addEventListener('click',function(){e('fuelOnboard').value=48;e('flightHours').value=timeUnit==='minutes'?120:2;e('fuelBurn').value=8;['fuelOnboard','flightHours','fuelBurn'].forEach(save);attempted=true;calcFuel()});e('fuelResetBtn').addEventListener('click',reset);e('fuelAcLabel').textContent='Enter the values for this flight. No aircraft profile required.'}

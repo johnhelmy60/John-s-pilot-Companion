@@ -1,4 +1,3 @@
-import { ac } from './aircraft.js';
 import { airportCodes, airportRecord } from './airports.js';
 
 var ctx=null;
@@ -89,19 +88,6 @@ function runwayHtml(a){
  return '<ul class="briefList">'+runways.map(function(r){return '<li>'+r+'</li>'}).join('')+'</ul>';
 }
 
-function aircraftHtml(){
- var aircraft=ac();
- return '<div class="result">'
-   + '<h3>Selected Aircraft</h3>'
-   + '<table>'
-   + '<tr><td>N-number</td><td>'+(aircraft.n||'—')+'</td></tr>'
-   + '<tr><td>Type</td><td>'+(aircraft.type||'—')+'</td></tr>'
-   + '<tr><td>Personal XW limit</td><td>'+((aircraft.xwLimit||'—'))+' kt</td></tr>'
-   + '<tr><td>Fuel burn</td><td>'+((aircraft.fuelBurn||'—'))+' GPH</td></tr>'
-   + '</table>'
-   + '</div>';
-}
-
 function reminderHtml(){
  return '<div class="result">'
   + '<h3>Arrival Briefing Prompts</h3>'
@@ -190,7 +176,6 @@ function renderSelectedBriefing(){
   + '<div class="result"><h3>Runways</h3>'+runwayHtml(a)+'</div>'
   + '<h3>Frequencies</h3>'
   + frequencyHtml(a)
-  + aircraftHtml()
   + reminderHtml()
   + '<p class="small">Reference only. Verify airport, runway, frequency, weather, NOTAM, POH/W&B, instructor, and school procedure information with ForeFlight, FAA/current sources, and official documents before flight.</p>';
 }

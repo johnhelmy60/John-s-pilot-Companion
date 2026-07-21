@@ -1,4 +1,3 @@
-import { initAircraft } from './aircraft.js';
 import { initAirports } from './airports.js';
 import { initFrequencies, renderAirports, onAirportRemoved } from './frequencies.js';
 import { initCraft } from './craft.js';
@@ -12,7 +11,7 @@ import { initPerformance, renderPerformance } from './performance.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','craft','more'];
-var sections=['routeplan','plan','airport','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
+var sections=['routeplan','plan','airport','more','crosswind','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
 var sectionNodes={},mainNode=null;
 
 function el(id){
@@ -32,13 +31,14 @@ function clone(o){return JSON.parse(JSON.stringify(o))}
 function normalizeTab(id){
  if(id==='board'||id==='route')return 'routeplan';
  if(id==='radio'||id==='following')return 'craft';
+ if(id==='aircraft')return 'plan';
  if(sections.indexOf(id)>=0)return id;
  return 'routeplan';
 }
 
 function groupFor(id){
  if(id==='routeplan')return 'route';
- if(['plan','crosswind','aircraft','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
+ if(['plan','crosswind','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
  if(id==='craft')return 'craft';
  if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
@@ -141,15 +141,17 @@ function wireTabs(){
  mainTabs.forEach(function(s,index){var tab=el('tab-'+s);if(tab){tab.setAttribute('role','tab');tab.setAttribute('aria-controls',s==='route'?'routeplan':s);tab.addEventListener('keydown',function(event){if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight'&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();var next=event.key==='Home'?0:event.key==='End'?mainTabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+mainTabs.length)%mainTabs.length;el('tab-'+mainTabs[next]).focus();showTab(mainTabs[next])})}});
 }
 
+function wireGoNoGo(){var reset=el('goResetBtn');if(reset)reset.addEventListener('click',function(){['goCeil','goVis'].forEach(function(id){el(id).value='';localStorage.removeItem('jp_'+id)});calcAll()})}
+
 window.onload=function(){
  mainNode=document.querySelector('main');sections.forEach(function(id){var node=document.getElementById(id);if(node)sectionNodes[id]=node});
  var context={el:el,nv:nv,fmt:fmt,pill:pill,today:today,clone:clone,calcAll:calcAll,showTab:showTab,renderAirports:function(){renderAirports();renderBriefing()},onAirportRemoved:onAirportRemoved};
  window.jpShowTab=showTab;
  wireTabs();
+ wireGoNoGo();
  loadInputs();
  initFuel(context);
  initWb(context);
- initAircraft(context);
  initAirports(context);
  initFrequencies(context);
  initRoutePlan(context);
@@ -161,6 +163,8 @@ initPerformance(context);
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;
  el('tank30').onclick=function(){setTankInterval(30)};el('tank45').onclick=function(){setTankInterval(45)};el('tank60').onclick=function(){setTankInterval(60)};
+ el('crosswindExampleBtn').onclick=function(){el('rwy').value=18;el('windDir').value=240;el('windSpeed').value=12;el('gust').value=18;calcAll()};
+ el('crosswindResetBtn').onclick=function(){['rwy','windDir','windSpeed','gust','xwLimit'].forEach(function(id){el(id).value='';localStorage.removeItem('jp_'+id)});calcAll()};
  showTab(localStorage.jp_tab||'route');calcAll();updateTank();setInterval(updateTank,1000);
  if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 }

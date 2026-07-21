@@ -1,4 +1,3 @@
-import { ac } from './aircraft.js';
 import { setRoute } from './frequencies.js';
 import { validateSection, validateInput } from './validation.js';
 
@@ -62,8 +61,8 @@ function addTokens(){
 }
 
 function loadPlan(){
- var plan=getRoutePlan(),aircraft=ac();
- e('planCallsign').value=plan.callsign||(aircraft&&aircraft.n)||'';
+ var plan=getRoutePlan();
+ e('planCallsign').value=plan.callsign||'';
  e('planDeparture').value=plan.departure||'';
  e('planArrival').value=plan.arrival||'';
  routeTokens=Array.isArray(plan.route)?plan.route.slice():[];

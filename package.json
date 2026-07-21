@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/performance-calculations.test.mjs"
+    "test": "node tests/performance-calculations.test.mjs && node tests/wb-envelope.test.mjs && node tests/ui-structure.test.mjs"
   }
 }

@@ -1,4 +1,4 @@
-# John's Pilot Companion v2.5
+# John's Pilot Companion
 
 Adds CRAFT IFR Clearance builder:
 - Clearance limit
@@ -12,6 +12,6 @@ Adds CRAFT IFR Clearance builder:
 
 Keep airport_database_A_M.json and airport_database_N_Z.json in the data directory.
 
-## Runway & Flight Math
+## Flight Math
 
-Aircraft-specific performance development is on hold. The active section contains universal pressure/density altitude, runway wind, climb-gradient, fuel/endurance, and descent calculations. It requires no POH dataset, backend, or live weather. The inactive schema research remains documented in `docs/performance-data.md` for possible future development.
+Aircraft-specific performance development is on hold. Flight Math contains focused Density Altitude, TOC, and TOD planning calculators. It requires no aircraft profile, POH dataset, backend, or live weather. The inactive schema research remains documented in `docs/performance-data.md` for possible future development.

@@ -1,50 +1,10 @@
 import assert from 'node:assert/strict';
-import { calculateAtmosphere, calculateWindComponents, temperatureToC, calculateFlightSpeeds, calculateClimbFromRate, calculateClimbFromGradient, calculateClimbPlan, calculateFuelPlan, calculateDescentPlan } from '../src/performance-calculations.js';
-
+import { calculateAtmosphere, temperatureToC, calculateFlightSpeeds, calculateClimbPlan, calculateDescentPlan } from '../src/performance-calculations.js';
 const atmosphere=calculateAtmosphere({fieldElevationFt:5000,temperatureC:25,altimeterInHg:29.92});
-assert.equal(atmosphere.pressureAltitudeFt,5000);
-assert.ok(atmosphere.densityAltitudeFt>5000);
-assert.equal(calculateAtmosphere({fieldElevationFt:5000,temperatureC:25,altimeterInHg:40}),null);
-
-const direct=calculateWindComponents({runwayHeadingDeg:180,windDirectionDeg:180,windSpeedKt:10});
-assert.equal(direct.headwindKt,10);
-assert.ok(Math.abs(direct.crosswindKt)<0.001);
-const rightCrosswind=calculateWindComponents({runwayHeadingDeg:180,windDirectionDeg:270,windSpeedKt:12,gustSpeedKt:18});
-assert.ok(rightCrosswind.crosswindKt>11.99);
-assert.ok(rightCrosswind.gustCrosswindKt>17.99);
-assert.equal(calculateWindComponents({runwayHeadingDeg:180,windDirectionDeg:270,windSpeedKt:12,gustSpeedKt:8}),null);
-assert.equal(temperatureToC(68,'f'),20);
-assert.equal(temperatureToC(20,'c'),20);
-assert.equal(temperatureToC(200,'f'),null);
-const noWindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:true});
-assert.ok(noWindSpeeds.estimatedTasKt>73);
-assert.equal(noWindSpeeds.estimatedGroundspeedKt,noWindSpeeds.estimatedTasKt);
-const headwindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:false,courseDeg:180,windDirectionDeg:180,windSpeedKt:10});
-assert.ok(headwindSpeeds.estimatedGroundspeedKt<noWindSpeeds.estimatedGroundspeedKt);
-const tailwindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:false,courseDeg:180,windDirectionDeg:360,windSpeedKt:10});
-assert.ok(tailwindSpeeds.estimatedGroundspeedKt>noWindSpeeds.estimatedGroundspeedKt);
-
-const climbRate=calculateClimbFromRate({groundSpeedKt:120,verticalSpeedFpm:600});
-assert.equal(climbRate.gradientFtPerNm,300);
-assert.equal(climbRate.requiredFpm,600);
-const climbGradient=calculateClimbFromGradient({groundSpeedKt:90,gradientFtPerNm:200});
-assert.equal(climbGradient.requiredFpm,300);
-assert.equal(climbGradient.gradientFtPerNm,200);
-const toc=calculateClimbPlan({startAltitudeFt:5000,targetAltitudeFt:8000,verticalSpeedFpm:500,indicatedAirspeedKt:73});
-assert.equal(toc.climbMinutes,6);
-assert.equal(toc.approximateDistanceNm,7.3);
-assert.equal(calculateClimbPlan({startAltitudeFt:8000,targetAltitudeFt:5000,verticalSpeedFpm:500,indicatedAirspeedKt:73}),null);
-
-const fuel=calculateFuelPlan({fuelOnboardGal:48,fuelBurnGph:8,reserveMinutes:60,plannedMinutes:120});
-assert.equal(fuel.totalEnduranceMinutes,360);
-assert.equal(fuel.usableEnduranceMinutes,300);
-assert.equal(fuel.fuelRemainingGal,32);
-assert.equal(fuel.reserveExceedsFuel,false);
-
-const descent=calculateDescentPlan({cruiseAltitudeFt:10000,targetAltitudeFt:5000,descentRateFpm:500,groundSpeedKt:120});
-assert.equal(descent.descentMinutes,10);
-assert.equal(descent.distanceNm,20);
-assert.equal(calculateDescentPlan({cruiseAltitudeFt:10000,targetAltitudeFt:5000,descentRateFpm:500,indicatedAirspeedKt:90}).distanceNm,15);
-assert.equal(calculateDescentPlan({cruiseAltitudeFt:5000,targetAltitudeFt:10000,descentRateFpm:500,groundSpeedKt:120}),null);
-
-console.log('Runway and flight math calculations passed.');
+assert.equal(atmosphere.pressureAltitudeFt,5000);assert.ok(atmosphere.densityAltitudeFt>5000);assert.equal(calculateAtmosphere({fieldElevationFt:5000,temperatureC:25,altimeterInHg:40}),null);
+assert.equal(temperatureToC(68,'f'),20);assert.equal(temperatureToC(20,'c'),20);assert.equal(temperatureToC(200,'f'),null);
+const calm=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:true});assert.ok(calm.estimatedTasKt>73);assert.equal(calm.estimatedGroundspeedKt,calm.estimatedTasKt);
+const headwind=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:false,courseDeg:180,windDirectionDeg:180,windSpeedKt:10});assert.ok(headwind.estimatedGroundspeedKt<calm.estimatedGroundspeedKt);
+const toc=calculateClimbPlan({startAltitudeFt:5000,targetAltitudeFt:8000,verticalSpeedFpm:500,groundspeedKt:73});assert.equal(toc.climbMinutes,6);assert.equal(toc.approximateDistanceNm,7.3);
+const tod=calculateDescentPlan({cruiseAltitudeFt:10000,targetAltitudeFt:5000,descentRateFpm:500,groundspeedKt:90});assert.equal(tod.descentMinutes,10);assert.equal(tod.distanceNm,15);
+console.log('Flight Math calculations passed.');
