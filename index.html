@@ -21,6 +21,7 @@ html{background:#02070b;scroll-behavior:smooth}body{min-height:100vh;padding-bot
 h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-size:16px;color:#79c4ff;margin-top:24px;padding-bottom:6px;border-bottom:1px solid #20374b}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}label{color:#c3cfda;font-weight:750}input,select,textarea{padding:12px 13px;border-radius:11px;border-color:#45647e;background:#05111b;font:inherit;font-size:16px;transition:border-color .15s,box-shadow .15s}input:hover,select:hover,textarea:hover{border-color:#6285a2}input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #ffd166;outline-offset:2px}input[aria-invalid='true']{border-color:var(--r)}input[readonly]{background:#101d2a;color:#c3cfda}.fieldError{min-height:0;color:#ffabab;font-size:12px;font-weight:750;margin-top:5px}.fieldError:not(:empty){min-height:18px}.tabs{left:50%;right:auto;width:min(calc(100% - 16px),var(--max));transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);border-color:#45647e;background:#071018f2;backdrop-filter:blur(14px)}.tab{min-height:46px;color:#c0ccd6;cursor:pointer}.tab:hover{border-color:var(--b);color:var(--t)}
 @media(max-width:560px){:root{--nav-height:78px}header{padding:11px 12px}.safetyBanner{margin:8px 10px 0}.grid{grid-template-columns:1fr;gap:8px}main{padding:8px 8px 0}.card{border-radius:16px;padding:16px}.sectionGrid{grid-template-columns:1fr 1fr}.tabs{bottom:calc(env(safe-area-inset-bottom) + 6px)}.tab{min-height:48px;font-size:11px}}
 @media(min-width:800px){.sectionGrid{grid-template-columns:repeat(3,1fr)}.toolCard{min-height:84px}.result{padding:16px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+.workflowSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0 20px}.workflowStep{padding:9px 6px;border:1px solid var(--l);border-radius:10px;background:#07111b;color:var(--m);font-size:12px;font-weight:800;text-align:center}.workflowStep:first-child{border-color:var(--b);color:var(--b)}.perfImportGrid,.perfResultGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.perfDatum{padding:11px;border:1px solid #29445b;border-radius:11px;background:#061018}.perfDatum b{display:block;margin-top:3px}.chartLocked{min-height:260px;display:grid;place-items:center;padding:24px;border:1px dashed #58728a;border-radius:14px;background:repeating-linear-gradient(0deg,#07111b,#07111b 39px,#142638 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,#142638 40px);text-align:center}.checkRow{display:flex;gap:10px;align-items:flex-start;padding:10px 0}.checkRow input{width:auto;margin-top:4px}.checkRow label{margin:0}.metadata{border-left:4px solid var(--y)}@media(max-width:560px){.workflowSteps{grid-template-columns:1fr 1fr}.perfImportGrid,.perfResultGrid{grid-template-columns:1fr}.chartLocked{min-height:220px}}
 </style></head><body><a class='skipLink' href='#appMain'>Skip to active tool</a><header><h1>John's Pilot Companion v2.5</h1><div class='sub'>Personal Flight Toolkit • CRAFT IFR Clearance</div></header><div class='safetyBanner' role='note'>PLANNING AID ONLY — Not official flight information. Verify every airport, frequency, route, weather item, performance value, and ATC instruction with ForeFlight, FAA/current sources, the aircraft POH/W&amp;B, and instructor or school procedures.</div><main id='appMain' tabindex='-1'>
 <section id='crosswind' class='card'><h2>Crosswind Calculator</h2><div class='grid'><div><label>Runway # or heading</label><input id='rwy' type='number' placeholder='11 or 110'></div><div><label>Wind from °</label><input id='windDir' type='number' placeholder='257'></div><div><label>Wind speed kt</label><input id='windSpeed' type='number' placeholder='8'></div><div><label>Gust kt</label><input id='gust' type='number' placeholder='14'></div><div><label>Personal XW limit kt</label><input id='xwLimit' type='number' value='17'></div></div><div class='result'><b>Active minimums:</b> <span id='xwMinMode'>—</span><br><span class='small' id='xwMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><div class='small'>Runway heading</div><div class='big' id='rwyOut'>—</div><div id='windRisk'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Angle</td><td id='angleOut'>—</td></tr><tr><td>Crosswind</td><td id='xwOut'>—</td></tr><tr><td>Gust crosswind</td><td id='gxwOut'>—</td></tr><tr><td>Head/Tailwind</td><td id='hwOut'>—</td></tr><tr><td>Wind side</td><td id='sideOut'>—</td></tr><tr><td>Crab/Nose</td><td id='crabOut'>—</td></tr></table></div></section>
 <section id='plan' class='card hidden'>
@@ -33,6 +34,7 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 <button class='toolCard' data-open='fuel'>Fuel<span>Fuel used, remaining, and reserve estimate</span></button>
 <button class='toolCard' data-open='minimums'>Minimums<span>Solo and dual personal minimums</span></button>
 <button class='toolCard' data-open='gono'>Go/No-Go<span>Reference-only risk snapshot</span></button>
+<button class='toolCard' data-open='performance'>Performance<span>Exact-aircraft POH workflow — mock only until verified data is supplied</span></button>
 </div>
 </section>
 <section id='airport' class='card hidden'>
@@ -111,6 +113,47 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 <div class='result cgGraph'><div class='cgGraphTitle'><b>CG Envelope</b><span class='cgGraphStatus' id='wbEnvelopeStatus'>—</span></div><div id='wbEnvelopeGraph'></div><div class='cgLegend'><span><i class='cgKey' style='background:#58b7ff'></i>Forward Limit</span><span><i class='cgKey' style='background:#ffd166'></i>Aft Limit</span><span><i class='cgKey' style='background:#ff6b6b'></i>Max Gross Weight</span><span><i class='cgKey' style='background:#fff'></i>Current Loading Point</span></div></div>
 <details class='result wbDebug' id='wbDebug'><summary>CG Graph Debug</summary><pre id='wbDebugOutput'>Debug data will appear after calculation.</pre></details>
 <p class='small'>Reference only. Verify aircraft-specific W&amp;B using the POH, official W&amp;B records, equipment list, instructor guidance, and school procedures.</p></section>
+<section id='performance' class='card hidden'>
+<h2>Aircraft Performance</h2>
+<div class='small'>Mock workflow only. No takeoff, landing, climb, interpolation, chart crosshairs, or safety-margin calculations are enabled until an exact-model POH/AFM dataset is supplied and independently verified.</div>
+<div class='workflowSteps' aria-label='Performance workflow'><div class='workflowStep'>1 Aircraft</div><div class='workflowStep'>2 Airport / Runway</div><div class='workflowStep'>3 Confirm Conditions</div><div class='workflowStep'>4 Results</div></div>
+
+<h3>1 — Aircraft</h3>
+<div class='result'><div class='small'>Selected profile</div><div class='boardMed' id='perfAircraft'>—</div><div id='perfDatasetStatus' class='small'></div></div>
+<div class='perfImportGrid'>
+<div class='perfDatum'><span class='small'>Takeoff weight from W&amp;B</span><b id='perfTakeoffWeight'>—</b></div>
+<div class='perfDatum'><span class='small'>Landing weight</span><b id='perfLandingWeight'>—</b></div>
+<div class='perfDatum'><span class='small'>Fuel from W&amp;B</span><b id='perfFuel'>—</b></div>
+<div class='perfDatum'><span class='small'>CG from W&amp;B</span><b id='perfCg'>—</b></div>
+</div>
+<div class='small' id='perfWbStatus'></div>
+
+<h3>2 — Airport / Runway</h3>
+<div class='grid'><div><label>Saved airport</label><select id='perfAirport' required></select></div><div><label>Runway</label><select id='perfRunway' required></select></div></div>
+<div class='perfImportGrid'><div class='perfDatum'><span class='small'>Airport</span><b id='perfAirportName'>—</b></div><div class='perfDatum'><span class='small'>Field elevation</span><b id='perfElevation'>—</b></div><div class='perfDatum'><span class='small'>Runway dimensions</span><b id='perfRunwayDimensions'>—</b></div></div>
+
+<h3>3 — Confirm Conditions</h3>
+<div class='result'><b>Current weather</b><div id='perfWeatherStatus' class='pill bad'>NOT FETCHED — provider not configured</div><div class='small'>Observation timestamp: <span id='perfWeatherTimestamp'>—</span></div><button class='btn btn2' disabled aria-disabled='true' title='Weather provider must be selected and validated first'>Fetch Current Weather (not configured)</button></div>
+<div class='grid'><div><label>Runway surface condition</label><select id='perfSurface' required><option value=''>Confirm condition</option><option value='dry'>Dry</option><option value='wet'>Wet</option><option value='contaminated'>Contaminated / other</option></select></div><div><label>Exact POH flap setting</label><input id='perfFlaps' placeholder='Await verified POH options' required></div></div>
+<div class='checkRow'><input id='perfConfirmRunway' type='checkbox'><label for='perfConfirmRunway'>I confirmed the runway and dimensions against current airport information.</label></div>
+<div class='checkRow'><input id='perfConfirmConfig' type='checkbox'><label for='perfConfirmConfig'>I confirmed surface condition and aircraft configuration.</label></div>
+<div class='checkRow'><input id='perfConfirmWeather' type='checkbox' disabled><label for='perfConfirmWeather'>I confirmed the timestamped weather observation. Disabled until weather retrieval is configured.</label></div>
+<button class='btn' id='perfReadinessBtn'>Check Readiness</button><div id='perfReadinessStatus' class='small' role='status' aria-live='polite'></div>
+
+<h3>4 — Results</h3>
+<div id='perfResultStatus' class='pill bad'>RESULTS LOCKED</div>
+<ul class='briefList' id='perfReadinessList'></ul>
+<div class='chartLocked' role='img' aria-label='Performance chart locked pending verified POH data'><div><b>Interactive POH chart unavailable</b><div class='small'>Moving crosshairs will be enabled only inside verified chart bounds. Extrapolation will remain prohibited.</div></div></div>
+<div class='perfResultGrid'>
+<div class='perfDatum'><span class='small'>Takeoff ground roll</span><b>LOCKED</b></div><div class='perfDatum'><span class='small'>Takeoff over obstacle</span><b>LOCKED</b></div>
+<div class='perfDatum'><span class='small'>Landing ground roll</span><b>LOCKED</b></div><div class='perfDatum'><span class='small'>Landing over obstacle</span><b>LOCKED</b></div>
+<div class='perfDatum'><span class='small'>Runway remaining</span><b>LOCKED</b></div><div class='perfDatum'><span class='small'>Safety margin</span><b>LOCKED</b></div>
+<div class='perfDatum'><span class='small'>Climb performance</span><b>LOCKED</b></div>
+</div>
+<div class='result metadata'><b>Source metadata for every result</b><div class='small'>POH/AFM revision: <span id='perfPohRevision'>Not supplied</span><br>Pages: <span id='perfPohPages'>Not supplied</span><br>Assumptions: <span id='perfAssumptions'>None permitted</span></div></div>
+<p class='small'>Planning aid only. Never use this mock for flight operations. Verify performance using the exact aircraft POH/AFM, current airport and weather information, aircraft loading, instructor guidance, and school procedures.</p>
+</section>
+
 <section id='fuel' class='card hidden'><h2>Fuel & Reserve</h2><div class='small' id='fuelAcLabel'>Selected aircraft: —</div><div class='grid'><div><label>Fuel onboard gal</label><input id='fuelOnboard' type='number'></div><div><label>Planned flight time hr</label><input id='flightHours' type='number'></div><div><label>Fuel burn GPH</label><input id='fuelBurn' type='number' value='9'></div></div><div class='result'><table><tr><th>Item</th><th>Result</th></tr><tr><td>Fuel used</td><td id='fuelUsed'>—</td></tr><tr><td>Fuel remaining</td><td id='fuelRem'>—</td></tr><tr><td>Reserve time</td><td id='reserveTime'>—</td></tr><tr><td>Status</td><td id='fuelStatus'>—</td></tr></table></div></section>
 <section id='tank' class='card hidden'><h2>Fuel Tank Switch Timer</h2>
 <div class='small'>Choose a timer interval, start the current tank, then reset after switching.</div>

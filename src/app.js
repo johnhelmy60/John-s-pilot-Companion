@@ -10,10 +10,11 @@ import { initRoutePlan } from './routeplan.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 import { enhanceForms, validateInput } from './validation.js';
+import { initPerformance, renderPerformance } from './performance.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','radio','more'];
-var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
+var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
 var sectionNodes={},mainNode=null;
 
 function el(id){
@@ -39,7 +40,7 @@ function normalizeTab(id){
 
 function groupFor(id){
  if(id==='routeplan')return 'route';
- if(['plan','crosswind','aircraft','wb','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
+ if(['plan','crosswind','aircraft','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
  if(['radio','atc','craft'].indexOf(id)>=0)return 'radio';
  if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
@@ -59,6 +60,7 @@ function showTab(id){
  try{calcAll()}catch(err){console.error('Page calculation refresh failed:',err)}
  if(id=='brief')renderBriefing();
  if(id=='radio')renderFlightFollowing();
+ if(id=='performance')renderPerformance();
 }
 
 function saveInputs(){
@@ -159,6 +161,7 @@ window.onload=function(){
  initMinimums(context);
  initAtc(context);
  initFlightFollowing(context);
+ initPerformance(context);
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;

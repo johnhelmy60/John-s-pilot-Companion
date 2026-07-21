@@ -2,6 +2,9 @@ import { ac } from './aircraft.js';
 
 var ctx=null;
 var activeInput=null;
+var lastWbSnapshot=null;
+
+export function getWbSnapshot(){return lastWbSnapshot?Object.assign({},lastWbSnapshot):null}
 
 var rows=[
  {key:'empty',wt:'wbEmptyWt',arm:'wbEmptyArm',moment:'wbEmptyMoment',required:[['emptyWt','Empty Weight'],['emptyArm','Empty Weight Arm']]},
@@ -239,6 +242,7 @@ export function calcWB(){
  var remain=max?max-totalWeight:0;
  var over=max&&totalWeight>max;
  var envelope=evaluateEnvelope(a,totalWeight,cg);
+ lastWbSnapshot={aircraftId:a.id||a.n||'',totalWeightLb:totalWeight||null,cgArmIn:totalWeight?cg:null,fuelGallons:fuel.gallons,fuelWeightLb:fuel.weight,envelopeStatus:envelope.code,calculatedAt:new Date().toISOString()};
 
  setText('wbTotalWeightCell',fmt(totalWeight,1));
  setText('wbTotalArmCell',totalWeight?fmt(cg,2):'-');

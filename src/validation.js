@@ -8,7 +8,7 @@ var rules={
  acEmptyWt:{min:1,max:100000,label:'Empty weight'},acEmptyArm:{min:-1000,max:1000,label:'Empty arm'},acMaxWt:{min:1,max:100000,label:'Maximum gross weight'},acFuelPpg:{min:.1,max:20,label:'Fuel weight'},acFrontArm:{min:-1000,max:1000,label:'Front arm'},acRearArm:{min:-1000,max:1000,label:'Rear arm'},acBagArm:{min:-1000,max:1000,label:'Baggage arm'},acFuelArm:{min:-1000,max:1000,label:'Fuel arm'},acFuelBurn:{min:.1,max:200,label:'Fuel burn'},acXwLimit:{min:0,max:100,label:'Crosswind limit'}
 };
 
-var airportIds=['planDeparture','planArrival','craftDep','craftArrival','airportSearch','customCode','freqCode','briefAirportSelect'];
+var airportIds=['planDeparture','planArrival','craftDep','craftArrival','airportSearch','customCode','freqCode','briefAirportSelect','perfAirport'];
 var frequencyIds=['craftFreq','ffFrequency','atcFrequency','freqValue'];
 var squawkIds=['craftSquawk','ffSquawk','atcSquawk'];
 var altitudeIds=['ffAltitude','ffAssignedAltitude','atcAltitude'];
