@@ -1,0 +1,8 @@
+{
+  "name": "johns-pilot-companion",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/performance-state.test.mjs"
+  }
+}

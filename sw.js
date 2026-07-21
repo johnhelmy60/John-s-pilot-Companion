@@ -1,4 +1,4 @@
-const CACHE='johns-pilot-companion-v2-32';
+const CACHE='johns-pilot-companion-v2-33';
 const ASSETS=[
   './index.html',
   './manifest.webmanifest',
@@ -11,6 +11,7 @@ const ASSETS=[
   './src/routeplan.js',
   './src/validation.js',
   './src/performance.js',
+  './src/performance-state.js',
   './src/performance-datasets.js',
   './src/weather.js',
   './src/config.js',
