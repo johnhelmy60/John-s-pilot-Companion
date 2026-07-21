@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { calculateAtmosphere, calculateWindComponents, calculateClimbFromRate, calculateClimbFromGradient, calculateClimbPlan, calculateFuelPlan, calculateDescentPlan } from '../src/performance-calculations.js';
+import { calculateAtmosphere, calculateWindComponents, temperatureToC, calculateFlightSpeeds, calculateClimbFromRate, calculateClimbFromGradient, calculateClimbPlan, calculateFuelPlan, calculateDescentPlan } from '../src/performance-calculations.js';
 
 const atmosphere=calculateAtmosphere({fieldElevationFt:5000,temperatureC:25,altimeterInHg:29.92});
 assert.equal(atmosphere.pressureAltitudeFt,5000);
@@ -13,6 +13,16 @@ const rightCrosswind=calculateWindComponents({runwayHeadingDeg:180,windDirection
 assert.ok(rightCrosswind.crosswindKt>11.99);
 assert.ok(rightCrosswind.gustCrosswindKt>17.99);
 assert.equal(calculateWindComponents({runwayHeadingDeg:180,windDirectionDeg:270,windSpeedKt:12,gustSpeedKt:8}),null);
+assert.equal(temperatureToC(68,'f'),20);
+assert.equal(temperatureToC(20,'c'),20);
+assert.equal(temperatureToC(200,'f'),null);
+const noWindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:true});
+assert.ok(noWindSpeeds.estimatedTasKt>73);
+assert.equal(noWindSpeeds.estimatedGroundspeedKt,noWindSpeeds.estimatedTasKt);
+const headwindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:false,courseDeg:180,windDirectionDeg:180,windSpeedKt:10});
+assert.ok(headwindSpeeds.estimatedGroundspeedKt<noWindSpeeds.estimatedGroundspeedKt);
+const tailwindSpeeds=calculateFlightSpeeds({indicatedAirspeedKt:73,averageAltitudeFt:6500,temperatureC:20,noWind:false,courseDeg:180,windDirectionDeg:360,windSpeedKt:10});
+assert.ok(tailwindSpeeds.estimatedGroundspeedKt>noWindSpeeds.estimatedGroundspeedKt);
 
 const climbRate=calculateClimbFromRate({groundSpeedKt:120,verticalSpeedFpm:600});
 assert.equal(climbRate.gradientFtPerNm,300);
