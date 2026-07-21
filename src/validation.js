@@ -9,9 +9,9 @@ var rules={
 };
 
 var airportIds=['planDeparture','planArrival','craftDep','craftArrival','airportSearch','customCode','freqCode','briefAirportSelect','perfAirport'];
-var frequencyIds=['craftFreq','ffFrequency','atcFrequency','freqValue'];
-var squawkIds=['craftSquawk','ffSquawk','atcSquawk'];
-var altitudeIds=['ffAltitude','ffAssignedAltitude','atcAltitude'];
+var frequencyIds=['craftFreq','ffFrequency','freqValue'];
+var squawkIds=['craftSquawk','ffSquawk'];
+var altitudeIds=['ffAltitude','ffAssignedAltitude'];
 var requiredIds=['acN','acType','acEmptyWt','acEmptyArm','acMaxWt','acFuelPpg','acFuelBurn'];
 
 function messageFor(input){
@@ -32,7 +32,6 @@ function messageFor(input){
  if(frequencyIds.indexOf(input.id)>=0){var freq=Number(raw);if(!/^\d{3}\.\d{1,3}$/.test(raw)||freq<108||freq>137)return 'Enter an aviation frequency from 108.000 to 137.000 MHz.';}
  if(squawkIds.indexOf(input.id)>=0&&!/^[0-7]{4}$/.test(raw))return 'Squawk must contain exactly four digits from 0 through 7.';
  if(altitudeIds.indexOf(input.id)>=0){var altitude=Number(raw.replace(/,/g,''));if(!/^\d{1,2}(,?\d{3})?$/.test(raw)||altitude<0||altitude>60000)return 'Enter an altitude from 0 to 60,000 feet.';}
- if(input.id==='atcRunway'&&!/^(0?[1-9]|[12][0-9]|3[0-6])[LRC]?$/i.test(raw))return 'Use runway 1–36 with optional L, C, or R.';
  if(input.id==='acN'&&!/^N?[A-Z0-9-]{2,10}$/i.test(raw))return 'Enter a valid aircraft registration or callsign identifier.';
  if(input.id==='planRouteEntry'||input.id==='routeEntry'){
   if(!/^[A-Z0-9./,\s-]{1,80}$/i.test(raw))return 'Use letters, numbers, spaces, commas, period, slash, or hyphen.';

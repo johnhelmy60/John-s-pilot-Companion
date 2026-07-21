@@ -4,7 +4,6 @@ import { initFrequencies, renderAirports, onAirportRemoved } from './frequencies
 import { initCraft } from './craft.js';
 import { initBriefing, renderBriefing } from './briefing.js';
 import { initMinimums, getActiveMinimums, renderSummary as renderMinimumsSummary } from './minimums.js';
-import { initAtc } from './atc.js';
 import { initFlightFollowing, renderFlightFollowing } from './flightfollowing.js';
 import { initRoutePlan } from './routeplan.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
@@ -14,7 +13,7 @@ import { initPerformance, renderPerformance } from './performance.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','radio','more'];
-var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','atc','craft','gono'];
+var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
 var sectionNodes={},mainNode=null;
 
 function el(id){
@@ -42,7 +41,7 @@ function groupFor(id){
  if(id==='routeplan')return 'route';
  if(['plan','crosswind','aircraft','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
- if(['radio','atc','craft'].indexOf(id)>=0)return 'radio';
+ if(['radio','craft'].indexOf(id)>=0)return 'radio';
  if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
  return 'route';
 }
@@ -159,7 +158,6 @@ window.onload=function(){
  initCraft(context);
  initBriefing(context);
  initMinimums(context);
- initAtc(context);
  initFlightFollowing(context);
  initPerformance(context);
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));

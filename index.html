@@ -50,7 +50,6 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 <h2>Radio</h2>
 <div class='small sectionHint'>Radio confidence tools only. Listen to and comply with actual ATC instructions. Verify all frequencies and instructions before transmitting.</div>
 <div class='sectionGrid'>
-<button class='toolCard' data-open='atc'>ATC Readback<span>Ground, tower, pattern, arrival, flight following, CTAF</span></button>
 <button class='toolCard' data-open='craft'>CRAFT<span>IFR clearance readback builder</span></button>
 </div>
 <h3>Flight Following Support</h3>
@@ -322,85 +321,6 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 
 <div class='grid'><button class='btn' id='saveMinimumsBtn'>Save Minimums</button><button class='btn btn2' id='resetMinimumsBtn'>Reset Defaults</button></div>
 <p class='small'>These are personal reference limits only. They do not replace ForeFlight, FAA/current sources, POH/W&B, instructor guidance, or school procedures.</p>
-</section>
-
-<section id='atc' class='card hidden'>
-<h2>ATC Readback Assistant</h2>
-<div class='small'>Practice common VFR radio calls and readbacks. Training examples only; use actual ATC instructions, AIM guidance, instructor coaching, and local procedures.</div>
-
-<label>Module</label>
-<select id='atcScenario'>
-<option value='ground'>Ground Taxi</option>
-<option value='takeoff'>Tower Takeoff</option>
-<option value='pattern'>Pattern Work</option>
-<option value='arrival'>Arrival / Landing</option>
-<option value='following'>Flight Following</option>
-<option value='ctaf'>CTAF Announcements</option>
-</select>
-
-<h3>Common Details</h3>
-<div class='grid'>
-<div><label>Callsign</label><input id='atcCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
-<div><label>Airport / Area</label><input id='atcAirport' placeholder='KBJC / Metro' autocorrect='off' autocapitalize='characters'></div>
-<div><label>Facility</label><input id='atcFacility' placeholder='Metro Ground / Denver Approach'></div>
-<div><label>Runway</label><input id='atcRunway' placeholder='30R'></div>
-<div><label>ATIS Code</label><input id='atcAtis' placeholder='Alpha' autocapitalize='characters'></div>
-<div><label>Position / Location</label><input id='atcPosition' placeholder='10 miles west / left downwind'></div>
-<div><label>Direction / Departure</label><input id='atcDirection' placeholder='north departure / left turn approved'></div>
-<div><label>Intentions</label><input id='atcIntentions' placeholder='inbound full stop / request closed traffic'></div>
-<div><label>ATC Instruction</label><select id='atcClearance'><option value='cleared for takeoff'>Cleared for takeoff</option><option value='line up and wait'>Line up and wait</option><option value='hold short'>Hold short</option><option value='cleared to land'>Cleared to land</option><option value='cleared touch and go'>Cleared touch and go</option><option value='continue'>Continue</option><option value='go around'>Go around</option></select></div>
-</div>
-
-<div id='atcTaxiFields'>
-<h3>Ground Taxi</h3>
-<div class='grid'>
-<div><label>Ramp / Parking Location</label><input id='atcLocation' placeholder='Signature / north ramp'></div>
-<div><label>Taxi Route Assigned</label><input id='atcTaxiRoute' placeholder='Alpha, Bravo'></div>
-<div><label>Hold Short</label><input id='atcHoldShort' placeholder='Runway 30R'></div>
-</div>
-</div>
-
-<div id='atcTowerFields'>
-<h3>Tower Takeoff</h3>
-<div class='small'>Use the common runway, departure direction, and ATC instruction fields above.</div>
-</div>
-
-<div id='atcPatternFields'>
-<h3>Pattern Work</h3>
-<div class='grid'>
-<div><label>Pattern Instruction</label><select id='atcPattern'><option value='left closed traffic approved'>Left closed traffic approved</option><option value='right closed traffic approved'>Right closed traffic approved</option><option value='make left traffic'>Make left traffic</option><option value='make right traffic'>Make right traffic</option><option value='extend downwind'>Extend downwind</option><option value='number two following traffic'>Number two following traffic</option></select></div>
-</div>
-</div>
-
-<div id='atcArrivalFields'>
-<h3>Arrival / Landing</h3>
-<div class='small'>Use the common position, intentions, runway, and ATC instruction fields above.</div>
-</div>
-
-<div id='atcFollowingFields'>
-<h3>Flight Following</h3>
-<div class='grid'>
-<div><label>Aircraft Type</label><input id='atcAircraftType' placeholder='PA-28'></div>
-<div><label>Altitude</label><input id='atcAltitude' placeholder='7,500'></div>
-<div><label>Destination</label><input id='atcDestination' placeholder='KFMM'></div>
-<div><label>Squawk</label><input id='atcSquawk' placeholder='4621'></div>
-<div><label>Handoff Frequency</label><input id='atcFrequency' placeholder='125.125'></div>
-</div>
-</div>
-
-<div id='atcCtafFields'>
-<h3>CTAF Announcements</h3>
-<div class='small'>Use the common position, runway, and intentions fields above.</div>
-</div>
-
-<div class='result'>
-<div class='small'>Module</div>
-<div class='big' style='font-size:22px' id='atcModuleTitle'>—</div>
-</div>
-<div class='result'><h3>Practice Call / Request</h3><div id='atcRequestOut'>—</div></div>
-<div class='result'><h3>Readback / Announcement Example</h3><div class='big' style='font-size:20px;line-height:1.35' id='atcReadbackOut'>—</div></div>
-<div class='result'><h3>Training Tip</h3><div class='small' id='atcTipOut'>—</div></div>
-<p class='small'>Examples are for confidence-building only. Actual phraseology varies by airport, controller, aircraft, and situation.</p>
 </section>
 
 <section id='craft' class='card hidden'>
