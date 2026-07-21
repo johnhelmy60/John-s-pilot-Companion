@@ -40,8 +40,8 @@ export async function loadPerformanceCatalog(){
 }
 
 export function datasetForAircraft(aircraft){
- var code=normalized(aircraft&&aircraft.type),year=Number(aircraft&&aircraft.year),engine=normalized(aircraft&&aircraft.engine),propeller=normalized(aircraft&&aircraft.propeller);
- var exact=approvedDatasets.find(function(dataset){var identity=dataset.aircraftIdentity||{};return normalized(identity.modelCode)===code&&Number(identity.year)===year&&normalized(identity.engine)===engine&&normalized(identity.propeller)===propeller});
+ var code=normalized(aircraft&&aircraft.type);
+ var exact=approvedDatasets.find(function(dataset){return normalized((dataset.aircraftIdentity||{}).modelCode)===code});
  return exact||performanceDatasetManifests[code]||null;
 }
 

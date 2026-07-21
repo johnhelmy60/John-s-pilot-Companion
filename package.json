@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/performance-state.test.mjs"
+    "test": "node tests/performance-calculations.test.mjs"
   }
 }
