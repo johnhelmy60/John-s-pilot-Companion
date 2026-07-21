@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "aircraftIdentity": {
+    "manufacturer": "Piper",
+    "model": "",
+    "modelCode": "PA-28-161",
+    "year": null,
+    "serialApplicability": "",
+    "engine": "",
+    "propeller": ""
+  },
+  "source": {
+    "documentTitle": "",
+    "revision": "",
+    "revisionDate": "",
+    "checksumSha256": "",
+    "transcribedBy": "",
+    "transcribedAt": "",
+    "independentlyVerifiedBy": "",
+    "independentlyVerifiedAt": "",
+    "approvedBy": "",
+    "approvedAt": ""
+  },
+  "limitations": {
+    "weightLb": { "minimum": null, "maximum": null },
+    "pressureAltitudeFt": { "minimum": null, "maximum": null },
+    "temperatureC": { "minimum": null, "maximum": null },
+    "windKt": { "minimum": null, "maximum": null }
+  },
+  "configurations": [],
+  "charts": { "takeoff": [], "landing": [], "climb": [] },
+  "interpolation": { "method": "bounded-linear", "extrapolationAllowed": false },
+  "assumptions": []
+}

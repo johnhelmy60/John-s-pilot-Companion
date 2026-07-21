@@ -9,6 +9,7 @@ import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 import { enhanceForms, validateInput } from './validation.js';
 import { initPerformance, renderPerformance } from './performance.js';
+import { loadPerformanceCatalog } from './performance-datasets.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','craft','more'];
@@ -157,6 +158,7 @@ window.onload=function(){
  initBriefing(context);
  initMinimums(context);
  initPerformance(context);
+ loadPerformanceCatalog().then(function(){renderPerformance()});
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;

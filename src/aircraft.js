@@ -1,10 +1,17 @@
 import { validateSection } from './validation.js';
 
 var n41498Envelope=[{weight:1400,forward:83,aft:93},{weight:1950,forward:83,aft:93},{weight:2325,forward:87,aft:93}];
-export var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',emptyWt:1433,emptyArm:87.1,maxWt:2325,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60,cgEnvelope:n41498Envelope}];
+export var defaults=[{id:'N41498',n:'N41498',type:'PA-28-161',year:null,engine:'',propeller:'',serialApplicability:'',emptyWt:1433,emptyArm:87.1,maxWt:2325,fuelPpg:6,frontArm:80.5,rearArm:118.1,bagArm:142.8,fuelArm:95,fuelBurn:9,xwLimit:17,tankInterval:60,cgEnvelope:n41498Envelope}];
 
 var ctx=null;
 var noteFields=['GeneralNotes','RentalQuirks','AvionicsNotes','FuelOilNotes','DispatchNotes','SquawkNotes'];
+
+function setupPerformanceIdentityFields(){
+ var type=ctx.el('acType'),grid=type&&type.parentNode&&type.parentNode.parentNode;if(!grid||ctx.el('acYear'))return;
+ [['Model year','acYear','number'],['Engine (exact designation)','acEngine','text'],['Propeller (exact designation)','acPropeller','text'],['Serial applicability','acSerialApplicability','text']].forEach(function(field){
+  var wrap=document.createElement('div'),label=document.createElement('label'),input=document.createElement('input');label.textContent=field[0];input.id=field[1];input.type=field[2];if(field[2]==='number'){input.min='1900';input.max='2100'}wrap.appendChild(label);wrap.appendChild(input);grid.insertBefore(wrap,type.parentNode.nextSibling);
+ });
+}
 
 function addCgEnvelopeRow(point){
  var host=ctx.el('acCgEnvelopeRows');if(!host)return;
@@ -76,7 +83,7 @@ export function populateAc(){
 
 export function loadAcForm(){
  var el=ctx.el,a=ac();
- el('acN').value=a.n||'';el('acType').value=a.type||'';el('acEmptyWt').value=a.emptyWt||'';el('acEmptyArm').value=a.emptyArm||'';el('acMaxWt').value=a.maxWt||'';el('acFuelPpg').value=a.fuelPpg||6;el('acFrontArm').value=a.frontArm||'';el('acRearArm').value=a.rearArm||'';el('acBagArm').value=a.bagArm||'';el('acFuelArm').value=a.fuelArm||'';el('acFuelBurn').value=a.fuelBurn||9;el('acXwLimit').value=a.xwLimit||17;
+ el('acN').value=a.n||'';el('acType').value=a.type||'';el('acYear').value=a.year||'';el('acEngine').value=a.engine||'';el('acPropeller').value=a.propeller||'';el('acSerialApplicability').value=a.serialApplicability||'';el('acEmptyWt').value=a.emptyWt||'';el('acEmptyArm').value=a.emptyArm||'';el('acMaxWt').value=a.maxWt||'';el('acFuelPpg').value=a.fuelPpg||6;el('acFrontArm').value=a.frontArm||'';el('acRearArm').value=a.rearArm||'';el('acBagArm').value=a.bagArm||'';el('acFuelArm').value=a.fuelArm||'';el('acFuelBurn').value=a.fuelBurn||9;el('acXwLimit').value=a.xwLimit||17;
  if(el('acCgEnvelope'))el('acCgEnvelope').value=Array.isArray(a.cgEnvelope)?JSON.stringify(a.cgEnvelope):'';
  renderCgEnvelopeRows(a.cgEnvelope);
  el('xwLimit').value=a.xwLimit||17;el('fuelBurn').value=a.fuelBurn||9;
@@ -103,7 +110,7 @@ export function saveAc(){
  var i=l.findIndex(function(x){return x.id===id});
  var envelopeResult=readCgEnvelopeRows(),envelope=envelopeResult.points;
  if(envelopeResult.error)return alert(envelopeResult.error);
- var a={id:id.indexOf('NEW_')===0?n:id,n:n,type:el('acType').value,emptyWt:nv('acEmptyWt')||0,emptyArm:nv('acEmptyArm')||0,maxWt:nv('acMaxWt')||0,fuelPpg:nv('acFuelPpg')||6,frontArm:nv('acFrontArm')||0,rearArm:nv('acRearArm')||0,bagArm:nv('acBagArm')||0,fuelArm:nv('acFuelArm')||0,fuelBurn:nv('acFuelBurn')||9,xwLimit:nv('acXwLimit')||17,tankInterval:parseInt(localStorage.jp_tankInterval||'60'),notes:readNotes()};
+ var a={id:id.indexOf('NEW_')===0?n:id,n:n,type:el('acType').value,year:parseInt(el('acYear').value)||null,engine:el('acEngine').value.trim(),propeller:el('acPropeller').value.trim(),serialApplicability:el('acSerialApplicability').value.trim(),emptyWt:nv('acEmptyWt')||0,emptyArm:nv('acEmptyArm')||0,maxWt:nv('acMaxWt')||0,fuelPpg:nv('acFuelPpg')||6,frontArm:nv('acFrontArm')||0,rearArm:nv('acRearArm')||0,bagArm:nv('acBagArm')||0,fuelArm:nv('acFuelArm')||0,fuelBurn:nv('acFuelBurn')||9,xwLimit:nv('acXwLimit')||17,tankInterval:parseInt(localStorage.jp_tankInterval||'60'),notes:readNotes()};
  if(envelope.length)a.cgEnvelope=envelope;
  if(i>=0)l[i]=a;else l.push(a);
  saveList(l);localStorage.jp_selectedAc=a.id;populateAc();calcAll();alert('Aircraft saved.');
@@ -111,7 +118,7 @@ export function saveAc(){
 
 export function newAc(){
  var l=getList(),id='NEW_'+Date.now();
- l.push({id:id,n:'',type:'',fuelPpg:6,fuelBurn:9,xwLimit:17,tankInterval:60,notes:{}});
+ l.push({id:id,n:'',type:'',year:null,engine:'',propeller:'',serialApplicability:'',fuelPpg:6,fuelBurn:9,xwLimit:17,tankInterval:60,notes:{}});
  saveList(l);localStorage.jp_selectedAc=id;populateAc();
 }
 
@@ -125,6 +132,7 @@ export function initAircraft(context){
  ctx=context;
  if(!localStorage.jp_aircraft)saveList(defaults);
  migrateN41498Profile();
+ setupPerformanceIdentityFields();
  setupCgEnvelopeEditor();
  populateAc();
  ctx.el('aircraftSelect').onchange=function(){localStorage.jp_selectedAc=this.value;loadAcForm();ctx.calcAll()};
