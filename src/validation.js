@@ -4,14 +4,13 @@ var rules={
  startHobbs:{min:0,max:99999,label:'Starting Hobbs'},endHobbs:{min:0,max:99999,label:'Ending Hobbs'},startTach:{min:0,max:99999,label:'Starting tach'},endTach:{min:0,max:99999,label:'Ending tach'},rate:{min:0,max:10000,label:'Rental rate'},
  goCeil:{min:0,max:60000,label:'Ceiling'},goVis:{min:0,max:200,label:'Visibility'},
  craftMaintain:{min:0,max:60000,label:'Maintain altitude'},craftExpect:{min:0,max:60000,label:'Expected altitude'},craftExpectTime:{min:0,max:120,label:'Expected altitude time'},
- ffAltimeter:{min:20,max:40,label:'Altimeter'},
  acEmptyWt:{min:1,max:100000,label:'Empty weight'},acEmptyArm:{min:-1000,max:1000,label:'Empty arm'},acMaxWt:{min:1,max:100000,label:'Maximum gross weight'},acFuelPpg:{min:.1,max:20,label:'Fuel weight'},acFrontArm:{min:-1000,max:1000,label:'Front arm'},acRearArm:{min:-1000,max:1000,label:'Rear arm'},acBagArm:{min:-1000,max:1000,label:'Baggage arm'},acFuelArm:{min:-1000,max:1000,label:'Fuel arm'},acFuelBurn:{min:.1,max:200,label:'Fuel burn'},acXwLimit:{min:0,max:100,label:'Crosswind limit'}
 };
 
 var airportIds=['planDeparture','planArrival','craftDep','craftArrival','airportSearch','customCode','freqCode','briefAirportSelect','perfAirport'];
-var frequencyIds=['craftFreq','ffFrequency','freqValue'];
-var squawkIds=['craftSquawk','ffSquawk'];
-var altitudeIds=['ffAltitude','ffAssignedAltitude'];
+var frequencyIds=['craftFreq','freqValue'];
+var squawkIds=['craftSquawk'];
+var altitudeIds=[];
 var requiredIds=['acN','acType','acEmptyWt','acEmptyArm','acMaxWt','acFuelPpg','acFuelBurn'];
 
 function messageFor(input){

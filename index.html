@@ -46,43 +46,6 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 <button class='toolCard' data-open='freq'>Frequencies<span>Selected airports and active/standby radio stack</span></button>
 </div>
 </section>
-<section id='radio' class='card hidden'>
-<h2>Radio</h2>
-<div class='small sectionHint'>Radio confidence tools only. Listen to and comply with actual ATC instructions. Verify all frequencies and instructions before transmitting.</div>
-<div class='sectionGrid'>
-<button class='toolCard' data-open='craft'>CRAFT<span>IFR clearance readback builder</span></button>
-</div>
-<h3>Flight Following Support</h3>
-<div class='small'>Small practice snippets for VFR flight following. This is no longer a standalone page.</div>
-<div class='result'><b>Selected airports from Frequency page:</b> <span id='ffRouteHint'>-</span></div>
-<button class='btn btn2' id='ffRefreshDefaults'>Use Current Aircraft &amp; Airports</button>
-<div class='grid'>
-<div><label>Facility</label><select id='ffFacilityPreset'><option value='Denver Approach'>Denver Approach</option><option value='Denver Departure'>Denver Departure</option><option value='Denver Center'>Denver Center</option><option value='custom'>Custom</option></select></div>
-<div><label>Custom facility</label><input id='ffFacilityCustom' placeholder='Approach / Center'></div>
-<div><label>Callsign</label><input id='ffCallsign' placeholder='Warrior 41498' autocorrect='off' autocapitalize='characters'></div>
-<div><label>Aircraft type</label><input id='ffAircraftType' placeholder='PA-28 / C172'></div>
-<div><label>Position</label><input id='ffPosition' placeholder='3 miles north of Rocky Mountain Metro'></div>
-<div><label>Altitude</label><input id='ffAltitude' placeholder='6,500'></div>
-<div><label>Destination</label><input id='ffDestination' placeholder='KFMM / Fort Morgan'></div>
-</div>
-<div class='result'><h3>Initial Request</h3><div id='ffInitialOut'>-</div></div>
-<div class='grid'>
-<div><label>Squawk code</label><input id='ffSquawk' placeholder='1234' inputmode='numeric'></div>
-<div><label>Altitude instruction</label><select id='ffAltitudeInstruction'><option value='vfr'>Maintain VFR</option><option value='below'>Maintain VFR at or below</option><option value='above'>Maintain VFR at or above</option></select></div>
-<div><label>Assigned altitude</label><input id='ffAssignedAltitude' placeholder='8,500'></div>
-<div><label>Altimeter optional</label><input id='ffAltimeter' placeholder='30.12'></div>
-</div>
-<div class='result'><h3>Readbacks</h3><div id='ffSquawkOut'>-</div><div style='margin-top:8px' id='ffAltitudeOut'>-</div></div>
-<h3>Handoff / Cancel</h3>
-<div class='bubbleBox' id='ffFreqSuggestions'></div>
-<div class='grid'>
-<div><label>Next facility</label><input id='ffNextFacility' placeholder='Denver Center'></div>
-<div><label>Frequency</label><input id='ffFrequency' placeholder='118.475' inputmode='decimal'></div>
-<div><label>Termination type</label><select id='ffTermination'><option value='cancel'>Cancel flight following</option><option value='terminated'>Radar service terminated</option><option value='approved'>Frequency change approved</option></select></div>
-</div>
-<div class='result'><div id='ffHandoffOut'>-</div><div style='margin-top:8px' id='ffTerminationOut'>-</div></div>
-<div class='result'><span class='pill warn'>Verify before transmitting</span> <span class='small'>Read and practice the phrase in the app before transmitting.</span></div>
-</section>
 <section id='more' class='card hidden'>
 <h2>More</h2>
 <div class='small sectionHint'>Lower-frequency utilities and future training tools.</div>
@@ -382,5 +345,5 @@ h2{font-size:clamp(21px,3vw,28px);line-height:1.2;letter-spacing:.01em}h3{font-s
 </section>
 
 <section id='gono' class='card hidden'><h2>Go / No-Go</h2><div class='small'>Auto-pulls crosswind and fuel reserve when available.</div><div class='grid'><div><label>Ceiling ft AGL</label><input id='goCeil' type='number' placeholder='9999 if none'></div><div><label>Visibility SM</label><input id='goVis' type='number' placeholder='10 for 10SM'></div></div><div class='result'><b>Using:</b> <span id='goMinMode'>—</span><br><span class='small' id='goMinSummary'>Set solo/dual limits on the Minimums tab.</span></div><div class='result'><table><tr><th>Item</th><th>Value</th></tr><tr><td>Crosswind</td><td id='goXwAuto'>—</td></tr><tr><td>Fuel reserve</td><td id='goReserveAuto'>—</td></tr><tr><td>Ceiling</td><td id='goCeilAuto'>—</td></tr><tr><td>Visibility</td><td id='goVisAuto'>—</td></tr></table><div class='big' id='goOverall'>—</div><div id='goDetails'></div></div></section>
-</main><div class='tabs'><button class='tab active' id='tab-route'>Route</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-radio'>Radio</button><button class='tab' id='tab-more'>More</button></div>
+</main><div class='tabs'><button class='tab active' id='tab-route'>Route</button><button class='tab' id='tab-plan'>Plan</button><button class='tab' id='tab-airport'>Airport</button><button class='tab' id='tab-craft'>CRAFT</button><button class='tab' id='tab-more'>More</button></div>
 <script type="module" src="./src/app.js"></script></body></html>

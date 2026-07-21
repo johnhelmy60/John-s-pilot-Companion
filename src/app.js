@@ -4,7 +4,6 @@ import { initFrequencies, renderAirports, onAirportRemoved } from './frequencies
 import { initCraft } from './craft.js';
 import { initBriefing, renderBriefing } from './briefing.js';
 import { initMinimums, getActiveMinimums, renderSummary as renderMinimumsSummary } from './minimums.js';
-import { initFlightFollowing, renderFlightFollowing } from './flightfollowing.js';
 import { initRoutePlan } from './routeplan.js';
 import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
@@ -12,8 +11,8 @@ import { enhanceForms, validateInput } from './validation.js';
 import { initPerformance, renderPerformance } from './performance.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
-var mainTabs=['route','plan','airport','radio','more'];
-var sections=['routeplan','plan','airport','radio','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
+var mainTabs=['route','plan','airport','craft','more'];
+var sections=['routeplan','plan','airport','more','crosswind','aircraft','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
 var sectionNodes={},mainNode=null;
 
 function el(id){
@@ -32,7 +31,7 @@ function clone(o){return JSON.parse(JSON.stringify(o))}
 
 function normalizeTab(id){
  if(id==='board'||id==='route')return 'routeplan';
- if(id==='following')return 'radio';
+ if(id==='radio'||id==='following')return 'craft';
  if(sections.indexOf(id)>=0)return id;
  return 'routeplan';
 }
@@ -41,7 +40,7 @@ function groupFor(id){
  if(id==='routeplan')return 'route';
  if(['plan','crosswind','aircraft','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
- if(['radio','craft'].indexOf(id)>=0)return 'radio';
+ if(id==='craft')return 'craft';
  if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
  return 'route';
 }
@@ -58,7 +57,6 @@ function showTab(id){
  localStorage.jp_tab=groupFor(id)==='route'?'route':id;
  try{calcAll()}catch(err){console.error('Page calculation refresh failed:',err)}
  if(id=='brief')renderBriefing();
- if(id=='radio')renderFlightFollowing();
  if(id=='performance')renderPerformance();
 }
 
@@ -137,7 +135,7 @@ function wireTabs(){
   if(tab)tab.onclick=function(){showTab(s)};
  });
  allControls('[data-open]').forEach(function(btn){
-  btn.onclick=function(){showTab(btn.getAttribute('data-open'))};
+  btn.onclick=function(event){event.preventDefault();event.stopPropagation();showTab(btn.getAttribute('data-open'))};
  });
  var tablist=document.querySelector('.tabs');tablist.setAttribute('role','tablist');tablist.setAttribute('aria-label','Primary navigation');
  mainTabs.forEach(function(s,index){var tab=el('tab-'+s);if(tab){tab.setAttribute('role','tab');tab.setAttribute('aria-controls',s==='route'?'routeplan':s);tab.addEventListener('keydown',function(event){if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight'&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();var next=event.key==='Home'?0:event.key==='End'?mainTabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+mainTabs.length)%mainTabs.length;el('tab-'+mainTabs[next]).focus();showTab(mainTabs[next])})}});
@@ -158,7 +156,6 @@ window.onload=function(){
  initCraft(context);
  initBriefing(context);
  initMinimums(context);
- initFlightFollowing(context);
  initPerformance(context);
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
