@@ -78,7 +78,7 @@ function normalizeMetar(icao, record, fetchedAt, cacheState) {
   };
 }
 
-module.exports = async function handler(request, response) {
+export default async function handler(request, response) {
   const origin = request.headers.origin;
   if (origin && origin !== ALLOWED_ORIGIN) return send(response, 403, { status: 'unavailable', error: 'Origin is not allowed.' });
   if (request.method === 'OPTIONS') {
