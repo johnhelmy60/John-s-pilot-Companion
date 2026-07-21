@@ -1,3 +1,5 @@
+import { METAR_PROXY_URL } from './config.js';
+
 const STALE_MINUTES = 90;
 
 function key(icao){return 'jp_metar_'+String(icao||'').toUpperCase()}
@@ -14,13 +16,18 @@ export function weatherIsStale(data){var age=weatherAge(data);return !data||data
 export async function fetchMetar(icao){
  var code=String(icao||'').trim().toUpperCase(),previous=savedMetar(code);
  if(!/^[A-Z][A-Z0-9]{3}$/.test(code))throw Object.assign(new Error('Select a valid four-character ICAO airport.'),{weather:previous});
+ if(!/^https:\/\//i.test(METAR_PROXY_URL))throw Object.assign(new Error('Weather proxy is not configured with a full HTTPS URL.'),{weather:previous,httpStatus:0,proxyHostname:'not configured'});
+ var proxyUrl=new URL(METAR_PROXY_URL);proxyUrl.searchParams.set('icao',code);
  try{
-  var response=await fetch('/api/metar?icao='+encodeURIComponent(code),{headers:{Accept:'application/json'},cache:'no-store'});
-  var body=await response.json().catch(function(){return {status:'unavailable',error:'Weather proxy returned an unreadable response.'}});
-  if(!response.ok||body.status!=='available')throw Object.assign(new Error(body.error||('Weather proxy returned HTTP '+response.status)),{weather:previous,server:body});
+  var response=await fetch(proxyUrl.href,{headers:{Accept:'application/json'},cache:'no-store'}),contentType=response.headers.get('content-type')||'',body=null;
+  try{body=JSON.parse(await response.text())}catch(parseError){throw Object.assign(new Error('Weather proxy returned an unreadable response.'),{httpStatus:response.status,proxyHostname:proxyUrl.hostname})}
+  if(!/application\/json/i.test(contentType))throw Object.assign(new Error('Weather proxy did not return application/json.'),{httpStatus:response.status,proxyHostname:proxyUrl.hostname,server:body});
+  if(!response.ok||body.status!=='available')throw Object.assign(new Error(body.error||('Weather proxy returned HTTP '+response.status)),{weather:previous,server:body,httpStatus:response.status,proxyHostname:proxyUrl.hostname});
   saveMetar(code,body);return body;
  }catch(error){
   if(!error.weather)error.weather=previous;
+  if(error.httpStatus==null)error.httpStatus=0;
+  if(!error.proxyHostname)error.proxyHostname=proxyUrl.hostname;
   throw error;
  }
 }

@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "api/metar.js": {
+      "maxDuration": 10
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/metar",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "https://johnhelmy60.github.io" },
+        { "key": "Vary", "value": "Origin" }
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ const CACHE_MS = 60 * 1000;
 const STALE_AFTER_MS = 90 * 60 * 1000;
 const RATE_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT = 30;
+const ALLOWED_ORIGIN = 'https://johnhelmy60.github.io';
 const cache = new Map();
 const clients = new Map();
 
@@ -12,7 +13,11 @@ function send(response, status, body, extraHeaders) {
   Object.entries(Object.assign({
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
-    'X-Content-Type-Options': 'nosniff'
+    'X-Content-Type-Options': 'nosniff',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Accept, Content-Type',
+    'Vary': 'Origin'
   }, extraHeaders || {})).forEach(([name, value]) => response.setHeader(name, value));
   return response.status(status).json(body);
 }
@@ -74,6 +79,15 @@ function normalizeMetar(icao, record, fetchedAt, cacheState) {
 }
 
 module.exports = async function handler(request, response) {
+  const origin = request.headers.origin;
+  if (origin && origin !== ALLOWED_ORIGIN) return send(response, 403, { status: 'unavailable', error: 'Origin is not allowed.' });
+  if (request.method === 'OPTIONS') {
+    response.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+    response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    response.setHeader('Access-Control-Allow-Headers', 'Accept, Content-Type');
+    response.setHeader('Vary', 'Origin');
+    return response.status(204).end();
+  }
   if (request.method !== 'GET') return send(response, 405, { status: 'unavailable', error: 'Method not allowed.' }, { Allow: 'GET' });
   if (rateLimited(request)) return send(response, 429, { status: 'unavailable', error: 'Proxy rate limit exceeded. Try again in one minute.' }, { 'Retry-After': '60' });
 
@@ -91,6 +105,14 @@ module.exports = async function handler(request, response) {
       signal: AbortSignal.timeout(8000)
     });
     if (upstream.status === 204) return send(response, 404, { status: 'unavailable', station: icao, fetchedAt: new Date().toISOString(), error: 'AWC returned no current METAR for this station.' });
+    if (upstream.status === 429) {
+      if (existing) return send(response, 200, Object.assign({}, existing.payload, { cache: 'stale-fallback', stale: true, warning: 'AWC rate limited the live request.' }), { Warning: '110 - "Response is stale"' });
+      return send(response, 429, { status: 'unavailable', station: icao, fetchedAt: new Date().toISOString(), error: 'AWC rate limited the weather request.' }, { 'Retry-After': upstream.headers.get('retry-after') || '60', 'Cache-Control': 'no-store' });
+    }
+    if (upstream.status >= 500) {
+      if (existing) return send(response, 200, Object.assign({}, existing.payload, { cache: 'stale-fallback', stale: true, warning: `AWC returned HTTP ${upstream.status}.` }), { Warning: '110 - "Response is stale"' });
+      return send(response, 502, { status: 'unavailable', station: icao, fetchedAt: new Date().toISOString(), error: `AWC service error: HTTP ${upstream.status}.` }, { 'Cache-Control': 'no-store' });
+    }
     if (!upstream.ok) throw new Error(`AWC returned HTTP ${upstream.status}`);
     const records = await upstream.json();
     if (!Array.isArray(records) || !records.length) return send(response, 404, { status: 'unavailable', station: icao, fetchedAt: new Date().toISOString(), error: 'AWC returned no METAR record.' });

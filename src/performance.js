@@ -1,6 +1,7 @@
 import { ac } from './aircraft.js';
 import { airportCodes, airportRecord } from './airports.js';
 import { getWbSnapshot } from './wb.js';
+import { getFuelPlanningSnapshot } from './fuel.js';
 import { datasetForAircraft, datasetReady } from './performance-datasets.js';
 import { fetchMetar, savedMetar, weatherAge, weatherIsStale } from './weather.js';
 
@@ -20,6 +21,7 @@ function renderWeather(data,error){
  text('perfWeatherWind',wind&&wind.speedKt!=null?(wind.directionDegrees==null?'Variable':String(Math.round(wind.directionDegrees)).padStart(3,'0')+' deg')+' at '+wind.speedKt+' kt'+(wind.gustKt!=null?' gust '+wind.gustKt:''):'Unavailable');
  text('perfWeatherRaw',data&&data.rawMetar?data.rawMetar:'Unavailable');
  text('perfWeatherError',error?error.message:(stale&&available?'Observation is stale and cannot satisfy Performance readiness.':''));
+ text('perfWeatherDiagnostic',error?'HTTP status: '+(error.httpStatus||'network/unavailable')+' / Proxy: '+(error.proxyHostname||'unknown'):'');
  e('perfConfirmWeather').disabled=!available||stale;if(e('perfConfirmWeather').disabled)e('perfConfirmWeather').checked=false;
 }
 async function getWeather(){
@@ -28,6 +30,42 @@ async function getWeather(){
  button.disabled=false;button.textContent='Fetch Latest AWC METAR';readiness();
 }
 function format(value,digits,unit){return isFinite(value)?Number(value).toFixed(digits)+(unit||''):'—'}
+
+export function calculateLandingWeight(values){
+ var takeoffWeightLb=Number(values.takeoffWeightLb),startingFuelGallons=Number(values.startingFuelGallons),plannedFlightHours=Number(values.plannedFlightHours),fuelBurnGph=Number(values.fuelBurnGph),taxiFuelGallons=Number(values.taxiFuelGallons),fuelPoundsPerGallon=Number(values.fuelPoundsPerGallon);
+ var flightFuelConsumedGallons=plannedFlightHours*fuelBurnGph,totalFuelConsumedGallons=taxiFuelGallons+flightFuelConsumedGallons;
+ if(![takeoffWeightLb,startingFuelGallons,plannedFlightHours,fuelBurnGph,taxiFuelGallons,fuelPoundsPerGallon].every(isFinite)||takeoffWeightLb<=0||startingFuelGallons<0||plannedFlightHours<0||fuelBurnGph<=0||taxiFuelGallons<0||fuelPoundsPerGallon<=0)return null;
+ if(totalFuelConsumedGallons>startingFuelGallons)return null;
+ return {flightFuelConsumedGallons:flightFuelConsumedGallons,totalFuelConsumedGallons:totalFuelConsumedGallons,landingWeightLb:takeoffWeightLb-totalFuelConsumedGallons*fuelPoundsPerGallon};
+}
+
+function landingWeightData(){
+ var aircraft=ac(),wb=getWbSnapshot(),fuel=getFuelPlanningSnapshot(),taxiRaw=e('perfTaxiFuel').value.trim(),taxi=taxiRaw===''?null:Number(taxiRaw),ppg=Number(aircraft&&aircraft.fuelPpg),errors=[];
+ if(!wb||!isFinite(wb.totalWeightLb))errors.push('takeoff weight from W&B');
+ if(!wb||!isFinite(wb.fuelGallons))errors.push('starting fuel from W&B');
+ if(!fuel||!isFinite(fuel.plannedFlightHours))errors.push('planned flight time from Fuel Planning');
+ if(!fuel||!isFinite(fuel.fuelBurnGph))errors.push('fuel burn from Fuel Planning');
+ if(taxi==null||!isFinite(taxi)||taxi<0)errors.push('valid taxi fuel');
+ if(!isFinite(ppg)||ppg<=0)errors.push('aircraft fuel weight per gallon');
+ var calculation=wb&&fuel&&taxi!=null?calculateLandingWeight({takeoffWeightLb:wb.totalWeightLb,startingFuelGallons:wb.fuelGallons,plannedFlightHours:fuel.plannedFlightHours,fuelBurnGph:fuel.fuelBurnGph,taxiFuelGallons:taxi,fuelPoundsPerGallon:ppg}):null;
+ var flightConsumed=fuel?fuel.plannedFlightHours*fuel.fuelBurnGph:null,totalConsumed=flightConsumed!=null&&taxi!=null?flightConsumed+taxi:null;
+ if(totalConsumed!=null&&wb&&isFinite(wb.fuelGallons)&&totalConsumed>wb.fuelGallons)errors.push('planned fuel consumed exceeds W&B starting fuel');
+ if(!e('perfConfirmTaxi').checked)errors.push('taxi-fuel confirmation');
+ var landingWeight=!errors.length&&calculation?calculation.landingWeightLb:null;if(!calculation&&errors.length===0)errors.push('valid landing-weight inputs');
+ text('perfLandingTakeoffWeight',wb&&isFinite(wb.totalWeightLb)?format(wb.totalWeightLb,1,' lb'):'Missing');
+ text('perfLandingStartFuel',wb&&isFinite(wb.fuelGallons)?format(wb.fuelGallons,1,' gal'):'Missing');
+ text('perfLandingFlightTime',fuel&&isFinite(fuel.plannedFlightHours)?format(fuel.plannedFlightHours,2,' hr'):'Missing');
+ text('perfLandingBurn',fuel&&isFinite(fuel.fuelBurnGph)?format(fuel.fuelBurnGph,1,' GPH'):'Missing');
+ text('perfLandingTaxiUsed',taxi!=null&&isFinite(taxi)?format(taxi,1,' gal'):'Missing');
+ text('perfLandingFlightUsed',flightConsumed!=null?format(flightConsumed,1,' gal'):'Missing');
+ text('perfLandingTotalUsed',totalConsumed!=null?format(totalConsumed,1,' gal'):'Missing');
+ text('perfLandingFuelPpg',isFinite(ppg)?format(ppg,1,' lb/gal'):'Missing');
+ text('perfLandingWeightCalc',landingWeight!=null?format(landingWeight,1,' lb'):'LOCKED');
+ text('perfLandingWeight',landingWeight!=null?format(landingWeight,1,' lb'):'LOCKED');
+ e('perfLandingWeightStatus').textContent=errors.length?'Landing weight locked - '+errors.join(', '):'Landing weight calculated from taxi plus planned flight fuel actually consumed.';
+ e('perfLandingWeightStatus').className='pill '+(errors.length?'bad':'good');
+ return {ready:errors.length===0,landingWeightLb:landingWeight,errors:errors};
+}
 
 function parseRunway(raw){
  var value=String(raw||''),ident=(value.match(/^([^•]+)/)||[])[1],length=(value.match(/([\d,]+)\s*ft/i)||[])[1],width=(value.match(/x\s*([\d,]+)/i)||[])[1];
@@ -60,7 +98,7 @@ function renderAircraft(){
  text('perfAircraft',((aircraft&&aircraft.n)||'—')+' • '+((aircraft&&aircraft.type)||'Model missing'));
  text('perfDatasetStatus',datasetReady(dataset)?'Approved exact-aircraft dataset ready':'Performance data unavailable');
  text('perfTakeoffWeight',wb&&wb.totalWeightLb!=null?format(wb.totalWeightLb,1,' lb'):'Not available from W&B');
- text('perfLandingWeight','Not available — landing fuel burn is not defined');
+ landingWeightData();
  text('perfFuel',wb&&wb.fuelGallons!=null?format(wb.fuelGallons,1,' gal'):'Not available from W&B');
  text('perfCg',wb&&wb.cgArmIn!=null?format(wb.cgArmIn,2,' in'):'Not available from W&B');
  var wbReady=!!(wb&&wb.totalWeightLb>(Number(aircraft.emptyWt)||0)&&wb.fuelGallons!=null&&wb.cgArmIn!=null&&wb.envelopeStatus==='inside');
@@ -82,10 +120,10 @@ function renderAirport(){
 }
 
 function readiness(){
- var context=renderAircraft(),airport=airportRecord(e('perfAirport').value),runway=selectedRunway(),missing=[];
+ var context=renderAircraft(),landing=landingWeightData(),airport=airportRecord(e('perfAirport').value),runway=selectedRunway(),missing=[];
  if(!context.dataset||!datasetReady(context.dataset))missing.push('verified exact-model POH/AFM dataset');
  if(!context.wbReady)missing.push('complete, in-envelope W&B loading with fuel');
- missing.push('landing weight / planned fuel burn');
+ if(!landing.ready)missing.push('confirmed landing-weight calculation');
  if(!airport)missing.push('saved airport');
  if(!runway)missing.push('confirmed runway');else if(!runway.lengthFt||!runway.widthFt)missing.push('structured runway length and width');
  if(!e('perfSurface').value)missing.push('surface condition');
@@ -108,10 +146,13 @@ export function renderPerformance(){
 }
 
 export function initPerformance(context){
- ctx=context;populateAirports();populateRunways();renderAircraft();readiness();
+ ctx=context;
+ if(!e('perfWeatherDiagnostic')){var diagnostic=document.createElement('div');diagnostic.id='perfWeatherDiagnostic';diagnostic.className='small';diagnostic.setAttribute('role','status');e('perfWeatherError').parentNode.insertBefore(diagnostic,e('perfWeatherBtn'))}
+ populateAirports();populateRunways();renderAircraft();readiness();
  e('perfAirport').addEventListener('change',function(){populateRunways();readiness()});
  e('perfRunway').addEventListener('change',function(){renderAirport();readiness()});
  ['perfSurface','perfFlaps','perfConfirmRunway','perfConfirmWeather','perfConfirmConfig'].forEach(function(id){e(id).addEventListener('input',readiness);e(id).addEventListener('change',readiness)});
+ ['perfTaxiFuel','perfConfirmTaxi'].forEach(function(id){e(id).addEventListener('input',readiness);e(id).addEventListener('change',readiness)});
  e('perfReadinessBtn').onclick=checkReadiness;
  e('perfWeatherBtn').onclick=getWeather;
 }
