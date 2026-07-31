@@ -10,5 +10,8 @@ assert.match(html,/<h2>Flight Math<\/h2>/);
 assert.deepEqual([...html.matchAll(/data-math-tool='([^']+)'/g)].map(match=>match[1]),['density','toc','tod']);
 for(const id of ['mathToolDensity','mathToolToc','mathToolTod'])assert.match(html,new RegExp(`id='${id}'`));
 assert.deepEqual([...html.matchAll(/id='tab-([^']+)'/g)].map(match=>match[1]),['route','plan','airport','craft','more']);
+assert.match(html,/<section id='more'[\s\S]*data-open='zulu'/);
+assert.match(html,/<section id='zulu'/);
+assert.doesNotMatch(html,/id='tab-zulu'/);
 assert.match(html,/padding-bottom:calc\(var\(--nav-height\)/);
 console.log('Plan and responsive navigation structure passed.');

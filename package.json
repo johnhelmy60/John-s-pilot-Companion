@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/performance-calculations.test.mjs && node tests/wb-envelope.test.mjs && node tests/ui-structure.test.mjs"
+    "test": "node tests/performance-calculations.test.mjs && node tests/wb-envelope.test.mjs && node tests/zulu-time.test.mjs && node tests/ui-structure.test.mjs"
+  },
+  "dependencies": {
+    "luxon": "^3.7.2"
   }
 }

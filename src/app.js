@@ -8,10 +8,11 @@ import { initFuel, calcFuel, getLastReserveHours } from './fuel.js';
 import { initWb, calcWB } from './wb.js';
 import { enhanceForms, validateInput } from './validation.js';
 import { initPerformance, renderPerformance } from './performance.js';
+import { initZuluTime } from './zulu-time.js';
 
 var lastCrosswind=null,lastGustCrosswind=null;
 var mainTabs=['route','plan','airport','craft','more'];
-var sections=['routeplan','plan','airport','more','crosswind','wb','performance','fuel','tank','hobbs','freq','airports','brief','minimums','craft','gono'];
+var sections=['routeplan','plan','airport','more','crosswind','wb','performance','fuel','tank','hobbs','zulu','freq','airports','brief','minimums','craft','gono'];
 var sectionNodes={},mainNode=null;
 
 function el(id){
@@ -41,7 +42,7 @@ function groupFor(id){
  if(['plan','crosswind','wb','performance','fuel','minimums','gono'].indexOf(id)>=0)return 'plan';
  if(['airport','airports','brief','freq'].indexOf(id)>=0)return 'airport';
  if(id==='craft')return 'craft';
- if(['more','tank','hobbs'].indexOf(id)>=0)return 'more';
+ if(['more','tank','hobbs','zulu'].indexOf(id)>=0)return 'more';
  return 'route';
 }
 
@@ -159,6 +160,7 @@ window.onload=function(){
  initBriefing(context);
  initMinimums(context);
 initPerformance(context);
+ initZuluTime(context);
  enhanceForms(Object.keys(sectionNodes).map(function(id){return sectionNodes[id]}));
  allControls('input').forEach(function(i){i.addEventListener('input',calcAll)});
  el('leftTankBtn').onclick=function(){startTank('LEFT')};el('rightTankBtn').onclick=function(){startTank('RIGHT')};el('stopTankBtn').onclick=stopTank;

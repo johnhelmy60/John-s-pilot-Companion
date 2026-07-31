@@ -1,4 +1,4 @@
-const CACHE='johns-pilot-companion-v2-41';
+const CACHE='johns-pilot-companion-v2-42';
 const ASSETS=[
   './index.html',
   './manifest.webmanifest',
@@ -11,6 +11,10 @@ const ASSETS=[
   './src/validation.js',
   './src/performance.js',
   './src/performance-calculations.js',
+  './src/zulu-time.js',
+  './src/zulu-time-data.js',
+  './src/zulu-time-calculations.js',
+  './vendor/luxon.mjs',
   './src/briefing.js',
   './src/minimums.js',
   './src/fuel.js',
